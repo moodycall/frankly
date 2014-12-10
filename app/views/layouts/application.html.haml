@@ -6,6 +6,7 @@
 		= javascript_include_tag 'application', 'data-turbolinks-track' => true
 		= csrf_meta_tags
 	%body
+		= link_to "Home", root_url
 		- if user_signed_in?
 			Logged in as
 			= link_to 'Edit profile', edit_user_registration_path

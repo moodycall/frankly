@@ -7,6 +7,6 @@ class AddPersonalizationColumnsToUsers < ActiveRecord::Migration
   	add_column :users, :send_session_sms_alerts,   :boolean, :default => false, :null => false
 		add_column :users, :stripe_recipient_id, 			 :string
 		add_column :users, :stripe_customer_id,				 :string
-		add_column :users, :default_timezone,					 :string
+		add_column :users, :preferred_timezone,			   :string
   end
 end

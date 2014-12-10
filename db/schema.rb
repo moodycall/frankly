@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20141210210546) do
     t.boolean  "send_session_sms_alerts",   default: false, null: false
     t.string   "stripe_recipient_id"
     t.string   "stripe_customer_id"
-    t.string   "default_timezone"
+    t.string   "preferred_timezone"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

@@ -15,7 +15,14 @@ class CounselorsController < ApplicationController
 
   # GET /counselors/new
   def new
-    @counselor = Counselor.new
+    unless current_user.counselor.present?
+      @counselor = current_user.build_counselor
+      if @counselor.save
+        redirect_to counselor_url(@counselor), notice: 'Great! A preview of your profile has been created for you. Update your information to become an active counselor.'
+      end
+    else
+      redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor Profile.'
+    end
   end
 
   # GET /counselors/1/edit
@@ -25,7 +32,7 @@ class CounselorsController < ApplicationController
   # POST /counselors
   # POST /counselors.json
   def create
-    @counselor = Counselor.new(counselor_params)
+    @counselor = current_user.counselors.new(counselor_params)
 
     respond_to do |format|
       if @counselor.save
@@ -70,6 +77,22 @@ class CounselorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def counselor_params
-      params.require(:counselor).permit(:bio, :photo, :profession_start_date, :slug, :user_id, :hourly_rate_in_cents, :hourly_fee_in_cents, :send_session_sms_alerts, :send_session_email_alerts, :advanced_scheduling_in_weeks, :available_monday, :available_tuesday, :available_wednesday, :available_thursday, :available_friday, :available_saturday, :available_sunday)
+      params.require(:counselor).permit(:bio,
+                                        :photo,
+                                        :profession_start_date,
+                                        :slug,
+                                        :user_id,
+                                        :hourly_rate_in_cents,
+                                        :hourly_fee_in_cents,
+                                        :send_session_sms_alerts,
+                                        :send_session_email_alerts,
+                                        :advanced_scheduling_in_weeks,
+                                        :available_monday,
+                                        :available_tuesday,
+                                        :available_wednesday,
+                                        :available_thursday,
+                                        :available_friday,
+                                        :available_saturday,
+                                        :available_sunday)
     end
 end
