@@ -6,6 +6,8 @@ gem 'rails', '4.1.3'
 gem 'haml-rails'
 # Make sure our forms look great
 gem 'simple_form'
+# User Authentication
+gem 'devise'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Great looking URLs
