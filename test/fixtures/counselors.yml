@@ -1,0 +1,39 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bio: MyText
+  photo: MyString
+  profession_start_date: 2014-12-10
+  slug: MyString
+  user_id: 1
+  hourly_rate_in_cents: 1
+  hourly_fee_in_cents: 1
+  send_session_sms_alerts: false
+  send_session_email_alerts: false
+  advanced_scheduling_in_weeks: 1
+  available_monday: false
+  available_tuesday: false
+  available_wednesday: false
+  available_thursday: false
+  available_friday: false
+  available_saturday: false
+  available_sunday: false
+
+two:
+  bio: MyText
+  photo: MyString
+  profession_start_date: 2014-12-10
+  slug: MyString
+  user_id: 1
+  hourly_rate_in_cents: 1
+  hourly_fee_in_cents: 1
+  send_session_sms_alerts: false
+  send_session_email_alerts: false
+  advanced_scheduling_in_weeks: 1
+  available_monday: false
+  available_tuesday: false
+  available_wednesday: false
+  available_thursday: false
+  available_friday: false
+  available_saturday: false
+  available_sunday: false

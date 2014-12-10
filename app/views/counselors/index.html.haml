@@ -1,0 +1,49 @@
+%h1 Counselors
+
+%table
+  %thead
+    %tr
+      %th Bio
+      %th Photo
+      %th Profession start date
+      %th Slug
+      %th User
+      %th Hourly rate in cents
+      %th Hourly fee in cents
+      %th Send session sms alerts
+      %th Send session email alerts
+      %th Advanced scheduling in weeks
+      %th Available monday
+      %th Available tuesday
+      %th Available wednesday
+      %th Available thursday
+      %th Available friday
+      %th Available saturday
+      %th Available sunday
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @counselors.each do |counselor|
+      %tr
+        %td= counselor.bio
+        %td= counselor.photo
+        %td= counselor.profession_start_date
+        %td= counselor.slug
+        %td= counselor.user_id
+        %td= counselor.hourly_rate_in_cents
+        %td= counselor.hourly_fee_in_cents
+        %td= counselor.send_session_sms_alerts
+        %td= counselor.send_session_email_alerts
+        %td= counselor.advanced_scheduling_in_weeks
+        %td= counselor.available_monday
+        %td= counselor.available_tuesday
+        %td= counselor.available_wednesday
+        %td= counselor.available_thursday
+        %td= counselor.available_friday
+        %td= counselor.available_saturday
+        %td= counselor.available_sunday
+        %td= link_to 'Show', counselor
+        %td= link_to 'Edit', edit_counselor_path(counselor)
+        %td= link_to 'Destroy', counselor, :method => :delete, :data => { :confirm => 'Are you sure?' }

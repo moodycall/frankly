@@ -11,7 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210202449) do
+ActiveRecord::Schema.define(version: 20141210204457) do
+
+  create_table "counselors", force: true do |t|
+    t.text     "bio"
+    t.string   "photo"
+    t.date     "profession_start_date"
+    t.string   "slug"
+    t.integer  "user_id"
+    t.integer  "hourly_rate_in_cents",         default: 6000,  null: false
+    t.integer  "hourly_fee_in_cents",          default: 600,   null: false
+    t.boolean  "send_session_sms_alerts",      default: false, null: false
+    t.boolean  "send_session_email_alerts",    default: true,  null: false
+    t.integer  "advanced_scheduling_in_weeks", default: 4,     null: false
+    t.boolean  "available_monday",             default: true,  null: false
+    t.boolean  "available_tuesday",            default: true,  null: false
+    t.boolean  "available_wednesday",          default: true,  null: false
+    t.boolean  "available_thursday",           default: true,  null: false
+    t.boolean  "available_friday",             default: true,  null: false
+    t.boolean  "available_saturday",           default: false, null: false
+    t.boolean  "available_sunday",             default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false

@@ -1,0 +1,57 @@
+%p#notice= notice
+
+%p
+  %b Bio:
+  = @counselor.bio
+%p
+  %b Photo:
+  = @counselor.photo
+%p
+  %b Profession start date:
+  = @counselor.profession_start_date
+%p
+  %b Slug:
+  = @counselor.slug
+%p
+  %b User:
+  = @counselor.user_id
+%p
+  %b Hourly rate in cents:
+  = @counselor.hourly_rate_in_cents
+%p
+  %b Hourly fee in cents:
+  = @counselor.hourly_fee_in_cents
+%p
+  %b Send session sms alerts:
+  = @counselor.send_session_sms_alerts
+%p
+  %b Send session email alerts:
+  = @counselor.send_session_email_alerts
+%p
+  %b Advanced scheduling in weeks:
+  = @counselor.advanced_scheduling_in_weeks
+%p
+  %b Available monday:
+  = @counselor.available_monday
+%p
+  %b Available tuesday:
+  = @counselor.available_tuesday
+%p
+  %b Available wednesday:
+  = @counselor.available_wednesday
+%p
+  %b Available thursday:
+  = @counselor.available_thursday
+%p
+  %b Available friday:
+  = @counselor.available_friday
+%p
+  %b Available saturday:
+  = @counselor.available_saturday
+%p
+  %b Available sunday:
+  = @counselor.available_sunday
+
+= link_to 'Edit', edit_counselor_path(@counselor)
+\|
+= link_to 'Back', counselors_path
