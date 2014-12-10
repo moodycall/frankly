@@ -1,4 +1,4 @@
-## Rails App for MoodyCall
-### An online video counseling tool
-_Wireframed, Designed, and Developed by Polar Notion_
-_http://polarnotion.com_
+== Rails App for MoodyCall
+=== An online video counseling tool
+Wireframed, Designed, and Developed by Polar Notion
+http://polarnotion.com
