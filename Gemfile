@@ -3,7 +3,11 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.3'
 
+# Alternative to ERB
 gem 'haml-rails'
+
+# Make sure our forms look great
+gem 'simple_form'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
