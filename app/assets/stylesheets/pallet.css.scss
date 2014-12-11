@@ -2,9 +2,4 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import 'pallet';
-
-#counselor_search {
-	background-color: $background_grey_light;
-	padding: 20px;
-}
+$background_grey_light: #E2E2E2;

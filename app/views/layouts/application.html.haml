@@ -7,6 +7,18 @@
 		= csrf_meta_tags
 	%body
 		= render "layouts/nav_primary"
+		
+		#counselor_search
+			%ul.list-inline
+				%li
+					Schedule a Session
+				%li
+					%input{:placeholder => "Speciality"}
+				%li
+					%input{:placeholder => "Datetime"}
+				%li
+					.btn.btn-primary.btn-sm
+						Search
 
 		- if notice
 			%p.notice= notice

@@ -2,9 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import 'pallet';
+.navbar {
+	margin-bottom: 0px;
+	border-radius: 0px;
+	border: 0px;
+}
 
-#counselor_search {
-	background-color: $background_grey_light;
-	padding: 20px;
+ul, ol {
+	margin-top: 0;
+	margin-bottom: 0px;
 }
