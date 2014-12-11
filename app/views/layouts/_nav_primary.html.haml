@@ -7,7 +7,7 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      %a.navbar-brand{:href => "#"} MoodyCall
+      = link_to "MoodyCall", root_url, :class => "navbar-brand"
     / Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       %ul.nav.navbar-nav
@@ -29,16 +29,16 @@
             %li
               %a{:href => "#"} One more separated link
       %ul.nav.navbar-nav.navbar-right
-        %li
-          = link_to "Home", root_url
         - if user_signed_in?
           %li
-            = link_to 'Dashboard', ""
+            = link_to 'Dashboard', user_dashboard_path
           %li
-            = link_to 'Edit profile', edit_user_registration_path
+            = link_to 'Settings', edit_user_registration_path
           %li
             = link_to "Logout", destroy_user_session_path, method: :delete
         - else
+          %li 
+            = link_to "Home", root_url
           %li
             = link_to "Sign up", new_user_registration_path
           %li

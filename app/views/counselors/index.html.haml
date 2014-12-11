@@ -6,7 +6,6 @@
       %th Bio
       %th Photo
       %th Profession start date
-      %th Slug
       %th User
       %th Hourly rate in cents
       %th
@@ -17,7 +16,6 @@
         %td= counselor.bio
         %td= counselor.photo
         %td= counselor.profession_start_date
-        %td= counselor.slug
-        %td= counselor.user_id
+        %td= counselor.user.name
         %td= number_to_currency(counselor.hourly_rate_in_dollars)
         %td= link_to 'View Profile', counselor
