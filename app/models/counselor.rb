@@ -2,6 +2,10 @@ class Counselor < ActiveRecord::Base
 	belongs_to :user
 	before_create :_generate_default_information
 
+	def hourly_rate_in_dollars
+		hourly_rate_in_cents * 0.01
+	end
+
 	private
 
 	def _generate_default_information

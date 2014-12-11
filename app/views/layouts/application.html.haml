@@ -6,16 +6,12 @@
 		= javascript_include_tag 'application', 'data-turbolinks-track' => true
 		= csrf_meta_tags
 	%body
-		= link_to "Home", root_url
-		- if user_signed_in?
-			Logged in as
-			= link_to 'Edit profile', edit_user_registration_path
-			= link_to "Logout", destroy_user_session_path, method: :delete
-		- else
-			= link_to "Sign up", new_user_registration_path
-			= link_to "Login", new_user_session_path
-		%p.notice= notice
-		%p.alert= alert
+		= render "layouts/nav_primary"
+
+		- if notice
+			%p.notice= notice
+		- if alert
+			%p.alert= alert
 		= yield
 		%footer
 			= link_to 'Become a Counselor', new_counselor_path
