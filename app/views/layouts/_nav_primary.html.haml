@@ -13,21 +13,15 @@
       %ul.nav.navbar-nav
         %li.dropdown
           %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
-            TimeZone
+            = Time.zone.now.strftime("%I:%M%P")
+            %small= Time.zone.name
             %span.caret
-          %ul.dropdown-menu{:role => "menu"}
-            %li
-              %a{:href => "#"} Action
-            %li
-              %a{:href => "#"} Another action
-            %li
-              %a{:href => "#"} Something else here
-            %li.divider
-            %li
-              %a{:href => "#"} Separated link
-            %li.divider
-            %li
-              %a{:href => "#"} One more separated link
+          %ul.dropdown-menu.timezone_picker{:role => "menu"}
+            %li.dropdown-header
+              Select Your Timezone
+            - ActiveSupport::TimeZone.us_zones.each do |zone|
+              %li
+                = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
       %ul.nav.navbar-nav.navbar-right
         - if user_signed_in?
           %li
@@ -47,3 +41,10 @@
     / /.navbar-collapse
   / /.container-fluid
 / /nav.navbar
+
+:javascript
+  $(".time_zone").click(function() {
+    zone = $(this).attr("data-timezone");
+    $.cookie("timezone", zone);
+  });
+

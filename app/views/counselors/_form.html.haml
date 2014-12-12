@@ -1,24 +1,15 @@
-= simple_form_for(@counselor) do |f|
-  = f.error_notification
+.container-fluid
+  = simple_form_for(@counselor) do |f|
+    = f.error_notification
 
-  .form-inputs
-    = f.input :bio
-    = f.input :photo
-    = f.input :profession_start_date
-    = f.input :slug
-    = f.input :user_id
-    = f.input :hourly_rate_in_cents
-    = f.input :hourly_fee_in_cents
-    = f.input :send_session_sms_alerts
-    = f.input :send_session_email_alerts
-    = f.input :advanced_scheduling_in_weeks
-    = f.input :available_monday
-    = f.input :available_tuesday
-    = f.input :available_wednesday
-    = f.input :available_thursday
-    = f.input :available_friday
-    = f.input :available_saturday
-    = f.input :available_sunday
+    .form-inputs
+      = f.input :bio
+      = f.input :photo
+      = f.input :profession_start_date
+      = f.input :hourly_rate_in_cents
+      = f.input :hourly_fee_in_cents
+      = f.input :send_session_sms_alerts
+      = f.input :send_session_email_alerts
 
-  .form-actions
-    = f.button :submit
+    .form-actions
+      = f.button :submit

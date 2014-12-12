@@ -1,4 +1,6 @@
 class AvailabilityInterval < ActiveRecord::Base
+	include ActionView::Helpers
+	
 	belongs_to :counselor
 
 	DAY_MONDAY    = 1

@@ -19,5 +19,6 @@
 //= require jquery.timepicker
 //= require datepair
 //= require jquery.datepair
+//= require jquery.cookie
 //= require turbolinks
 //= require_tree .

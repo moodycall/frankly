@@ -1,6 +1,9 @@
 class Counselor < ActiveRecord::Base
 	include ActionView::Helpers
 
+	extend FriendlyId
+  friendly_id :created_slug, use: [:slugged, :history, :finders]
+
 	belongs_to :user
 
 	has_many :availability_intervals
@@ -8,6 +11,10 @@ class Counselor < ActiveRecord::Base
 	accepts_nested_attributes_for :availability_intervals
 	
 	before_create :_generate_default_information
+
+	def created_slug
+		self.user.name
+	end
 
 	def hourly_rate_in_dollars
 		hourly_rate_in_cents * 0.01
