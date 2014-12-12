@@ -1,6 +1,12 @@
 class Counselor < ActiveRecord::Base
 	include ActionView::Helpers
+
 	belongs_to :user
+
+	has_many :availability_intervals
+
+	accepts_nested_attributes_for :availability_intervals
+	
 	before_create :_generate_default_information
 
 	def hourly_rate_in_dollars

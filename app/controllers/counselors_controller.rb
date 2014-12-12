@@ -1,6 +1,6 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_counselor, only: [:show, :edit, :update, :destroy]
+  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :availability]
   respond_to :html, :json
 
   # GET /counselors
@@ -28,6 +28,9 @@ class CounselorsController < ApplicationController
 
   # GET /counselors/1/edit
   def edit
+  end
+
+  def availability
   end
 
   # POST /counselors
@@ -94,6 +97,7 @@ class CounselorsController < ApplicationController
                                         :available_thursday,
                                         :available_friday,
                                         :available_saturday,
-                                        :available_sunday)
+                                        :available_sunday,
+                                        availability_intervals_attributes: [:day_of_week, :start_time, :end_time])
     end
 end

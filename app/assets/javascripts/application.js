@@ -11,9 +11,13 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ui
 //= require best_in_place
 //= require best_in_place.purr
 //= require jquery_ujs
 //= require bootstrap
+//= require jquery.timepicker
+//= require datepair
+//= require jquery.datepair
 //= require turbolinks
 //= require_tree .

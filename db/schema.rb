@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210210546) do
+ActiveRecord::Schema.define(version: 20141212145512) do
+
+  create_table "availability_intervals", force: true do |t|
+    t.integer  "day_of_week",  default: 1, null: false
+    t.integer  "counselor_id"
+    t.string   "start_time"
+    t.string   "end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "counselors", force: true do |t|
     t.text     "bio"
