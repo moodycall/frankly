@@ -1,6 +1,7 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
   before_action :set_counselor, only: [:show, :edit, :update, :destroy]
+  respond_to :html, :json
 
   # GET /counselors
   # GET /counselors.json

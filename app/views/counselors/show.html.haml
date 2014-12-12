@@ -1,54 +1,58 @@
-.row
-  .col-md-6
-    %h1= @counselor.user.name
+.container-fluid
+  .row
+    .col-md-6
+      %h1= @counselor.user.name
 
-    %p
-      %h3 Professional Biography:
-      = @counselor.bio
-    %p
-      %b Photo:
-      = @counselor.photo
-    %p
-      %b Profession start date:
-      = @counselor.profession_start_date
-    %p
-      %b Slug:
-      = @counselor.slug
-    %p
-      %b User:
-      = @counselor.user_id
-    %p
-      %b Hourly rate in cents:
-      = number_to_currency(@counselor.hourly_rate_in_dollars)
+      %p
+        %h3 Professional Biography
+        = best_in_place @counselor, :bio, :type => :textarea
+      
+      %hr
 
-  .col-md-6
-    %h2 Availability
+      %p
+        %b Photo:
+        = @counselor.photo
+      %p
+        %b Profession start date:
+        = @counselor.years_in_business
+      %p
+        %b Slug:
+        = @counselor.slug
+      %p
+        %b User:
+        = @counselor.user_id
+      %p
+        %b Hourly rate in cents:
+        = number_to_currency(@counselor.hourly_rate_in_dollars)
 
-    %p
-      %b Advanced scheduling in weeks:
-      = @counselor.advanced_scheduling_in_weeks
-    %p
-      %b Available monday:
-      = @counselor.available_monday
-    %p
-      %b Available tuesday:
-      = @counselor.available_tuesday
-    %p
-      %b Available wednesday:
-      = @counselor.available_wednesday
-    %p
-      %b Available thursday:
-      = @counselor.available_thursday
-    %p
-      %b Available friday:
-      = @counselor.available_friday
-    %p
-      %b Available saturday:
-      = @counselor.available_saturday
-    %p
-      %b Available sunday:
-      = @counselor.available_sunday
+    .col-md-6
+      %h2 Availability
 
-= link_to 'Edit', edit_counselor_path(@counselor)
-|
-= link_to 'Back', counselors_path
+      %p
+        %b Advanced scheduling in weeks:
+        = @counselor.advanced_scheduling_in_weeks
+      %p
+        %b Available monday:
+        = @counselor.available_monday
+      %p
+        %b Available tuesday:
+        = @counselor.available_tuesday
+      %p
+        %b Available wednesday:
+        = @counselor.available_wednesday
+      %p
+        %b Available thursday:
+        = @counselor.available_thursday
+      %p
+        %b Available friday:
+        = @counselor.available_friday
+      %p
+        %b Available saturday:
+        = @counselor.available_saturday
+      %p
+        %b Available sunday:
+        = @counselor.available_sunday
+
+  = link_to 'Edit', edit_counselor_path(@counselor)
+  |
+  = link_to 'Back', counselors_path
