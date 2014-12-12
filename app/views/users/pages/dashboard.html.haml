@@ -1,5 +1,10 @@
 .container-fluid
-	%h1 Dashboard
+	.row
+		.col-sm-6
+			%h1 Dashboard
+		.col-sm-6
+			- if current_user.counselor.present?
+				= link_to "View Public Profile", counselor_path(current_user.counselor), :class => "btn btn-link pull-right"
 
 	.row
 		.col-md-6
