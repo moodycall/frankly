@@ -27,6 +27,10 @@
     .col-md-6
       %h2 Availability
 
+      = link_to "Edit Availability", availability_counselor_path(@counselor)
+
+      %hr
+
       / = Time.at(time_as_utc(@counselor.availability_intervals.first.start_time).to_time.to_i).in_time_zone(Time.zone).strftime("%I:%M%P")
       %p
         %b Advanced scheduling in weeks:
