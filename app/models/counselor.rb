@@ -35,9 +35,10 @@ class Counselor < ActiveRecord::Base
 	def _create_stripe_recipient_id
 		unless user.stripe_recipient_id.present?
 	  	recipient = Stripe::Recipient.create(
-	  		:name  => "#{user.name}",
-			  :email => "#{user.email}",
-			 	:type  => "individual"
+	  		:name  			 => "#{user.name}",
+			  :email 			 => "#{user.email}",
+			  :description => "MoodCall Counselor",
+			 	:type 			 => "individual"
 			)
 
 			user.stripe_recipient_id = recipient.id

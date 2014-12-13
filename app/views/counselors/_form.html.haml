@@ -3,13 +3,13 @@
     = f.error_notification
 
     .form-inputs
-      = f.input :bio, input_html: { :class => "form-control time start" }
-      = f.input :photo, input_html: { :class => "form-control time start" }
-      = f.input :profession_start_date, input_html: { :class => "form-control time start" }
+      = f.input :bio, input_html: { :class => "form-control" }
+      = f.input :photo, input_html: { :class => "form-control" }
+      = f.input :profession_start_date, input_html: { :class => "form-control" }
       / = f.input :hourly_rate_in_cents
       / = f.input :hourly_fee_in_cents
-      = f.input :send_session_sms_alerts, input_html: { :class => "form-control time start" }
-      = f.input :send_session_email_alerts, input_html: { :class => "form-control time start" }
+      = f.input :send_session_sms_alerts, input_html: { :class => "form-control" }
+      = f.input :send_session_email_alerts, input_html: { :class => "form-control" }
 
     .form-actions
       = f.submit "Update Profile", :class => "btn btn-primary"
