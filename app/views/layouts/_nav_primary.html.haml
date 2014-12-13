@@ -45,6 +45,6 @@
 :javascript
   $(".time_zone").click(function() {
     zone = $(this).attr("data-timezone");
-    $.cookie("timezone", zone);
+    $.cookie("moodcall_timezone", zone, { path: '/' });
   });
 

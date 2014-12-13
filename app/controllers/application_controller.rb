@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
   before_action :set_timezone
 
   def set_timezone
-  	Time.zone = cookies[:timezone] || "Eastern Time (US & Canada)"
+  	Time.zone = cookies[:moodcall_timezone] || "Eastern Time (US & Canada)"
   end
 end
