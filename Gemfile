@@ -14,6 +14,8 @@ gem 'sqlite3'
 gem 'friendly_id', '~> 5.0.0'
 # Allow inplace editing, especially for counselors
 gem 'best_in_place', github: 'bernat/best_in_place' 
+# Stripe for payment and money transfers
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets

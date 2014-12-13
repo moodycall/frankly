@@ -11,6 +11,7 @@ class Counselor < ActiveRecord::Base
 	accepts_nested_attributes_for :availability_intervals
 	
 	before_create :_generate_default_information
+	before_create :_create_stripe_recipient_id
 
 	def created_slug
 		self.user.name
@@ -29,5 +30,18 @@ class Counselor < ActiveRecord::Base
 	def _generate_default_information
 		self.bio = "I'm passionate about help people reach their full potential. I look forward to leveraging my professional experience to help you reach your full potential."
 		self.profession_start_date = Time.now
+	end
+
+	def _create_stripe_recipient_id
+		unless user.stripe_recipient_id.present?
+	  	recipient = Stripe::Recipient.create(
+	  		:name  => "#{user.name}",
+			  :email => "#{user.email}",
+			 	:type  => "individual"
+			)
+
+			user.stripe_recipient_id = recipient.id
+			user.save
+		end
 	end
 end
