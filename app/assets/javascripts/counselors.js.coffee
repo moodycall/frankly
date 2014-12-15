@@ -7,6 +7,7 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   $('.interval_trigger').click ->
+  	$(".intervals_wrapper").slideUp();
   	target_wrapper = $(this).attr("data-trigger");
   	$(target_wrapper).slideToggle();
 

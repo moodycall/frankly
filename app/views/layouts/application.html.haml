@@ -12,9 +12,9 @@
 		= render "layouts/nav_search"
 
 		- if notice
-			%p.notice= notice
+			%p.notice.alert.alert-success= notice
 		- if alert
-			%p.alert= alert
+			%p.alert.alert-danger= alert
 		= yield
 		%footer
 			= link_to 'Become a Counselor', new_counselor_path
