@@ -1,0 +1,81 @@
+= simple_form_for(@credit_card) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name, :input_html => { :class => "form-control"}
+
+  #cc_information
+    .row
+      .col-xs-9
+        .form-group
+          %label Card Number
+          %input.form-control.cc-numb{"data-stripe" => "number", :maxlength => "20", :type => "text"}/
+      .col-xs-3
+        .form-group
+          %label CVC
+          %input.form-control.with_help_btn{"data-stripe" => "cvc", :maxlength => "4", :type => "text"}/
+    .row
+      .col-xs-4
+        %label{:for => "card_exp_month"}
+          Expiration
+          %br
+            %small (MM/YYYY)
+      .col-xs-5
+        .form-group
+          %select.form-control{"data-stripe" => "exp-month"}
+            %option{:value => "01"} January
+            %option{:value => "02"} February
+            %option{:value => "03"} March
+            %option{:value => "04"} April
+            %option{:value => "05"} May
+            %option{:value => "06"} June
+            %option{:value => "07"} July
+            %option{:value => "08"} August
+            %option{:value => "09"} September
+            %option{:value => "10"} October
+            %option{:value => "11"} November
+            %option{:value => "12"} December
+      .col-xs-3
+        %select.form-control{"data-stripe" => "exp-year"}
+          - (0..10).to_a.each do |y|
+            - yr = (DateTime.now + y.year).year
+            %option{:value => yr}= yr
+
+  .form-actions
+    = f.submit "Add Card", :class => "btn btn-primary"
+
+:javascript
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('pk_test_E0zSFId2UQvPIozfMjD863F7');
+
+ 
+  var stripeResponseHandler = function(status, response) {
+    var $form = $('#new_credit_card');
+
+    if (response.error) {
+      // Show the errors on the form
+      $form.find('.payment-errors').text(response.error.message);
+      $form.find('button').prop('disabled', false);
+    } else {
+      // token contains id, last4, and card type
+      var token = response.id;
+      // Insert the token into the form so it gets submitted to the server
+      $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+      // and re-submit
+      $form.get(0).submit();
+    }
+  };
+
+  jQuery(function($) {
+    $('#new_credit_card').submit(function(e) {
+      var $form = $(this);
+
+      // Disable the submit button to prevent repeated clicks
+      $form.find('button').prop('disabled', true);
+
+      Stripe.card.createToken($form, stripeResponseHandler);
+
+      // Prevent the form from submitting with the default action
+      return false;
+    });
+  });

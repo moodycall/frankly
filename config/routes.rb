@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :credit_cards,
+            :except => [:edit, :show],
+            :path => "payments" do
+  end
+
   resources :counseling_sessions
 
   resources :counselors do

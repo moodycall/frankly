@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 
 	has_one :counselor
   has_many :counseling_sessions
+  has_many :credit_cards
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
