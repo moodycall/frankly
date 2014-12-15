@@ -1,0 +1,41 @@
+%h1 Listing counseling_sessions
+
+%table
+  %thead
+    %tr
+      %th Start datetime
+      %th Estimate duration in minutes
+      %th Actual duration in minutes
+      %th Client
+      %th Counselor
+      %th Price in cents
+      %th Stripe charge
+      %th Slug
+      %th Secure
+      %th Refund amount in cents
+      %th Payout
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @counseling_sessions.each do |counseling_session|
+      %tr
+        %td= counseling_session.start_datetime
+        %td= counseling_session.estimate_duration_in_minutes
+        %td= counseling_session.actual_duration_in_minutes
+        %td= counseling_session.client_id
+        %td= counseling_session.counselor_id
+        %td= counseling_session.price_in_cents
+        %td= counseling_session.stripe_charge_id
+        %td= counseling_session.slug
+        %td= counseling_session.secure_id
+        %td= counseling_session.refund_amount_in_cents
+        %td= counseling_session.payout_id
+        %td= link_to 'Show', counseling_session
+        %td= link_to 'Edit', edit_counseling_session_path(counseling_session)
+        %td= link_to 'Destroy', counseling_session, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Counseling session', new_counseling_session_path

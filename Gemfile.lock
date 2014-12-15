@@ -60,6 +60,9 @@ GEM
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    dotiw (2.0)
+      actionpack (>= 3)
+      i18n
     erubis (2.7.0)
     execjs (2.2.2)
     friendly_id (5.0.4)
@@ -169,6 +172,7 @@ DEPENDENCIES
   best_in_place!
   coffee-rails (~> 4.0.0)
   devise
+  dotiw
   friendly_id (~> 5.0.0)
   haml-rails
   jbuilder (~> 2.0)

@@ -1,0 +1,39 @@
+%p#notice= notice
+
+%p
+  %b Start datetime:
+  = @counseling_session.start_datetime
+%p
+  %b Estimate duration in minutes:
+  = @counseling_session.estimate_duration_in_minutes
+%p
+  %b Actual duration in minutes:
+  = @counseling_session.actual_duration_in_minutes
+%p
+  %b Client:
+  = @counseling_session.client_id
+%p
+  %b Counselor:
+  = @counseling_session.counselor_id
+%p
+  %b Price in cents:
+  = @counseling_session.price_in_cents
+%p
+  %b Stripe charge:
+  = @counseling_session.stripe_charge_id
+%p
+  %b Slug:
+  = @counseling_session.slug
+%p
+  %b Secure:
+  = @counseling_session.secure_id
+%p
+  %b Refund amount in cents:
+  = @counseling_session.refund_amount_in_cents
+%p
+  %b Payout:
+  = @counseling_session.payout_id
+
+= link_to 'Edit', edit_counseling_session_path(@counseling_session)
+\|
+= link_to 'Back', counseling_sessions_path

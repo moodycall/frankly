@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
 
 	has_one :counselor
+  has_many :counseling_sessions
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

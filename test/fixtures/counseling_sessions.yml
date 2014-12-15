@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  start_datetime: 2014-12-12 21:57:08
+  estimate_duration_in_minutes: 1
+  actual_duration_in_minutes: 1
+  client_id: 1
+  counselor_id: 1
+  price_in_cents: 1
+  stripe_charge_id: MyString
+  slug: MyString
+  secure_id: MyString
+  refund_amount_in_cents: 1
+  payout_id: 1
+
+two:
+  start_datetime: 2014-12-12 21:57:08
+  estimate_duration_in_minutes: 1
+  actual_duration_in_minutes: 1
+  client_id: 1
+  counselor_id: 1
+  price_in_cents: 1
+  stripe_charge_id: MyString
+  slug: MyString
+  secure_id: MyString
+  refund_amount_in_cents: 1
+  payout_id: 1

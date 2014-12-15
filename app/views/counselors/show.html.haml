@@ -30,32 +30,47 @@
       = link_to "Edit Availability", availability_counselor_path(@counselor)
 
       %hr
+      %h3
+        Today
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        7:00pm
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        7:30pm
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        8:00pm
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        8:30pm
 
-      / = Time.at(time_as_utc(@counselor.availability_intervals.first.start_time).to_time.to_i).in_time_zone(Time.zone).strftime("%I:%M%P")
-      %p
-        %b Advanced scheduling in weeks:
-        = @counselor.advanced_scheduling_in_weeks
-      %p
-        %b Available monday:
-        = @counselor.available_monday
-      %p
-        %b Available tuesday:
-        = @counselor.available_tuesday
-      %p
-        %b Available wednesday:
-        = @counselor.available_wednesday
-      %p
-        %b Available thursday:
-        = @counselor.available_thursday
-      %p
-        %b Available friday:
-        = @counselor.available_friday
-      %p
-        %b Available saturday:
-        = @counselor.available_saturday
-      %p
-        %b Available sunday:
-        = @counselor.available_sunday
+      %h3
+        Tomorrow
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        7:00pm
+      .btn.btn-primary.disabled
+        7:30pm
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        8:00pm
+      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+        8:30pm
+
+  / Modal
+  #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          %button.close{"data-dismiss" => "modal", :type => "button"}
+            %span{"aria-hidden" => "true"} &times;
+            %span.sr-only Close
+          %h4#myModalLabel.modal-title Modal title
+        .modal-body
+          = simple_form_for(@counselor.counseling_sessions.new) do |f|
+            = f.error_notification
+
+            .form-inputs
+              = f.input :day, as: :string, input_html: { :class => "form-control" }
+              = f.input :time, as: :string, input_html: { :class => "form-control" }
+
+            .form-actions
+              = f.submit "Update Profile", :class => "btn btn-primary btn-block"
 
   = link_to 'Edit', edit_counselor_path(@counselor)
   |

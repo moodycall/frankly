@@ -7,6 +7,7 @@ class Counselor < ActiveRecord::Base
 	belongs_to :user
 
 	has_many :availability_intervals
+	has_many :counseling_sessions
 
 	accepts_nested_attributes_for :availability_intervals
 	
@@ -42,7 +43,6 @@ class Counselor < ActiveRecord::Base
 			)
 
 			user.stripe_recipient_id = recipient.id
-			user.save
 		end
 	end
 end

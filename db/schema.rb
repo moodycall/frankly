@@ -11,13 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212145512) do
+ActiveRecord::Schema.define(version: 20141213025708) do
 
   create_table "availability_intervals", force: true do |t|
     t.integer  "day_of_week",  default: 1, null: false
     t.integer  "counselor_id"
     t.string   "start_time"
     t.string   "end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "counseling_sessions", force: true do |t|
+    t.datetime "start_datetime"
+    t.integer  "estimate_duration_in_minutes"
+    t.integer  "actual_duration_in_minutes"
+    t.integer  "client_id"
+    t.integer  "counselor_id"
+    t.integer  "price_in_cents"
+    t.string   "stripe_charge_id"
+    t.string   "slug"
+    t.string   "secure_id"
+    t.integer  "refund_amount_in_cents"
+    t.integer  "payout_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

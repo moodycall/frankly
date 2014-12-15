@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :counseling_sessions
+
   resources :counselors do
   	member do
   		get :availability

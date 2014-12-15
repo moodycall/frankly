@@ -1,0 +1,18 @@
+= simple_form_for(@counseling_session) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :start_datetime
+    = f.input :estimate_duration_in_minutes
+    = f.input :actual_duration_in_minutes
+    = f.input :client_id
+    = f.input :counselor_id
+    = f.input :price_in_cents
+    = f.input :stripe_charge_id
+    = f.input :slug
+    = f.input :secure_id
+    = f.input :refund_amount_in_cents
+    = f.input :payout_id
+
+  .form-actions
+    = f.button :submit
