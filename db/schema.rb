@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20141215211950) do
     t.integer  "user_id"
     t.string   "name"
     t.string   "stripe_card_id"
+    t.boolean  "is_active",      default: true, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

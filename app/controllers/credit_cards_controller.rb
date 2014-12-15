@@ -18,18 +18,16 @@ class CreditCardsController < ApplicationController
   def create
     @credit_card = current_user.credit_cards.new(credit_card_params)
 
+    # We want to retrieve the customer from Stripe
+    # Then add the new card to the customer
     customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
     card                        = customer.cards.create(:card => params[:stripeToken])
     @credit_card.stripe_card_id = card.id
 
-    respond_to do |format|
-      if @credit_card.save
-        format.html { redirect_to @credit_card, notice: 'Credit card was successfully created.' }
-        format.json { render :show, status: :created, location: @credit_card }
-      else
-        format.html { render :new }
-        format.json { render json: @credit_card.errors, status: :unprocessable_entity }
-      end
+    if @credit_card.save
+      redirect_to credit_cards_path, notice: 'Credit card was successfully created.'
+    else
+      render :new
     end
   end
 
@@ -50,7 +48,14 @@ class CreditCardsController < ApplicationController
   # DELETE /credit_cards/1
   # DELETE /credit_cards/1.json
   def destroy
-    @credit_card.destroy
+    @credit_card.is_active = false
+    if @credit_card.save
+      # If the account has been deactivated from MoodyCall,
+      # we want to clear it from Stripe to prevent them from being billed.
+      customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
+      card                        = customer.cards.retrieve(@credit_card.stripe_card_id).delete()
+    end
+
     respond_to do |format|
       format.html { redirect_to credit_cards_url, notice: 'Credit card was successfully destroyed.' }
       format.json { head :no_content }
