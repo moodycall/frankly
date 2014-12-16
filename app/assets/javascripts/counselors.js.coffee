@@ -7,9 +7,8 @@ jQuery ->
   $('.best_in_place').best_in_place()
 
   $('.interval_trigger').click ->
-  	$(".intervals_wrapper").slideUp();
-  	target_wrapper = $(this).attr("data-trigger");
-  	$(target_wrapper).slideToggle();
+  	$(".intervals_wrapper").not($(this).attr("data-trigger")).slideUp();
+  	$($(this).attr("data-trigger")).slideToggle();
 
   # Set Initial Datepairs
   $('.time_pair .time').timepicker

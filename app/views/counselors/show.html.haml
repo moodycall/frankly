@@ -27,7 +27,8 @@
     .col-md-6
       %h2 Availability
 
-      = link_to "Edit Availability", availability_counselor_path(@counselor)
+      - if current_user and current_user.counselor == @counselor
+        = link_to "Edit Availability", availability_counselor_path(@counselor)
 
       %hr
       %h3

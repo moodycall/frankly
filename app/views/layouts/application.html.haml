@@ -1,20 +1,18 @@
 !!!
 %html
-	%head
-		%title Moodycall
-		= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-		= javascript_include_tag 'application', 'data-turbolinks-track' => true
-		= csrf_meta_tags
+  %head
+    %title Moodycall
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
 
-		%script{:src => "https://js.stripe.com/v2/", :type => "text/javascript"}
-	%body
-		= render "layouts/nav_primary"
-		= render "layouts/nav_search"
+    %script{:src => "https://js.stripe.com/v2/", :type => "text/javascript"}
+  %body
+    = render "layouts/nav_primary"
+    = render "layouts/nav_search"
 
-		- if notice
-			%p.notice.alert.alert-success= notice
-		- if alert
-			%p.alert.alert-danger= alert
-		= yield
-		%footer
-			= link_to 'Become a Counselor', new_counselor_path
+    = render "layouts/alerts"
+    
+    = yield
+    
+    = render "layouts/footer"
