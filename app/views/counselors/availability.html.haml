@@ -1,4 +1,4 @@
-.container-fluid
+.container
   %h1 Availability
 
   = simple_form_for(@counselor) do |f|
@@ -8,13 +8,16 @@
       .input-group
         = f.input :advanced_scheduling_in_weeks, input_html: { :class => "form-control"}, :label => "How far in advance can a client schedule a session?"
         
-      #counselor_availability_table
-        #monday_row.row{:class => (@counselor.available_monday ? nil : "unavailable")}
+      #counselor_availability_container
+        #monday_row.row.availability_day_wrapper{:class => (@counselor.available_monday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Monday
+            .availability_day_title Monday
           .col-sm-6
-            = f.input :available_monday, :label => false
-            #monday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#monday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_monday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #monday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#monday_intervals_wrapper"} Edit
           .col-xs-12
             #monday_intervals_wrapper.intervals_wrapper
               %table#monday_interval_table.daily_availability_intervals_table.table
@@ -40,12 +43,15 @@
                         .remove_row x
               #add_monday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#monday_interval_table", "data-day-value" => "1"} Add Interval
 
-        #tuesday_row.row{:class => (@counselor.available_tuesday ? nil : "unavailable")}
+        #tuesday_row.row.availability_day_wrapper{:class => (@counselor.available_tuesday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Tuesday
+            .availability_day_title Tuesday
           .col-sm-6
-            = f.input :available_tuesday, :label => false
-            #tuesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#tuesday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_tuesday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #tuesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#tuesday_intervals_wrapper"} Edit
           .col-xs-12
             #tuesday_intervals_wrapper.intervals_wrapper
               %table#tuesday_interval_table.daily_availability_intervals_table.table
@@ -71,12 +77,15 @@
                         .remove_row x
               #add_tuesday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#tuesday_interval_table", "data-day-value" => "2"} Add Interval
 
-        #wednesday_row.row{:class => (@counselor.available_wednesday ? nil : "unavailable")}
+        #wednesday_row.row.availability_day_wrapper{:class => (@counselor.available_wednesday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Wednesday
+            .availability_day_title Wednesday
           .col-sm-6
-            = f.input :available_wednesday, :label => false
-            #wednesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#wednesday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_wednesday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #wednesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#wednesday_intervals_wrapper"} Edit
           .col-xs-12
             #wednesday_intervals_wrapper.intervals_wrapper
               %table#wednesday_interval_table.daily_availability_intervals_table.table
@@ -102,12 +111,15 @@
                         .remove_row x
               #add_wednesday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#wednesday_interval_table", "data-day-value" => "3"} Add Interval
 
-        #thursday_row.row{:class => (@counselor.available_thursday ? nil : "unavailable")}
+        #thursday_row.row.availability_day_wrapper{:class => (@counselor.available_thursday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Thursday
+            .availability_day_title Thursday
           .col-sm-6
-            = f.input :available_thursday, :label => false
-            #thursday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#thursday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_thursday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #thursday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#thursday_intervals_wrapper"} Edit
           .col-xs-12
             #thursday_intervals_wrapper.intervals_wrapper
               %table#thursday_interval_table.daily_availability_intervals_table.table
@@ -133,12 +145,15 @@
                         .remove_row x
               #add_thursday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#thursday_interval_table", "data-day-value" => "4"} Add Interval
 
-        #friday_row.row{:class => (@counselor.available_friday ? nil : "unavailable")}
+        #friday_row.row.availability_day_wrapper{:class => (@counselor.available_friday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Friday
+            .availability_day_title Friday
           .col-sm-6
-            = f.input :available_friday, :label => false
-            #friday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#friday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_friday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #friday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#friday_intervals_wrapper"} Edit
           .col-xs-12
             #friday_intervals_wrapper.intervals_wrapper
               %table#friday_interval_table.daily_availability_intervals_table.table
@@ -164,12 +179,15 @@
                         .remove_row x
               #add_friday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#friday_interval_table", "data-day-value" => "5"} Add Interval
 
-        #saturday_row.row{:class => (@counselor.available_saturday ? nil : "unavailable")}
+        #saturday_row.row.availability_day_wrapper{:class => (@counselor.available_saturday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Saturday
+            .availability_day_title Saturday
           .col-sm-6
-            = f.input :available_saturday, :label => false
-            #saturday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#saturday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_saturday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #saturday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#saturday_intervals_wrapper"} Edit
           .col-xs-12
             #saturday_intervals_wrapper.intervals_wrapper
               %table#saturday_interval_table.daily_availability_intervals_table.table
@@ -195,12 +213,15 @@
                         .remove_row x
               #add_saturday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#saturday_interval_table", "data-day-value" => "6"} Add Interval
 
-        #sunday_row.row{:class => (@counselor.available_sunday ? nil : "unavailable")}
+        #sunday_row.row.availability_day_wrapper{:class => (@counselor.available_sunday ? nil : "unavailable")}
           .col-sm-6
-            %h3 Sunday
+            .availability_day_title Sunday
           .col-sm-6
-            = f.input :available_sunday, :label => false
-            #sunday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#sunday_intervals_wrapper"} Edit
+            %ul.list-inline.pull-right
+              %li
+                = f.input :available_sunday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+              %li
+                #sunday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#sunday_intervals_wrapper"} Edit
           .col-xs-12
             #sunday_intervals_wrapper.intervals_wrapper
               %table#sunday_interval_table.daily_availability_intervals_table.table
@@ -231,6 +252,8 @@
       = f.submit "Save Availability", :class => "btn btn-primary"
 
 :javascript
+  $(".boolean-switch").bootstrapSwitch();
+
   i = #{@counselor.availability_intervals.count};
 
   $('.add_interval_btn').click(function(){

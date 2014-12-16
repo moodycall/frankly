@@ -2,19 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import 'pallet';
+@import 'palette';
 
 #counselor_search {
 	background-color: $background_grey_light;
 	padding: 20px;
-}
-
-#counselor_availability_table {
-	.unavailable {
-		color: $text_muted;
-	}
-	.intervals_wrapper {
-		display:none;
-		max-width: 400px;
-	}
 }

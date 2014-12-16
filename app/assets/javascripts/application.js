@@ -16,6 +16,7 @@
 //= require best_in_place.purr
 //= require jquery_ujs
 //= require bootstrap
+//= require bootstrap-switch
 //= require jquery.timepicker
 //= require jquery.countdown
 //= require datepair
