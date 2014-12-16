@@ -26,6 +26,8 @@
         - if user_signed_in?
           %li
             = link_to 'Dashboard', user_dashboard_path
+          %li
+            = link_to 'Favorites', favorite_counselors_path
           %li.dropdown
             %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
               Icon

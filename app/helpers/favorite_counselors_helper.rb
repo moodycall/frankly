@@ -1,0 +1,2 @@
+module FavoriteCounselorsHelper
+end

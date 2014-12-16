@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 	has_one :counselor
   has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards
+  has_many :favorite_counselors
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

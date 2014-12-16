@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :favorite_counselors,
+            :only => [:create, :destroy, :index]
+
   resources :credit_cards,
             :except => [:edit, :show],
             :path => "payments" do

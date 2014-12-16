@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215211950) do
+ActiveRecord::Schema.define(version: 20141216195416) do
 
   create_table "availability_intervals", force: true do |t|
     t.integer  "day_of_week",  default: 1, null: false
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(version: 20141215211950) do
     t.string   "name"
     t.string   "stripe_card_id"
     t.boolean  "is_active",      default: true, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "favorite_counselors", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "counselor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
