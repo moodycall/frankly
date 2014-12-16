@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 
 	has_one :counselor
-  has_many :counseling_sessions
+  has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards
   
   # Include default devise modules. Others available are:
@@ -10,6 +10,14 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   before_save :_create_stripe_customer_id
+
+  def session_count_with_counselor(counselor_id)
+    counseling_sessions.where(:counselor_id => counselor_id).count
+  end
+
+  def upcoming_sessions
+    counseling_sessions.where("start_datetime >= ?", Time.zone.now)
+  end
 
   private
   

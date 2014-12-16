@@ -22,6 +22,10 @@ class Counselor < ActiveRecord::Base
 		hourly_rate_in_cents * 0.01
 	end
 
+	def minutely_rate_in_cents
+		hourly_rate_in_cents / 60
+	end
+
 	def years_in_business
 		distance_of_time_in_words(profession_start_date, Time.now)
 	end

@@ -17,6 +17,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require jquery.timepicker
+//= require jquery.countdown
 //= require datepair
 //= require jquery.datepair
 //= require jquery.cookie

@@ -11,7 +11,7 @@ jQuery ->
   	$($(this).attr("data-trigger")).slideToggle();
 
   # Set Initial Datepairs
-  $('.time_pair .time').timepicker
+  $('.time').timepicker
   	showDuration: true
   	maxTime: '11:30pm'
   $('.time_pair').datepair()
