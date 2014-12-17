@@ -5,7 +5,6 @@
     %thead
       %tr
         %th Name
-        %th Photo
         %th Profession start date
         %th Hourly rate in cents
         %th
@@ -14,7 +13,6 @@
       - @counselors.each do |counselor|
         %tr
           %td= counselor.user.name
-          %td= counselor.photo
           %td= counselor.profession_start_date
           %td= number_to_currency(counselor.hourly_rate_in_dollars)
           %td= link_to 'View Profile', counselor

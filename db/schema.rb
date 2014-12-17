@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216212230) do
+ActiveRecord::Schema.define(version: 20141217165747) do
 
   create_table "availability_intervals", force: true do |t|
     t.integer  "day_of_week",  default: 1, null: false
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20141216212230) do
 
   create_table "counselors", force: true do |t|
     t.text     "bio"
-    t.string   "photo"
     t.date     "profession_start_date"
     t.string   "slug"
     t.integer  "user_id"
@@ -128,6 +127,7 @@ ActiveRecord::Schema.define(version: 20141216212230) do
     t.string   "stripe_recipient_id"
     t.string   "stripe_customer_id"
     t.string   "preferred_timezone"
+    t.string   "photo"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

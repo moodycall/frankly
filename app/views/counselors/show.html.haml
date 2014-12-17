@@ -1,20 +1,26 @@
 .container
   .row
     .col-md-6
-      %h1= @counselor.user.name
+      .row
+        .col-sm-3
+          = image_tag @counselor.user.photo
+        .col-sm-9
 
-      .counselor_pubic_rating
-        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+          %h1= @counselor.user.name
 
-      %br
+          .counselor_pubic_rating
+            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+            .text-muted
+              (#{@counselor.ratings.count})
+          %br
 
-      = link_to favorite_counselors_path(:counselor => @counselor), :method => :post do
-        %i.icon-heart
-        Favorite
+          = link_to favorite_counselors_path(:counselor => @counselor), :method => :post do
+            %i.icon-heart
+            Favorite
 
       %p
         = counselor_url(@counselor)
@@ -24,9 +30,6 @@
       
       %hr
 
-      %p
-        %b Photo:
-        = @counselor.photo
       %p
         %b Profession start date:
         = @counselor.years_in_business

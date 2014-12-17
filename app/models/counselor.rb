@@ -25,7 +25,12 @@ class Counselor < ActiveRecord::Base
 		ratings.each do |rating|
 			total += rating.stars
 		end
-		total / ratings.count
+
+		if total == 0
+			return 0
+		else
+			star_count = total / ratings.count
+		end
 	end
 
 	def hourly_rate_in_dollars
