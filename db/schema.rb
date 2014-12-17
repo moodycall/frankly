@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216195416) do
+ActiveRecord::Schema.define(version: 20141216212230) do
 
   create_table "availability_intervals", force: true do |t|
     t.integer  "day_of_week",  default: 1, null: false
@@ -88,6 +88,21 @@ ActiveRecord::Schema.define(version: 20141216195416) do
   add_index "friendly_id_slugs", ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+
+  create_table "ratings", force: true do |t|
+    t.integer  "rater_id",              null: false
+    t.string   "rater_type",            null: false
+    t.integer  "rateable_id",           null: false
+    t.string   "rateable_type",         null: false
+    t.text     "comment"
+    t.integer  "stars",                 null: false
+    t.integer  "counseling_session_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ratings", ["rateable_id", "rateable_type"], name: "index_ratings_on_rateable_id_and_rateable_type"
+  add_index "ratings", ["rater_id", "rater_type"], name: "index_ratings_on_rater_id_and_rater_type"
 
   create_table "users", force: true do |t|
     t.string   "email",                     default: "",    null: false

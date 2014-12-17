@@ -7,7 +7,9 @@ Rails.application.routes.draw do
             :path => "payments" do
   end
 
-  resources :counseling_sessions
+  resources :counseling_sessions do
+    resources :ratings
+  end
 
   resources :counselors do
   	member do

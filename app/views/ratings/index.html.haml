@@ -1,0 +1,33 @@
+%h1 Listing ratings
+
+%table
+  %thead
+    %tr
+      %th Rater
+      %th Rater type
+      %th Rateable
+      %th Rateable type
+      %th Comment
+      %th Stars
+      %th Session
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @ratings.each do |rating|
+      %tr
+        %td= rating.rater_id
+        %td= rating.rater_type
+        %td= rating.rateable_id
+        %td= rating.rateable_type
+        %td= rating.comment
+        %td= rating.stars
+        %td= rating.session_id
+        %td= link_to 'Show', rating
+        %td= link_to 'Edit', edit_rating_path(rating)
+        %td= link_to 'Destroy', rating, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Rating', new_counseling_session_rating_path

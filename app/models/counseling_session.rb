@@ -1,7 +1,8 @@
 class CounselingSession < ActiveRecord::Base
-
 	extend FriendlyId
   friendly_id :secure_id, use: [:slugged, :history, :finders]
+
+  has_one :rating
 
 	belongs_to :counselor
 	belongs_to :client, :class_name => "User"

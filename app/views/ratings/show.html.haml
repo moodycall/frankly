@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Rater:
+  = @rating.rater_id
+%p
+  %b Rater type:
+  = @rating.rater_type
+%p
+  %b Rateable:
+  = @rating.rateable_id
+%p
+  %b Rateable type:
+  = @rating.rateable_type
+%p
+  %b Comment:
+  = @rating.comment
+%p
+  %b Stars:
+  = @rating.stars
+%p
+  %b Session:
+  = @rating.session_id
+
+= link_to 'Edit', edit_rating_path(@rating)
+\|
+= link_to 'Back', ratings_path

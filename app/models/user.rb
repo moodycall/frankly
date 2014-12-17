@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards
   has_many :favorite_counselors
+  has_many :ratings, as: :rater
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

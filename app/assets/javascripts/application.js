@@ -19,6 +19,7 @@
 //= require bootstrap-switch
 //= require jquery.timepicker
 //= require jquery.countdown
+//= require jquery.rating
 //= require datepair
 //= require jquery.datepair
 //= require jquery.cookie

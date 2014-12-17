@@ -9,6 +9,8 @@ class Counselor < ActiveRecord::Base
 	has_many :availability_intervals
 	has_many :counseling_sessions
 
+	has_many :ratings, as: :rateable
+
 	accepts_nested_attributes_for :availability_intervals
 	
 	before_create :_generate_default_information
@@ -16,6 +18,14 @@ class Counselor < ActiveRecord::Base
 
 	def created_slug
 		self.user.name
+	end
+
+	def public_rating
+		total = 0
+		ratings.each do |rating|
+			total += rating.stars
+		end
+		total / ratings.count
 	end
 
 	def hourly_rate_in_dollars

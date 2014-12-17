@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rater_id: 1
+  rater_type: MyString
+  rateable_id: 1
+  rateable_type: MyString
+  comment: MyText
+  stars: 1
+  session_id: 1
+
+two:
+  rater_id: 1
+  rater_type: MyString
+  rateable_id: 1
+  rateable_type: MyString
+  comment: MyText
+  stars: 1
+  session_id: 1

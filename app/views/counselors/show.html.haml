@@ -3,6 +3,15 @@
     .col-md-6
       %h1= @counselor.user.name
 
+      .counselor_pubic_rating
+        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
+
+      %br
+
       = link_to favorite_counselors_path(:counselor => @counselor), :method => :post do
         %i.icon-heart
         Favorite
@@ -81,3 +90,6 @@
   = link_to 'Edit', edit_counselor_path(@counselor)
   |
   = link_to 'Back', counselors_path
+
+:javascript
+  $('.star:nth-child(#{@counselor.public_rating})').attr("checked", "checked");
