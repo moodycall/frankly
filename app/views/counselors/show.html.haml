@@ -8,6 +8,10 @@
 
           %h1= @counselor.user.name
 
+          %p.text-muted
+            %em
+              Joined #{distance_of_time_in_words(Time.now, @counselor.user.created_at)} ago
+
           .counselor_pubic_rating
             %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
             %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
@@ -30,15 +34,20 @@
       
       %hr
 
-      %p
-        %b Profession start date:
-        = @counselor.years_in_business
-      %p
-        %b User:
-        = @counselor.user_id
-      %p
-        %b Hourly rate in cents:
-        = number_to_currency(@counselor.hourly_rate_in_dollars)
+      .row
+        .col-md-6
+          %h4
+            Licensed In
+        .col-md-6
+          %h4
+            Education
+        .col-md-6
+          %h4
+            Certications
+
+      / %p
+      /   %b Hourly rate in cents:
+      /   = number_to_currency(@counselor.hourly_rate_in_dollars)
 
     .col-md-6
       %h2 Availability
@@ -89,10 +98,6 @@
 
             .form-actions
               = f.submit "Update Profile", :class => "btn btn-primary btn-block"
-
-  = link_to 'Edit', edit_counselor_path(@counselor)
-  |
-  = link_to 'Back', counselors_path
 
 :javascript
   $('.star:nth-child(#{@counselor.public_rating})').attr("checked", "checked");

@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import 'palette';
+
 .navbar {
 	margin-bottom: 0px;
 	border-radius: 0px;
@@ -11,4 +13,31 @@
 ul, ol {
 	margin-top: 0;
 	margin-bottom: 0px;
+}
+
+.btn {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: normal;
+	text-align: center;
+	vertical-align: middle;
+	touch-action: manipulation;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid rgba(0, 0, 0, 0);
+	white-space: nowrap;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857;
+	border-radius: 0px;
+}
+
+.btn-primary {
+	color: #FFF;
+	background-color: $primary_color;
+}
+
+.btn-primary.btn-dark {
+	color: #FFF;
+	background-color: $primary_color_dark;
 }

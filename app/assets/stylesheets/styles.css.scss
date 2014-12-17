@@ -11,3 +11,20 @@
 	max-width: 25px;
 	border-radius: 50px;
 }
+
+.btn.btn-primary.navbar-btn {
+	padding: 6px 15px;
+	color: white;
+}
+
+.nav-special {
+	position: absolute;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0);
+	.time_zone_nav {
+		display: none;
+	}
+	&.navbar-default .navbar-nav > li > a {
+		color: #fff;
+	}
+}

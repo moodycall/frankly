@@ -1,28 +1,29 @@
-%h1 Payment Information
+.container
+  %h1 Payment Information
 
-.row
-  .col-md-6
-    %h3 Credit Cards
+  .row
+    .col-md-6
+      %h3 Credit Cards
 
-    %table.table
-      %thead
-        %tr
-          %th Name
-          %th Stripe card
-          %th
-          %th
-          %th
-          
-      %tbody
-        - @credit_cards.each do |credit_card|
+      %table.table
+        %thead
           %tr
-            %td= credit_card.name
-            %td= credit_card.stripe_card_id
-            %td= link_to 'Show', credit_card
-            %td= link_to 'Destroy', credit_card, :method => :delete, :data => { :confirm => 'Are you sure?' }
+            %th Name
+            %th Stripe card
+            %th
+            %th
+            %th
+            
+        %tbody
+          - @credit_cards.each do |credit_card|
+            %tr
+              %td= credit_card.name
+              %td= credit_card.stripe_card_id
+              %td= link_to 'Show', credit_card
+              %td= link_to 'Destroy', credit_card, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-    .text-center
-      = link_to 'New Credit card', new_credit_card_path, :class => "btn btn-primary"
+      .text-center
+        = link_to 'New Credit card', new_credit_card_path, :class => "btn btn-primary"
 
-  .col-md-6
-    %h3 Payment History
+    .col-md-6
+      %h3 Payment History

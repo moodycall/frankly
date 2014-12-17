@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   resources :favorite_counselors,
             :only => [:create, :destroy, :index]
 
@@ -20,5 +21,5 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {:registrations => "users/registrations"}
   get 'dashboard' => 'users/pages#dashboard', as: :user_dashboard
   
-  root "counselors#index"
+  root "pages#home"
 end

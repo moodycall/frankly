@@ -10,7 +10,7 @@
       = link_to "MoodyCall", root_url, :class => "navbar-brand"
     / Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      %ul.nav.navbar-nav
+      %ul.nav.navbar-nav.time_zone_nav
         %li.dropdown
           %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
             = Time.zone.now.strftime("%I:%M%P")
@@ -44,9 +44,9 @@
           %li 
             = link_to "Home", root_url
           %li
-            = link_to "Sign up", new_user_registration_path
-          %li
             = link_to "Login", new_user_session_path
+          %li
+            = link_to "Sign up", new_user_registration_path, :class => "btn btn-primary navbar-btn"
       / /ul.nav.navbar-right
     / /.navbar-collapse
   / /.container-fluid
