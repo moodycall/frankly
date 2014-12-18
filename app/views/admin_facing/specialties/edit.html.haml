@@ -1,0 +1,8 @@
+.container 
+	%h1 Editing #{@specialty.name}
+
+	= render 'form'
+
+	= link_to 'Show', @specialty
+	\|
+	= link_to 'Back', specialties_path

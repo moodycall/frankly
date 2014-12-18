@@ -1,0 +1,23 @@
+.container
+  %h1 Specialties
+
+  %table.table
+    %thead
+      %tr
+        %th Name
+        %th
+        %th
+        %th
+        
+    %tbody
+      - @specialties.each do |specialty|
+        %tr
+          %td= specialty.name
+          %td
+            .btn-group.pull-right
+              = link_to 'Show', specialty, :class => "btn btn-default"
+              = link_to 'Edit', edit_specialty_path(specialty), :class => "btn btn-default"
+
+  %br
+
+  = link_to 'New Specialty', new_specialty_path, :class => "btn btn-primary"

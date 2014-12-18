@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217165747) do
+ActiveRecord::Schema.define(version: 20141217204044) do
 
   create_table "availability_intervals", force: true do |t|
     t.integer  "day_of_week",  default: 1, null: false
@@ -102,6 +102,21 @@ ActiveRecord::Schema.define(version: 20141217165747) do
 
   add_index "ratings", ["rateable_id", "rateable_type"], name: "index_ratings_on_rateable_id_and_rateable_type"
   add_index "ratings", ["rater_id", "rater_type"], name: "index_ratings_on_rater_id_and_rater_type"
+
+  create_table "specializations", force: true do |t|
+    t.integer  "specialty_id"
+    t.integer  "counselor_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "specialties", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.boolean  "is_active",  default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                     default: "",    null: false

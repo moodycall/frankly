@@ -8,8 +8,9 @@ class Counselor < ActiveRecord::Base
 
 	has_many :availability_intervals
 	has_many :counseling_sessions
-
 	has_many :ratings, as: :rateable
+	has_many :specializations
+	has_many :specialties, :through => :specializations
 
 	accepts_nested_attributes_for :availability_intervals
 	
