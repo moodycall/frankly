@@ -1,23 +1,28 @@
 .container
   %h1 Specialties
 
-  = render 'form'
-
-  %table.table
-    %thead
-      %tr
-        %th Name
-        %th Status
-        %th Counselors
-        %th
-        
-    %tbody
-      - @specialties.each do |specialty|
-        %tr
-          %td= specialty.name
-          %td= specialty.is_active
-          %td= specialty.counselors.count
-          %td
-            .btn-group.pull-right
-              = link_to 'Show', specialty, :class => "btn btn-default"
-              = link_to 'Edit', edit_specialty_path(specialty), :class => "btn btn-default"
+  .row
+    .col-md-8
+      %table.table
+        %thead
+          %tr
+            %th Name
+            %th Status
+            %th Counselors
+            %th
+            
+        %tbody
+          - @specialties.each do |specialty|
+            %tr
+              %td= specialty.name
+              %td= specialty.is_active
+              %td= specialty.counselors.count
+              %td
+                .btn-group.pull-right
+                  = link_to 'Show', specialty, :class => "btn btn-default"
+                  = link_to 'Edit', edit_specialty_path(specialty), :class => "btn btn-default"
+    .col-md-4
+      .well
+        %h3
+          New Specialty
+        = render 'form'

@@ -5,8 +5,8 @@
     = f.error_notification
 
     .form-inputs
-      .input-group
-        = f.input :advanced_scheduling_in_weeks, input_html: { :class => "form-control"}, :label => "How far in advance can a client schedule a session?"
+      .form-group
+        = f.input :advanced_scheduling_in_weeks, as: :string, :label => false, input_html: { :class => "form-control floatlabel"}, :placeholder => "How far in advance can a client schedule a session?"
         
       #counselor_availability_container
         #monday_row.row.availability_day_wrapper{:class => (@counselor.available_monday ? nil : "unavailable")}

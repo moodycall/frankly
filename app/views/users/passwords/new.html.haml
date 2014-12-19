@@ -1,0 +1,14 @@
+.container
+	%h2 Forgot your password?
+
+	= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+		= f.error_notification
+
+		.form-inputs
+			.form-group
+				= f.input :email, required: true, autofocus: true, input_html: { :class => "form-control floatlabel" }, :placeholder => "Email", :label => false
+
+		.form-actions
+			= f.submit "Send me reset password instructions", :class => "btn btn-primary"
+
+	= render "users/shared/links"

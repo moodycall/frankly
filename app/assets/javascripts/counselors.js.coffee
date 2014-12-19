@@ -9,6 +9,9 @@ jQuery ->
   $(".boolean-switch").bootstrapSwitch()
   $( ".datepicker" ).datepicker({"showAnim": "slideDown"})
   $('#counselor_specialty_ids').chosen()
+  $('.floatlabel').floatlabel({
+    "labelEndTop": "8px",
+  });
 
   $('.interval_trigger').click ->
   	$(".intervals_wrapper").not($(this).attr("data-trigger")).slideUp();

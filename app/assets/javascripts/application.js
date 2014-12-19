@@ -20,6 +20,7 @@
 //= require jquery.timepicker
 //= require jquery.countdown
 //= require jquery.rating
+//= require floatlabels
 //= require datepair
 //= require jquery.datepair
 //= require jquery.cookie

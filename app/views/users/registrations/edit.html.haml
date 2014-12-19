@@ -1,4 +1,4 @@
-.container-fluid
+.container
   %h1
     Account Settings
   = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
@@ -9,14 +9,19 @@
         %h2
           User Info
         .form-inputs
-          = f.input :name, input_html: { :class => "form-control" }
-          = f.input :email, input_html: { :class => "form-control" }, required: true, autofocus: true
+          .form-group
+            = f.input :name, input_html: { :class => "form-control floatlabel" }, :label => false, :placeholder => "Name"
+          .form-group
+            = f.input :email, input_html: { :class => "form-control floatlabel" }, required: true, autofocus: true, :label => false, :placeholder => "Email"
           - if devise_mapping.confirmable? && resource.pending_reconfirmation?
             %p
               Currently waiting confirmation for: #{resource.unconfirmed_email}
-          = f.input :password, input_html: { :class => "form-control" }, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false
-          = f.input :password_confirmation, input_html: { :class => "form-control" }, required: false
-          = f.input :current_password, input_html: { :class => "form-control" }, hint: "we need your current password to confirm your changes", required: true
+          .form-group
+            = f.input :password, input_html: { :class => "form-control floatlabel" }, autocomplete: "off", hint: "leave it blank if you don't want to change it", required: false, :label => false, :placeholder => "New Password"
+          .form-group
+            = f.input :password_confirmation, input_html: { :class => "form-control floatlabel" }, required: false,  :label => false, :placeholder => "New Password Confirmation"
+          .form-group
+            = f.input :current_password, input_html: { :class => "form-control floatlabel" }, hint: "we need your current password to confirm your changes", required: true, :label => false, :placeholder => "Current Password"
         / %h3 Cancel my account
         / %p
         /   Unhappy? #{link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}
@@ -29,17 +34,11 @@
             Update Bank Details
           #bank_details_wrapper
             .form-group
-              %label
-                Country Code
-              %input.form-control.country
+              %input.form-control.floatlabel.country{:placeholder => "Country Code"}
             .form-group
-              %label
-                Routing Number
-              %input.form-control.routing-number
+              %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
             .form-group
-              %label
-                Account Number
-              %input.form-control.account-number
+              %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
     .form-actions
       = f.submit "Update", :class => "btn btn-primary"
 

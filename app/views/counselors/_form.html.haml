@@ -3,14 +3,19 @@
     = f.error_notification
 
     .form-inputs
-      = f.input :bio, input_html: { :class => "form-control" }
-      = f.input :profession_start_date, as: :string, input_html: { :class => "form-control datepicker" }
+      .form-group
+        = f.input :bio, :placeholder => "Biography", input_html: { :class => "form-control floatlabel" }, :label => false
+      .form-group
+        = f.input :profession_start_date, :placeholder => "Profession Start Date", :label => false, as: :string, input_html: { :class => "form-control floatlabel datepicker" }
 
-      = f.association :specialties, input_html: { :class => "form-control" }
+      .form-group
+        = f.association :specialties, input_html: { :class => "form-control" }
       / = f.input :hourly_rate_in_cents
       / = f.input :hourly_fee_in_cents
-      = f.input :send_session_sms_alerts, input_html: { :class => "form-control boolean-switch" }
-      = f.input :send_session_email_alerts, input_html: { :class => "form-control boolean-switch" }
+      .form-group
+        = f.input :send_session_sms_alerts, input_html: { :class => "form-control boolean-switch" }
+      .form-group
+        = f.input :send_session_email_alerts, input_html: { :class => "form-control boolean-switch" }
 
     .form-actions
       = f.submit "Update Profile", :class => "btn btn-primary"
