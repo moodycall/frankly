@@ -12,6 +12,11 @@
             %em
               Joined #{distance_of_time_in_words(Time.now, @counselor.user.created_at)} ago
 
+          .public_counselor_specialties
+            = raw @counselor.specialties.map {|specialty| link_to specialty.name, ""}.join(", ")
+
+          %br
+
           .counselor_pubic_rating
             %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
             %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
@@ -86,7 +91,7 @@
           %button.close{"data-dismiss" => "modal", :type => "button"}
             %span{"aria-hidden" => "true"} &times;
             %span.sr-only Close
-          %h4#myModalLabel.modal-title Modal title
+          %h4#myModalLabel.modal-title Schedule a Session
         .modal-body
           = simple_form_for(@counselor.counseling_sessions.new) do |f|
             = f.error_notification

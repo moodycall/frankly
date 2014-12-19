@@ -1,9 +1,10 @@
 = simple_form_for(@specialty) do |f|
   = f.error_notification
 
-  .form-inputs
-    = f.input :name, input_html: { :class => "form-control" }
-    = f.input :is_active
-
-  .form-actions
-    = f.submit "Create Specialty", :class => "btn btn-primary"
+  .row
+    .col-md-4
+      = f.input :name, input_html: { :class => "form-control" }, :placeholder => "Name", :label => false
+    .col-md-4
+      = f.check_box :is_active, :class => "boolean-switch", :label => false
+    .col-md-4
+      = f.submit "Create Specialty", :class => "btn btn-primary"      

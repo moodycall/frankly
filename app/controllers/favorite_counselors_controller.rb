@@ -1,5 +1,5 @@
 class FavoriteCounselorsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!
   before_action :set_favorite_counselor, only: [:destroy]
 
   # GET /favorite_counselors

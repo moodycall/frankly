@@ -23,4 +23,5 @@
 //= require datepair
 //= require jquery.datepair
 //= require jquery.cookie
+//= require chosen-jquery
 //= require_tree .

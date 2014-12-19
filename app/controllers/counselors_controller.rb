@@ -98,6 +98,7 @@ class CounselorsController < ApplicationController
                                         :available_friday,
                                         :available_saturday,
                                         :available_sunday,
+                                        { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time])
     end
 end

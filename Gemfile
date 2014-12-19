@@ -16,6 +16,8 @@ gem 'friendly_id', '~> 5.0.0'
 gem 'best_in_place', github: 'bernat/best_in_place'
 # Intercom
 gem 'intercom-rails'
+# Multiselect
+gem 'chosen-rails'
 # Stripe for payment and money transfers
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 # Full Contact for image recovery

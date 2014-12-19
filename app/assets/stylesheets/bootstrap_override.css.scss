@@ -15,6 +15,14 @@ ul, ol {
 	margin-bottom: 0px;
 }
 
+a {
+	color: $primary_color_dark;
+	&:hover {
+		color: $primary_color_dark;
+		opacity: .5;
+	}
+}
+
 .btn {
 	display: inline-block;
 	margin-bottom: 0;
@@ -40,4 +48,50 @@ ul, ol {
 .btn-primary.btn-dark {
 	color: #FFF;
 	background-color: $primary_color_dark;
+}
+
+.btn-primary.disabled,
+.btn-primary.disabled:hover,
+.btn-primary.disabled:focus,
+.btn-primary.disabled.focus,
+.btn-primary.disabled:active,
+.btn-primary.disabled.active,
+.btn-primary[disabled],
+.btn-primary[disabled]:hover,
+.btn-primary[disabled]:focus,
+.btn-primary[disabled].focus,
+.btn-primary[disabled]:active,
+.btn-primary[disabled].active,
+fieldset[disabled] .btn-primary,
+fieldset[disabled] .btn-primary:hover,
+fieldset[disabled] .btn-primary:focus,
+fieldset[disabled] .btn-primary.focus,
+fieldset[disabled] .btn-primary:active,
+fieldset[disabled] .btn-primary.active {
+	background-color: $primary_color;
+	border-color: $primary_color;
+	opacity: .5;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .btn-primary.dropdown-toggle {
+	color: #FFF;
+	background-color: $primary_color_dark;
+	border-color: $primary_color_dark;
+}
+
+.modal-content {
+	position: relative;
+	background-color: #FFF;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0px;
+	-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+	background-clip: padding-box;
+	outline: 0;
 }

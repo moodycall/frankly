@@ -5,6 +5,7 @@ class AdminFacing::SpecialtiesController < AdminFacingController
   # GET /specialties
   # GET /specialties.json
   def index
+    @specialty = Specialty.new
     @specialties = Specialty.all
   end
 
@@ -25,7 +26,8 @@ class AdminFacing::SpecialtiesController < AdminFacingController
   # POST /specialties
   # POST /specialties.json
   def create
-    @specialty = Specialty.new(specialty_params)
+    @specialty           = Specialty.new(specialty_params)
+    @specialty.is_active = ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:specialty][:is_active])
 
     respond_to do |format|
       if @specialty.save

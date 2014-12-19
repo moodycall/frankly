@@ -6,6 +6,10 @@ jQuery ->
   
   $('.best_in_place').best_in_place()
 
+  $(".boolean-switch").bootstrapSwitch()
+  $( ".datepicker" ).datepicker({"showAnim": "slideDown"})
+  $('#counselor_specialty_ids').chosen()
+
   $('.interval_trigger').click ->
   	$(".intervals_wrapper").not($(this).attr("data-trigger")).slideUp();
   	$($(this).attr("data-trigger")).slideToggle();
