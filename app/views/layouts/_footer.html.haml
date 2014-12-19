@@ -15,10 +15,27 @@
       .col-sm-4
         %ul.list-unstyled
           %li
-            Terms
+            = link_to "Terms", "", :id => "footerTerms"
           %li
-            Privacy
+            = link_to "Privacy", "", :id => "footerPrivacy"
           %li
-            1.555.1234
+            = link_to "1.555.1234", "", :id => "footer_telephone"
           %li
-            support@moodycall.com
+            = link_to "support@moodycall.com", "", :id => "footer_email"
+
+:javascript
+  $("#footerTerms").click(function() {
+    Intercom('trackEvent', 'viewed_terms');
+  });
+
+  $("#footerPrivacy").click(function() {
+    Intercom('trackEvent', 'viewed_privacy_policy');
+  });
+
+  $("#footer_telephone").click(function() {
+    Intercom('trackEvent', 'clicked_support_phone');
+  });
+
+  $("#footer_email").click(function() {
+    Intercom('trackEvent', 'clicked_support_email');
+  });
