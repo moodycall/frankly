@@ -1,7 +1,7 @@
 @import 'palette';
 
 #home_intro {
-	background: asset-url("background-home.jpg") center top;
+	background: asset-data-url("background-home.jpg") center top;
 	min-height: 500px;
 	padding: 10px;
 	background-size: cover;
