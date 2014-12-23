@@ -2,14 +2,20 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.3'
+
+# Postgres DB with heroku
+gem 'pg'
+gem 'unicorn'
+gem 'activerecord-postgresql-adapter'
+gem 'rails_12factor'
+gem "rack-timeout"
+
 # Alternative to ERB
 gem 'haml-rails'
 # Make sure our forms look great
 gem 'simple_form'
 # User Authentication
 gem 'devise'
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Great looking URLs
 gem 'friendly_id', '~> 5.0.0'
 # Allow inplace editing, especially for counselors
