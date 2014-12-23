@@ -8,9 +8,9 @@
       %em
         = params[:specialty]
     - else
-    %em
-      #{pluralize(@counselors.count, "Professional")}
-    Available
+      %em
+        #{pluralize(@counselors.count, "Professional")}
+      Available
   
   - @counselors.each do |counselor|
     = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
