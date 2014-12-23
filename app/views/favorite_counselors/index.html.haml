@@ -2,5 +2,4 @@
 	%h1 Favorite Counselors
 
 	- @favorite_counselors.each do |favorite|
-		= link_to counselor_path(favorite.counselor) do
-			= favorite.counselor.user.name
+		= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor}

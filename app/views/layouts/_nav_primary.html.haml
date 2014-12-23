@@ -23,6 +23,8 @@
               %li
                 = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
       %ul.nav.navbar-nav.navbar-right
+        %li
+          = link_to 'Search', counselors_url(:subdomain => nil), :id => "primaryNavFavorites"
         - if user_signed_in?
           %li
             = link_to 'Dashboard', user_dashboard_url(:subdomain => nil)
@@ -41,8 +43,6 @@
               %li
                 = link_to "Logout", destroy_user_session_url(:subdomain => nil), method: :delete
         - else
-          %li 
-            = link_to "Home", root_url
           %li
             = link_to "Login", new_user_session_url(:subdomain => nil)
           %li

@@ -1,0 +1,52 @@
+.counselor_preview_wrapper.preview_with_schedule
+  .row
+    .col-sm-2
+      .counselor_image_wrapper
+        = link_to counselor_path(counselor) do
+          = image_tag "default-avatar.png", :class => "counselor_image"
+          / = image_tag counselor.user.photo
+    .col-sm-10
+
+      .counselor_favorite_wrapper.pull-right
+        = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
+          %i.icon-heart
+          Favorite
+
+      .counselor_name_wrapper
+        = link_to counselor_path(counselor) do
+          %h2.counselor_name
+            = counselor.user.name
+
+      .counselor_specialties_wrapper
+        = raw counselor.specialties.map {|specialty| link_to specialty.name, "", :class => "counselor_specialty"}.join(" ")
+
+      .counselor_pubic_rating_wrapper
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        .counselor_ratings_total.text-muted
+          (#{counselor.ratings.count})
+
+      .counselor_availability_preview_wrapper
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            7:00pm
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            7:30pm
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            8:00pm
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            8:30pm
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            9:00pm
+        .col-xs-4.col-sm-2
+          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
+            9:30pm
+
+%hr

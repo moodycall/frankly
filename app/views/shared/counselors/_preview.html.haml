@@ -1,0 +1,28 @@
+.counselor_preview_wrapper
+  .row
+    .col-sm-4
+      .counselor_image_wrapper
+        = image_tag "default-avatar.png", :class => "counselor_image"
+        / = image_tag counselor.user.photo
+    .col-sm-8
+
+      .counselor_name_wrapper
+        %h1.counselor_name
+          = counselor.user.name
+
+      .counselor_specialties_wrapper
+        = raw counselor.specialties.map {|specialty| link_to specialty.name, "", :class => "counselor_specialty"}.join(" ")
+
+      .counselor_pubic_rating_wrapper
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        %input.star{:name => "counselor_star", :type => "radio", :disabled => :disabled}
+        .counselor_ratings_total.text-muted
+          (#{counselor.ratings.count})
+
+      .counselor_favorite_wrapper
+        = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
+          %i.icon-heart
+          Favorite

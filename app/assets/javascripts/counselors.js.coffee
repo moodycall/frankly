@@ -22,3 +22,9 @@ jQuery ->
   	showDuration: true
   	maxTime: '11:30pm'
   $('.time_pair').datepair()
+
+  $(window).resize ->
+    new_height = $(window).height()
+    $('.counselor_availability_wrapper').height(new_height)
+
+  $(window).resize()

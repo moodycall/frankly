@@ -5,5 +5,5 @@
 jQuery ->
 
 	$("#new_rating").submit ->
-	  foo = $(".star-rating-on").length
-	  $("#rating_stars").val(foo)
+	  star_count = $(".star-rating-on").length
+	  $("#rating_stars").val(star_count)

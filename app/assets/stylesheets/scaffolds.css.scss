@@ -28,6 +28,10 @@ select.form-control {
   height: 42px;
 }
 
+img {
+  max-width: 100%;
+}
+
 .text-white {
   color: #fff;
 }
@@ -43,6 +47,11 @@ a:hover {
 .table > tfoot > tr > th,
 .table > tfoot > tr > td {
   vertical-align: middle;
+}
+
+#main {
+  min-height: 400px;
+  padding-bottom: 50px;
 }
 
 #notice {
@@ -81,7 +90,6 @@ a:hover {
 .footer {
   padding-top: 40px;
   padding-bottom: 40px;
-  margin-top: 100px;
   color: #777;
   border-top: 1px solid #E5E5E5;
 }

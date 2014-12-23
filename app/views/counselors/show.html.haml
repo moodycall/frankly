@@ -1,41 +1,29 @@
 .container
   .row
     .col-md-6
-      .row
-        .col-sm-3
-          = image_tag @counselor.user.photo
-        .col-sm-9
 
-          %h1= @counselor.user.name
+      = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
 
-          %p.text-muted
-            %em
-              Joined #{distance_of_time_in_words(Time.now, @counselor.user.created_at)} ago
+      .counselor_professional_bio_wrapper
+        %h3.counselor_professional_bio_title
+          Professional Biography
+        %p.counselor_professional_bio
+          = best_in_place @counselor, :bio, :type => :textarea
 
-          .public_counselor_specialties
-            = raw @counselor.specialties.map {|specialty| link_to specialty.name, ""}.join(", ")
+      %hr
 
-          %br
-
-          .counselor_pubic_rating
-            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-            %input.star{:name => "start_one", :type => "radio", :disabled => :disabled}
-            .text-muted
-              (#{@counselor.ratings.count})
-          %br
-
-          = link_to favorite_counselors_path(:counselor => @counselor), :method => :post do
-            %i.icon-heart
-            Favorite
-
-      %p
-        = counselor_url(@counselor)
-      %p
-        %h3 Professional Biography
-        = best_in_place @counselor, :bio, :type => :textarea
+      .counselor_professional_experience_wrapper
+        %h3.counselor_professional_experience_title
+          Professional Experience
+        %p.counselor_professional_experience
+          %ul
+            %li
+              = distance_of_time_in_words(Time.now, @counselor.profession_start_date, include_seconds: false)
+              Experience
+            %li
+              Joined MoodyCall
+              = distance_of_time_in_words(Time.now, @counselor.user.created_at, include_seconds: false)
+              ago
       
       %hr
 
@@ -50,38 +38,53 @@
           %h4
             Certications
 
+      %hr
+
+      .counselor_comments_wrapper
+        %h3.counselor_comments_title
+          Reviews
+        .row
+          - @counselor.ratings.each do |rating|
+            = rating.comment
+
       / %p
       /   %b Hourly rate in cents:
       /   = number_to_currency(@counselor.hourly_rate_in_dollars)
 
+      / %p
+      /   = counselor_url(@counselor)
+
     .col-md-6
-      %h2 Availability
+      .counselor_availability_wrapper
+        %h2.counselor_availability_title.text-center
+          Schedule a Session
 
-      - if current_user and current_user.counselor == @counselor
-        = link_to "Edit Availability", availability_counselor_path(@counselor)
+        - if current_user and current_user.counselor == @counselor
+          .text-center
+            = link_to "Edit Availability", availability_counselor_path(@counselor)
 
-      %hr
-      %h3
-        Today
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        7:00pm
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        7:30pm
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        8:00pm
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        8:30pm
+        %hr
+        %h3
+          Today
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          7:00pm
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          7:30pm
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          8:00pm
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          8:30pm
 
-      %h3
-        Tomorrow
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        7:00pm
-      .btn.btn-primary.disabled
-        7:30pm
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        8:00pm
-      .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
-        8:30pm
+        %h3
+          Tomorrow
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          7:00pm
+        .btn.btn-primary.disabled
+          7:30pm
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          8:00pm
+        .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
+          8:30pm
 
   / Modal
   #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
