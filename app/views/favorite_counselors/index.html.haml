@@ -1,5 +1,11 @@
 .container
 	%h1 Favorite Counselors
 
-	- @favorite_counselors.each do |favorite|
-		= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor}
+	-if @favorite_counselors.present?
+		- @favorite_counselors.each do |favorite|
+			= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor}
+	-else
+		%p.text-center
+			You currently have no favorites.
+		%p.text-center
+			=link_to "Browse Counselors", counselors_url, :class => "btn btn-primary btn-lg"

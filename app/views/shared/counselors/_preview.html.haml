@@ -2,8 +2,10 @@
   .row
     .col-sm-4
       .counselor_image_wrapper
-        = image_tag "default-avatar.png", :class => "counselor_image"
-        / = image_tag counselor.user.photo
+        -if counselor.user.photo.present?
+          = image_tag counselor.user.photo, :class => "counselor_image"
+        -else
+          = image_tag "default-avatar.png", :class => "counselor_image"
     .col-sm-8
 
       .counselor_name_wrapper

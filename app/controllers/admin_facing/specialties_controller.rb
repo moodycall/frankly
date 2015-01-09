@@ -9,11 +9,6 @@ class AdminFacing::SpecialtiesController < AdminFacingController
     @specialties = Specialty.all
   end
 
-  # GET /specialties/1
-  # GET /specialties/1.json
-  def show
-  end
-
   # GET /specialties/new
   def new
     @specialty = Specialty.new
@@ -31,7 +26,7 @@ class AdminFacing::SpecialtiesController < AdminFacingController
 
     respond_to do |format|
       if @specialty.save
-        format.html { redirect_to @specialty, notice: 'Specialty was successfully created.' }
+        format.html { redirect_to specialties_url, notice: 'Specialty was successfully created.' }
         format.json { render :show, status: :created, location: @specialty }
       else
         format.html { render :new }
@@ -45,7 +40,7 @@ class AdminFacing::SpecialtiesController < AdminFacingController
   def update
     respond_to do |format|
       if @specialty.update(specialty_params)
-        format.html { redirect_to @specialty, notice: 'Specialty was successfully updated.' }
+        format.html { redirect_to specialties_url, notice: 'Specialty was successfully updated.' }
         format.json { render :show, status: :ok, location: @specialty }
       else
         format.html { render :edit }

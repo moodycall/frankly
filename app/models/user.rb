@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     counseling_sessions.where("start_datetime >= ?", Time.zone.now)
   end
 
+  def previous_sessions
+    counseling_sessions.where("start_datetime <= ?", Time.zone.now)
+  end
+
   private
   
   def _create_stripe_customer_id
