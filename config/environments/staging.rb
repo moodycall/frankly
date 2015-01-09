@@ -1,8 +1,8 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.action_mailer.default_url_options = { host: 'moodycall.org' }
-  config.session_store :cookie_store, key: '_moodycall_session', domain: ".moodycall.org"
+  config.action_mailer.default_url_options = { host: 'moodycall.pw' }
+  config.session_store :cookie_store, key: '_moodycall_session', domain: ".moodycall.pw"
 
   # Code is not reloaded between requests.
   config.cache_classes = true
