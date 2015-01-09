@@ -2,41 +2,42 @@
   .row
     .col-md-6
 
-      = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
+      .counselor_professional_overview_wrapper
+        = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
 
-      .counselor_professional_bio_wrapper
-        %h3.counselor_professional_bio_title
-          Professional Biography
-        %p.counselor_professional_bio
-          = best_in_place @counselor, :bio, :type => :textarea
+        .counselor_professional_bio_wrapper
+          %h3.counselor_professional_bio_title
+            Professional Biography
+          %p.counselor_professional_bio
+            = best_in_place @counselor, :bio, :type => :textarea
 
-      %hr
+        %hr
 
-      .counselor_professional_experience_wrapper
-        %h3.counselor_professional_experience_title
-          Professional Experience
-        %p.counselor_professional_experience
-          %ul
-            %li
-              = distance_of_time_in_words(Time.now, @counselor.profession_start_date, include_seconds: false)
-              Experience
-            %li
-              Joined MoodyCall
-              = distance_of_time_in_words(Time.now, @counselor.user.created_at, include_seconds: false)
-              ago
-      
-      %hr
+        .counselor_professional_experience_wrapper
+          %h3.counselor_professional_experience_title
+            Professional Experience
+          %p.counselor_professional_experience
+            %ul
+              %li
+                = distance_of_time_in_words(Time.now, @counselor.profession_start_date, include_seconds: false)
+                Experience
+              %li
+                Joined MoodyCall
+                = distance_of_time_in_words(Time.now, @counselor.user.created_at, include_seconds: false)
+                ago
+        
+        %hr
 
-      .row
-        .col-md-6
-          %h4
-            Licensed In
-        .col-md-6
-          %h4
-            Education
-        .col-md-6
-          %h4
-            Certications
+        .row
+          .col-md-6
+            %h4
+              Licensed In
+          .col-md-6
+            %h4
+              Education
+          .col-md-6
+            %h4
+              Certications
 
       %hr
 
