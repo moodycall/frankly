@@ -13,8 +13,11 @@ Rails.application.routes.draw do
             :only => [:create, :destroy, :index]
 
   resources :credit_cards,
-            :except => [:edit, :show],
+            :except => [:edit, :show, :destroy],
             :path => "payments" do
+    member do
+      get :deactivate
+    end
   end
 
   resources :counseling_sessions do

@@ -9,21 +9,23 @@
         %thead
           %tr
             %th Name
-            %th Stripe card
-            %th
-            %th
+            %th Last Digits
             %th
             
         %tbody
           - @credit_cards.each do |credit_card|
             %tr
               %td= credit_card.name
-              %td= credit_card.stripe_card_id
-              %td= link_to 'Show', credit_card
-              %td= link_to 'Destroy', credit_card, :method => :delete, :data => { :confirm => 'Are you sure?' }
+              %td= credit_card.last_four
+              %td= link_to 'Remove', deactivate_credit_card_path(credit_card), :data => { :confirm => 'Are you sure?' }
 
-      .text-center
-        = link_to 'New Credit card', new_credit_card_path, :class => "btn btn-primary"
+      - if @credit_cards.count > 0
+        .text-right
+          = link_to 'Replace Credit Card', new_credit_card_path, :class => "btn btn-link btn-sm"
+      - else
+        .text-center
+          = link_to 'New Credit Card', new_credit_card_path, :class => "btn btn-primary"
+
 
     .col-md-6
       %h3 Payment History

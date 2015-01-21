@@ -84,6 +84,19 @@ fieldset[disabled] .btn-primary.active {
 	border-color: $primary_color_dark;
 }
 
+.btn-sm, .btn-group-sm > .btn {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+
+.btn-link {
+	color: $primary_color;
+	font-weight: normal;
+	border-radius: 0;
+}
+
 .modal-content {
 	position: relative;
 	background-color: #FFF;

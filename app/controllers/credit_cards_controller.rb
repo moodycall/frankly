@@ -1,11 +1,11 @@
 class CreditCardsController < ApplicationController
   before_filter :authenticate_user!
-  before_action :set_credit_card, only: [:show, :edit, :update, :destroy]
+  before_action :set_credit_card, only: [:show, :edit, :update, :deactivate]
 
   # GET /credit_cards
   # GET /credit_cards.json
   def index
-    @credit_cards = current_user.credit_cards.all
+    @credit_cards = current_user.credit_cards.where(:is_active => true).all
   end
 
   # GET /credit_cards/new
@@ -22,7 +22,9 @@ class CreditCardsController < ApplicationController
     # Then add the new card to the customer
     customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
     card                        = customer.cards.create(:card => params[:stripeToken])
+
     @credit_card.stripe_card_id = card.id
+    @credit_card.last_four      = card.last4
 
     if @credit_card.save
       redirect_to credit_cards_path, notice: 'Credit card was successfully created.'
@@ -47,19 +49,18 @@ class CreditCardsController < ApplicationController
 
   # DELETE /credit_cards/1
   # DELETE /credit_cards/1.json
-  def destroy
+  def deactivate
     @credit_card.is_active = false
     if @credit_card.save
       # If the account has been deactivated from MoodyCall,
-      # we want to clear it from Stripe to prevent them from being billed.
-      customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
-      card                        = customer.cards.retrieve(@credit_card.stripe_card_id).delete()
+      # uncomment below if we decide we need to remove from Stripe
+      # customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
+      # card                        = customer.cards.retrieve(@credit_card.stripe_card_id).delete()
+      redirect_to credit_cards_url, notice: 'Credit card was successfully destroyed.'
+    else
+      redirect_to credit_cards_url, notice: 'Credit card was not successfully.'
     end
 
-    respond_to do |format|
-      format.html { redirect_to credit_cards_url, notice: 'Credit card was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
