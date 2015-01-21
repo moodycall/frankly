@@ -41,9 +41,10 @@
 	}
 
 	.counselor_specialty {
-		text-decoration: underline;
 		margin-right: 5px;
 		font-size: 10px;
+		border-bottom: 1px solid $primary_color;
+		padding-bottom: 2px;
 	}
 
 	.counselor_pubic_rating_wrapper {
