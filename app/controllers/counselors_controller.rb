@@ -6,7 +6,13 @@ class CounselorsController < ApplicationController
   # GET /counselors
   # GET /counselors.json
   def index
-    @counselors = Counselor.all
+    @specialty = Specialty.find_by_name "#{params[:specialty]}"
+
+    if @specialty.present?
+      @counselors = @specialty.counselors
+    else
+      @counselors = Counselor.all
+    end
   end
 
   # GET /counselors/1

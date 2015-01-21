@@ -1,16 +1,14 @@
 .container
 
   %h4.search_results_overview
-    - if params[:specialty]
-      %em
-        #{pluralize(@counselors.count, "Professional")}
-      specializing in
-      %em
-        = params[:specialty]
-    - else
-      %em
-        #{pluralize(@counselors.count, "Professional")}
-      Available
+    %em
+      #{pluralize(@counselors.count, "Professional")}
+      - if @speciality.present?
+        specializing in
+        %em
+          = @speciality.name
+      - else
+        Available
   
   - @counselors.each do |counselor|
     = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}

@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   def _collect_details_from_full_contact
     person      = FullContact.person(email: self.email)
     self.photo  = person.photos.first.url
-    if person.demographics.gender == "Female"
+    if person and person.demographics.present? and person.demographics.gender.present? and person.demographics.gender == "Female"
       self.gender = 2
     end
   end

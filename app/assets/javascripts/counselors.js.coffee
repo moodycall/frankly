@@ -3,6 +3,8 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 jQuery ->
+
+  $('textarea').autosize();
   
   $('.best_in_place').best_in_place()
 
