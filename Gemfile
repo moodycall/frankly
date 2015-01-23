@@ -28,6 +28,8 @@ gem 'chosen-rails'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 # Full Contact for image recovery
 gem 'fullcontact'
+# Twilio for SMS
+gem 'twilio-ruby', '~> 3.12'
 # Duration Calculations
 gem 'dotiw'
 # Use SCSS for stylesheets

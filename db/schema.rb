@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121211108) do
+ActiveRecord::Schema.define(version: 20150123164313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,22 @@ ActiveRecord::Schema.define(version: 20150121211108) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "prompts", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.integer  "quantity",            default: 1,    null: false
+    t.integer  "interval",            default: 1,    null: false
+    t.boolean  "send_before_session", default: true, null: false
+    t.boolean  "enable_sms",          default: true, null: false
+    t.text     "sms_message"
+    t.boolean  "enable_email",        default: true, null: false
+    t.text     "email_message"
+    t.integer  "audience_type",       default: 1,    null: false
+    t.boolean  "is_active",           default: true, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "ratings", force: true do |t|
     t.integer  "rater_id",              null: false
     t.string   "rater_type",            null: false
@@ -106,6 +122,15 @@ ActiveRecord::Schema.define(version: 20150121211108) do
 
   add_index "ratings", ["rateable_id", "rateable_type"], name: "index_ratings_on_rateable_id_and_rateable_type", using: :btree
   add_index "ratings", ["rater_id", "rater_type"], name: "index_ratings_on_rater_id_and_rater_type", using: :btree
+
+  create_table "session_prompts", force: true do |t|
+    t.integer  "prompt_id"
+    t.integer  "session_id"
+    t.integer  "user_id"
+    t.datetime "sent_dts"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "specializations", force: true do |t|
     t.integer  "specialty_id"

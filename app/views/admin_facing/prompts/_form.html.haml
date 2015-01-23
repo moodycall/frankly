@@ -1,0 +1,48 @@
+= simple_form_for(@prompt) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .row
+      .col-sm-8.col-sm-offset-2
+        .form-group
+          = f.input :name, input_html: { :class => "form-control" }
+        .form-group
+          = f.input :audience_type, collection: Prompt.audience_types, :label_method => :last, :value_method => :first, :include_blank => false, input_html: { :class => "form-control" }, :label => "Send to"
+
+        %label
+          Send Instructions
+        .row
+          .col-sm-3
+            .form-group
+              = f.input :quantity, input_html: { :class => "form-control" }, :placeholder => 1, :label => false
+          .col-sm-3
+            .form-group
+              = f.input :interval, collection: Prompt.interval_options, :label_method => :last, :value_method => :first, :include_blank => false, input_html: { :class => "form-control" }, :label => false
+          .col-sm-3
+            .form-group
+              = f.check_box :send_before_session, :class => "boolean-switch", :label => false, "data-on-text" => "before", "data-off-text" => "after"
+          .col-sm-3
+            .form-group
+              %input.form-control{ :placeholder => "session", :disabled => ""}
+
+        %hr
+
+        .row
+          .col-sm-6
+            .form-group
+              = f.label :enable_sms
+              = f.check_box :enable_sms, :class => "boolean-switch", :label => false
+            .form-group
+              = f.input :sms_message, input_html: { :class => "form-control" }
+          .col-sm-6
+            .form-group
+              = f.label :enable_email
+              = f.check_box :enable_email, :class => "boolean-switch", :label => false
+            .form-group
+              = f.input :email_message, input_html: { :class => "form-control" }
+        .form-group
+          = f.label :is_active, :label => "Status"
+          = f.check_box :is_active, :class => "boolean-switch", :label => false, "data-on-text" => "active", "data-off-text" => "draft"
+
+        .form-actions
+          = f.button :submit, :class => "btn btn-primary btn-block btn-lg"

@@ -4,6 +4,19 @@
   cursor: pointer;
 }
 
+label, th {
+	top: 15px;
+	left: 15px;
+	font-size: 12px;
+	font-weight: 700;
+	color: #959595;
+	text-transform: uppercase;
+}
+
+label {
+	display: block;
+}
+
 .timezone_picker {
 	max-height: 300px;
 	overflow: scroll;

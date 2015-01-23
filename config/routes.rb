@@ -6,6 +6,9 @@ Rails.application.routes.draw do
             :controller => "admin_facing/specialties",
             :except     => [:show]
 
+  resources :prompts,
+            :controller => "admin_facing/prompts"
+
   # PUBLIC/USER PAGES
   # We want to keep admin information seperated as an added level of security
 

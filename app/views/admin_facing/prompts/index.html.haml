@@ -1,0 +1,37 @@
+.container
+  %h1 Communication Prompts
+
+  %table.table
+    %thead
+      %tr
+        %th Name
+        %th Send Instructions
+        %th Channel
+        %th Status
+        %th 
+        
+    %tbody
+      - @prompts.each do |prompt|
+        %tr
+          %td
+            = prompt.name
+          %td
+            Send to #{prompt.audience_as_string}
+            %br
+            #{prompt.quantity} #{prompt.interval_as_string} #{prompt.proximity_to_session} session
+          %td
+            %ul.list-inline
+              -if prompt.enable_sms
+                %li
+                  .icon-iphone
+              -if prompt.enable_email
+                %li
+                  .icon-envelope
+          %td
+            = prompt.is_active
+          %td.text-right
+            = link_to 'Edit', edit_prompt_path(prompt), :class => "btn btn-sm btn-default"
+
+  %br
+
+  = link_to 'New Prompt', new_prompt_path, :class => "btn btn-primary btn-lg"

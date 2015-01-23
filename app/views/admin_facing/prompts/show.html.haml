@@ -1,0 +1,32 @@
+.container
+  %p
+    %b Duration:
+    = @prompt.quantity
+  %p
+    %b Interval:
+    = @prompt.interval
+  %p
+    %b Send before session:
+    = @prompt.send_before_session
+  %p
+    %b Enable sms:
+    = @prompt.enable_sms
+  %p
+    %b Sms message:
+    = @prompt.sms_message
+  %p
+    %b Enable email:
+    = @prompt.enable_email
+  %p
+    %b Email message:
+    = @prompt.email_message
+  %p
+    %b Audience type:
+    = @prompt.audience_type
+  %p
+    %b Is active:
+    = @prompt.is_active
+
+  = link_to 'Edit', edit_prompt_path(@prompt)
+  \|
+  = link_to 'Back', prompts_path

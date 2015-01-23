@@ -35,6 +35,9 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
+  config.twilio_account_sid  = "AC0c4bc1334eb07102c5c95b20c0a14835"
+  config.twilio_auth_token   = "6bb18c6aa2aeb152d6a954b8dc9e3f73"
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end
