@@ -52,6 +52,32 @@ class CounselingSession < ActiveRecord::Base
 	  end
 	end
 
+	def _create_before_prompts_for_client
+		@client_before_prompts = Prompt.where(:audience_type => 2, :is_active => true, :send_before_session => true).all
+
+		@client_before_prompts.each do |prompt|
+
+			preprompt        						 = self.session_prompts.new
+    	preprompt.prompt             = prompt
+    	preprompt.user               = self.client
+
+	    if prompt.interval == 1    # Minutes
+	    	send_time = self.start_datetime - (prompt.quantity).minutes
+	    elsif prompt.interval == 2 # Hours
+	    	send_time = self.start_datetime - (prompt.quantity).hours
+	    elsif prompt.interval == 3 # Days
+	    	send_time = self.start_datetime - (prompt.quantity).days
+	    elsif prompt.interval == 4 # Months
+	    	send_time = self.start_datetime - (prompt.quantity).months
+	    end
+
+	    if send_time > Time.now
+	    	preprompt.scheduled_send_dts = send_time
+				preprompt.save
+			end
+	  end
+	end
+
 	def _set_default_values
 		unless self.estimate_duration_in_minutes.present?
 			self.estimate_duration_in_minutes = 30

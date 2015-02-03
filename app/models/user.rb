@@ -49,5 +49,10 @@ class User < ActiveRecord::Base
     if person and person.demographics.present? and person.demographics.gender.present? and person.demographics.gender == "Female"
       self.gender = 2
     end
+
+    # If FullContact Fails, we don't care about throwing an error
+    # This should get moved into a background process in the future
+    rescue NoMethodError
+    rescue FullContact::NotFound
   end
 end

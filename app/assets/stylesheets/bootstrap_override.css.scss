@@ -164,7 +164,7 @@ textarea.form-control {
 	font-size: 18px;
 	line-height: 20px;
 	height: auto;
-	max-height: 59px;
+	max-height: 55px;
 }
 
 .dropdown-menu {
@@ -215,6 +215,10 @@ textarea.form-control {
 	line-height: 1.42857;
 	color: #777;
 	white-space: nowrap;
+}
+
+.alert {
+	margin-bottom: 0px;
 }
 
 // BOOTSTRAP SWITCH OVERRIDES
