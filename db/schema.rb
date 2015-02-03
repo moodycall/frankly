@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123164313) do
+ActiveRecord::Schema.define(version: 20150203194534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20150123164313) do
     t.text     "email_message"
     t.integer  "audience_type",       default: 1,    null: false
     t.boolean  "is_active",           default: true, null: false
+    t.string   "secure_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -125,11 +126,13 @@ ActiveRecord::Schema.define(version: 20150123164313) do
 
   create_table "session_prompts", force: true do |t|
     t.integer  "prompt_id"
-    t.integer  "session_id"
+    t.integer  "counseling_session_id"
     t.integer  "user_id"
-    t.datetime "sent_dts"
+    t.datetime "scheduled_send_dts"
+    t.datetime "sent_email_dts"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "sent_sms_dts"
   end
 
   create_table "specializations", force: true do |t|

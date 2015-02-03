@@ -11,6 +11,7 @@ class AdminFacing::PromptsController < AdminFacingController
   # GET /prompts/1
   # GET /prompts/1.json
   def show
+    @upcoming_deliveries = @prompt.session_prompts.where(:sent_email_dts => nil, :sent_sms_dts => nil).all
   end
 
   # GET /prompts/new
@@ -72,6 +73,7 @@ class AdminFacing::PromptsController < AdminFacingController
     def prompt_params
       params.require(:prompt).permit(:name,
                                      :quantity,
+                                     :secure_id,
                                      :interval,
                                      :send_before_session,
                                      :enable_sms,

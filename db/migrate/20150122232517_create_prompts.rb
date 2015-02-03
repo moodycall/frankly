@@ -12,6 +12,7 @@ class CreatePrompts < ActiveRecord::Migration
       t.text     :email_message
       t.integer  :audience_type,       default: 1,    null: false
       t.boolean  :is_active,           default: true, null: false
+      t.string   :secure_id
 
       t.timestamps
     end

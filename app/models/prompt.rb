@@ -4,7 +4,7 @@ class Prompt < ActiveRecord::Base
 
   has_many :session_prompts
   has_many :user, through: :session_prompts
-  has_many :session, through: :session_prompts
+  has_many :counseling_sessions, through: :session_prompts
 
   INTERVAL_MINUTES = 1
   INTERVAL_HOURS   = 2
@@ -30,6 +30,10 @@ class Prompt < ActiveRecord::Base
       AUDIENCE_CLIENT      => "client",
       AUDIENCE_COUNSELOR   => "counselor"
     }
+  end
+
+  def previous_delivery_count
+    session_prompts.where.not(sent_email_dts: nil, sent_sms_dts: nil).count
   end
 
   def interval_as_string
@@ -66,7 +70,7 @@ class Prompt < ActiveRecord::Base
 
   def _generate_secure_id
     unless self.secure_id.present?
-      self.secure_id = "#{SecureRandom.hex(2).upcase}"
+      self.secure_id = "#{SecureRandom.hex(3).upcase}"
       self.slug      = self.secure_id
     end
   end

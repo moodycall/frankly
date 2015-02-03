@@ -30,6 +30,7 @@
           %td
             = prompt.is_active
           %td.text-right
+            = link_to 'View', prompt_path(prompt), :class => "btn btn-sm btn-default"
             = link_to 'Edit', edit_prompt_path(prompt), :class => "btn btn-sm btn-default"
 
   %br
