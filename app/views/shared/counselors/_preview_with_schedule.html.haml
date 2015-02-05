@@ -26,11 +26,11 @@
         = raw counselor.specialties.map {|specialty| link_to specialty.name, "", :class => "counselor_specialty"}.join(" ")
 
       .counselor_pubic_rating_wrapper
-        %input.star{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
-        %input.star{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
+        .fa.fa-lg.fa-star-o{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
+        .fa.fa-lg.fa-star-o{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
+        .fa.fa-lg.fa-star-o{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
+        .fa.fa-lg.fa-star-o{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
+        .fa.fa-lg.fa-star-o{:name => "counselor_star_#{counselor.id}", :type => "radio", :disabled => :disabled}
         .counselor_ratings_total.text-muted
           (#{counselor.ratings.count})
 
