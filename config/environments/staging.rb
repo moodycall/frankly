@@ -80,6 +80,9 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  config.twilio_account_sid  = "AC0c4bc1334eb07102c5c95b20c0a14835"
+  config.twilio_auth_token   = "6bb18c6aa2aeb152d6a954b8dc9e3f73"
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
