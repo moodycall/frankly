@@ -21,6 +21,15 @@ class Counselor < ActiveRecord::Base
 		self.user.name
 	end
 
+	def is_user_favorite(user_id)
+		user = User.find(user_id)
+		if user.favorite_counselors.where(:counselor_id => self.id).present?
+			return true
+		else
+			return false
+		end
+	end
+
 	def public_rating
 		total = 0
 		ratings.each do |rating|

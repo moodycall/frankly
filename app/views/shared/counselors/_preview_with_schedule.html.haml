@@ -3,14 +3,18 @@
     .col-sm-2
       .counselor_image_wrapper
         = link_to counselor_path(counselor) do
-          = image_tag "default-avatar.png", :class => "counselor_image"
+          - if counselor.user.photo.present?
+            = image_tag counselor.user.photo, :class => "counselor_image"
+          - else
+            = image_tag "default-avatar.png", :class => "counselor_image"
           / = image_tag counselor.user.photo
     .col-sm-10
 
       .counselor_favorite_wrapper.pull-right
-        = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
-          %i.icon-heart
-          Favorite
+        = link_to favorite_counselors_path(:counselor => counselor), :method => :post do
+          %span{ :class => "#{ "favorited" if counselor.is_user_favorite(current_user.id) == true}"}
+            .fa.fa-heart
+            Favorite
 
       .counselor_name_wrapper
         = link_to counselor_path(counselor) do

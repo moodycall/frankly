@@ -9,6 +9,7 @@
 	border-radius: 0px;
 	border: none;
 	border-bottom: 4px solid $primary_color;
+	padding-top: 3px;
 }
 
 ul, ol {
@@ -27,7 +28,8 @@ a {
 .btn {
 	display: inline-block;
 	margin-bottom: 0;
-	font-weight: normal;
+	font-weight: 500;
+	letter-spacing: .5px;
 	text-align: center;
 	vertical-align: middle;
 	touch-action: manipulation;
@@ -37,7 +39,7 @@ a {
 	white-space: nowrap;
 	font-size: 14px;
 	line-height: 1.42857;
-	border-radius: 0px;
+	border-radius: 5px;
 }
 
 .btn-primary {
@@ -45,10 +47,17 @@ a {
 	background-color: $primary_color;
 }
 
+
+.btn.btn-primary.navbar-btn {
+	padding: 6px 15px;
+	color: white;
+}
+
 .btn-primary.btn-dark {
 	color: #FFF;
 	background-color: $primary_color_dark;
 }
+
 
 .btn-primary.disabled,
 .btn-primary.disabled:hover,
@@ -73,6 +82,7 @@ fieldset[disabled] .btn-primary.active {
 	opacity: .5;
 }
 
+.navbar-default .navbar-nav > li > a.btn:hover,
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary.focus,
@@ -82,6 +92,18 @@ fieldset[disabled] .btn-primary.active {
 	color: #FFF;
 	background-color: $primary_color_dark;
 	border-color: $primary_color_dark;
+	opacity: 1;
+}
+
+.btn-primary.btn-dark:hover,
+.btn-primary.btn-dark:focus,
+.btn-primary.btn-dark.focus,
+.btn-primary.btn-dark:active,
+.btn-primary.btn-dark.active,
+.open > .btn-primary.btn-dark.dropdown-toggle {
+	color: #FFF;
+	background-color: $primary_color_darker;
+	border-color: $primary_color_darker;
 }
 
 .btn-sm, .btn-group-sm > .btn {
@@ -158,13 +180,15 @@ textarea.form-control {
 	margin-left: 20px;
 }
 
-.navbar-brand {
+.navbar > .container .navbar-brand,
+.navbar > .container-fluid .navbar-brand {
 	float: left;
-	padding: 10px 15px;
+	padding: 8px 15px;
 	font-size: 18px;
 	line-height: 20px;
 	height: auto;
 	max-height: 55px;
+	margin-left: 0px;
 }
 
 .dropdown-menu {

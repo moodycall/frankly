@@ -26,5 +26,5 @@
 
       .counselor_favorite_wrapper
         = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
-          %i.icon-heart
+          .fa.fa-heart
           Favorite

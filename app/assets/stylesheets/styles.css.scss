@@ -27,16 +27,26 @@ label {
 	border-radius: 50px;
 }
 
-.btn.btn-primary.navbar-btn {
-	padding: 6px 15px;
-	color: white;
+.visible-special {
+	display: none;
 }
 
-.nav-special {
+.navbar.nav-special {
 	position: absolute;
 	width: 100%;
 	background-color: rgba(0, 0, 0, 0);
 	border: 0px;
+	& > .container-fluid .navbar-brand{
+		padding: 8px 15px 0px 15px;
+		max-width: 179px;
+		max-height: 100%;
+	}
+	.visible-special {
+		display: inline-block;
+	}
+	.hidden-special {
+		display: none;
+	}
 	.time_zone_nav {
 		display: none;
 	}
