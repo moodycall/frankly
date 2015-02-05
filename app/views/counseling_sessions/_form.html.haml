@@ -2,17 +2,12 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :start_datetime
-    = f.input :estimate_duration_in_minutes
-    = f.input :actual_duration_in_minutes
-    = f.input :client_id
-    = f.input :counselor_id
-    = f.input :price_in_cents
-    = f.input :stripe_charge_id
-    = f.input :slug
-    = f.input :secure_id
-    = f.input :refund_amount_in_cents
-    = f.input :payout_id
+    .form-group
+      = f.input :start_datetime
+    .form-group
+      = f.input :estimate_duration_in_minutes, :input_html  => { :class => "form-control" }
+    .form-group
+      = f.input :actual_duration_in_minutes, :input_html  => { :class => "form-control" }
 
   .form-actions
-    = f.button :submit
+    = f.button :submit, :class => "btn btn-primary btn-lg"

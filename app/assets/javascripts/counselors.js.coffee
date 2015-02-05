@@ -15,6 +15,8 @@ jQuery ->
     "labelEndTop": "8px",
   });
 
+  $("#datepicker").datepicker({ minDate: 0 });
+
   $('.interval_trigger').click ->
   	$(".intervals_wrapper").not($(this).attr("data-trigger")).slideUp();
   	$($(this).attr("data-trigger")).slideToggle();

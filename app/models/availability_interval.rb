@@ -3,13 +3,13 @@ class AvailabilityInterval < ActiveRecord::Base
 	
 	belongs_to :counselor
 
+	DAY_SUNDAY    = 0
 	DAY_MONDAY    = 1
 	DAY_TUESDAY   = 2
 	DAY_WEDNESDAY = 3
 	DAY_THURSDAY  = 4
 	DAY_FRIDAY    = 5
 	DAY_SATURDAY  = 6
-	DAY_SUNDAY    = 7
 
 	def self.days_of_the_week
 		{

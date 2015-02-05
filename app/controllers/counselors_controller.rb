@@ -8,6 +8,10 @@ class CounselorsController < ApplicationController
   def index
     @specialty = Specialty.find_by_name "#{params[:specialty]}"
 
+    if params[:datetime].present?
+      @date = Date.parse(params[:datetime])
+    end
+
     if @specialty.present?
       @counselors = @specialty.counselors
     else

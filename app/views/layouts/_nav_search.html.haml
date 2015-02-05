@@ -5,7 +5,7 @@
         .col-sm-4
           =  select_tag :specialty, options_from_collection_for_select(Specialty.all, :name, :name, params[:specialty]), :class => "form-control", :label => false, :include_blank => false
         .col-sm-4
-          = text_field_tag :datetime, "Datetime", :class => "form-control"
+          = date_field_tag :datetime, "Datetime", :class => "form-control"
         .col-sm-2
           = select_tag :gender, options_for_select([ "Either", "Male", "Female" ], "Either"), :class => "form-control"
         .col-sm-2

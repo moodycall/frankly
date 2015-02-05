@@ -65,6 +65,10 @@
             = link_to "Edit Availability", availability_counselor_path(@counselor)
 
         %hr
+
+        - @counselor.availability_intervals.each do |interval|
+          = interval.start_time
+          = interval.end_time
         %h3
           Today
         .btn.btn-primary{"data-toggle" => "modal", "data-target" => "#myModal"}
