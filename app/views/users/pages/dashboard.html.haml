@@ -2,13 +2,6 @@
 	.row
 		.col-sm-6
 			%h1 Dashboard
-		.col-sm-6
-			- if current_user.counselor.present?
-				.pull-right
-					%span
-						Counselor Options:
-					= link_to "View Public Profile", counselor_path(current_user.counselor), :class => "btn btn-link"
-					= link_to "Edit Availability", availability_counselor_path(current_user.counselor), :class => "btn btn-link"
 
 	.row
 		.col-md-6
