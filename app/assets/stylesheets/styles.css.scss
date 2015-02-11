@@ -1,5 +1,53 @@
 @import 'palette';
 
+.color_primary {
+	color: $primary_color;
+}
+
+.background_color_primary {
+	background-color: $primary_color;
+}
+
+.color_primary_dark {
+	color: $primary_color_dark;
+}
+
+.background_color_primary_dark {
+	background-color: $primary_color_dark;
+}
+
+.color_primary_darker {
+	color: $primary_color_darker;
+}
+
+.background_color_primary_darker {
+	background-color: $primary_color_darker;
+}
+
+.color_moody_red {
+	color: $moody_red;
+}
+
+.background_color_moody_red {
+	background-color: $moody_red;
+}
+
+.background_color_grey_light {
+	background-color: $background_grey_light;
+}
+
+.color_grey_light {
+	color: $grey_light;
+}
+
+.color_grey_medium {
+	color: $grey_medium;
+}
+
+.color_grey_dark {
+	color: $grey_dark;
+}
+
 .remove_row {
   cursor: pointer;
 }
@@ -116,3 +164,44 @@ footer h3 {
 	background: url(/assets/chosen-sprite.png) -42px 1px no-repeat;
 	font-size: 1px;
 }
+
+.session_preview {
+	border: 3px solid $grey_light;
+	
+	.helper{
+		display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+	}
+	.counselor_favorite_wrapper {
+		float: right;
+		padding: 10px;
+		font-size: 16px;
+	}
+	.session_preview_icon {
+		float: left;
+		height: 126px;
+		background-color: $primary_color;
+		color: #fff;
+		padding: 20px;
+		margin: -3px 0px -3px -3px;
+
+		.fa {
+			font-size: 26px;
+			vertical-align: middle;
+		}
+	}
+	.session_preview_img {
+		max-width: 120px;
+	}
+
+	.session_preview_counselor_title {
+		font-size: 24px;
+		margin-top: 5px;
+		text-transform: capitalize;
+		color: #333;
+	}
+
+
+}
+
