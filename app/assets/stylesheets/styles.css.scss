@@ -70,6 +70,17 @@ label {
 	overflow: scroll;
 }
 
+.time_zone_hover_wrapper {
+	.time_zone_hover_name {
+		display: none;
+	}
+	&:hover {
+		.time_zone_hover_name {
+			display: inline;
+		}
+	}
+}
+
 .user_navigation_icon img {
 	max-width: 25px;
 	border-radius: 50px;

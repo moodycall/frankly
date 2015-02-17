@@ -14,9 +14,15 @@
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       %ul.nav.navbar-nav.time_zone_nav
         %li.dropdown
-          %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
-            = Time.zone.now.strftime("%I:%M%P")
-            %small= Time.zone.name
+          %a.time_zone_hover_wrapper.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
+            %span.time_zone_hover_icon
+              .fa.fa-map-marker
+            %span.time_zone_hover_time
+
+              = Time.zone.now.strftime("%I:%M%P")
+
+            %span.time_zone_hover_name
+              = Time.zone.name
             %span.caret
           %ul.dropdown-menu.timezone_picker{:role => "menu"}
             %li.dropdown-header
