@@ -3,9 +3,9 @@
     .col-sm-2
       .counselor_image_wrapper
         = link_to counselor_path(counselor) do
-          - if counselor.user.photo.present?
-            = image_tag counselor.user.photo, :class => "counselor_image"
-          - else
+          -if counselor.photo.present?
+            = image_tag counselor.photo_url(:medium), :class => "counselor_image"
+          -else
             = image_tag "default-avatar.png", :class => "counselor_image"
           / = image_tag counselor.user.photo
     .col-sm-10

@@ -8,6 +8,8 @@ class User < ActiveRecord::Base
 
   has_many :session_prompts
   has_many :prompts, through: :session_prompts
+
+  mount_uploader :photo, ProfilePhotoUploader
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

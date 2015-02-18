@@ -117,11 +117,22 @@ label {
 #ui-datepicker-div {
 	background-color: #FFF;
 	padding: 15px;
-	border: 2px solid $primary_color;
-	display:none;
+	border: 1px solid #CCC;
+	display: none;
+	border-top: 0px;
+	margin-top: -1px;
 	td {
 		text-align: center;
 		padding: 5px;
+	}
+	.ui-datepicker-title {
+		text-align: center;
+		padding: 14px 5px;
+		text-transform: uppercase;
+		font-weight: 800;
+	}
+	.ui-datepicker-next {
+		float: right;
 	}
 }
 
@@ -134,7 +145,7 @@ footer h3 {
 	border: 1px solid #CCC;
 	border-radius: 4px;
 	background-image: none;
-	padding: 6px;
+	padding: 3px 6px 2px;
 	li.search-choice {
 		position: relative;
 		margin: 0px 0 0px 5px;
@@ -174,6 +185,11 @@ footer h3 {
 	height: 12px;
 	background: url(/assets/chosen-sprite.png) -42px 1px no-repeat;
 	font-size: 1px;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+	font-size: 14px;
+	height: 33px;
 }
 
 .session_preview {

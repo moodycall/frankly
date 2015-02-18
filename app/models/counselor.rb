@@ -17,6 +17,8 @@ class Counselor < ActiveRecord::Base
 	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id
 
+	mount_uploader :photo, ProfilePhotoUploader
+
 	def created_slug
 		self.user.name
 	end

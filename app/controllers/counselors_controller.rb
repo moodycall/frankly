@@ -27,14 +27,20 @@ class CounselorsController < ApplicationController
 
   # GET /counselors/new
   def new
-    unless current_user.counselor.present?
-      @counselor = current_user.build_counselor
-      if @counselor.save
-        redirect_to counselor_url(@counselor), notice: 'Great! A preview of your profile has been created for you. Update your information to become an active counselor.'
-      end
-    else
+    if current_user.counselor.present?
       redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor with MoodyCall. Take a look at your profile listed below.'
+    else
+      @counselor = Counselor.new
+      @counselor.bio = "I'm passionate about help people reach their full potential. I look forward to leveraging my professional experience to help you reach your full potential."
     end
+    # unless current_user.counselor.present?
+    #   @counselor = current_user.build_counselor
+    #   if @counselor.save
+    #     redirect_to counselor_url(@counselor), notice: 'Great! A preview of your profile has been created for you. Update your information to become an active counselor.'
+    #   end
+    # else
+    #   redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor with MoodyCall. Take a look at your profile listed below.'
+    # end
   end
 
   # GET /counselors/1/edit
@@ -47,7 +53,7 @@ class CounselorsController < ApplicationController
   # POST /counselors
   # POST /counselors.json
   def create
-    @counselor = current_user.counselors.new(counselor_params)
+    @counselor = current_user.build_counselor(counselor_params)
 
     respond_to do |format|
       if @counselor.save

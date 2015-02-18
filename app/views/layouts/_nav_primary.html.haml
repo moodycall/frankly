@@ -41,10 +41,10 @@
           %li.dropdown
             %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
               .user_navigation_icon
-                - if current_user.photo.present?
-                  = image_tag current_user.photo
-                - else
-                  .fa.fa-user
+                / - if current_user.photo.present?
+                /   = image_tag current_user.photo_url(:thumb)
+                / - else
+                .fa.fa-user
             %ul.dropdown-menu{:role => "menu"}
               - if current_user.counselor.present?
                 %li.dropdown-header

@@ -1,12 +1,12 @@
 .counselor_preview_wrapper
   .row
-    .col-sm-4
+    .col-sm-5
       .counselor_image_wrapper
-        -if counselor.user.photo.present?
-          = image_tag counselor.user.photo, :class => "counselor_image"
+        -if counselor.photo.present?
+          = image_tag counselor.photo_url(:medium), :class => "counselor_image"
         -else
           = image_tag "default-avatar.png", :class => "counselor_image"
-    .col-sm-8
+    .col-sm-7
 
       .counselor_name_wrapper
         %h1.counselor_name

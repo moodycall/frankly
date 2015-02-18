@@ -176,6 +176,11 @@ fieldset[disabled] .btn-primary.active {
 	padding: 20px 12px;
 }
 
+input[type="file"].form-control {
+	display: block;
+	padding: 10px;
+}
+
 textarea.form-control {
 	height: auto;
 	padding: 10px 12px;
@@ -186,7 +191,7 @@ textarea.form-control {
 }
 
 .radio, .checkbox {
-	position: relative;
+	position: inherit;
 	display: block;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -230,6 +235,10 @@ textarea.form-control {
 		overflow: hidden;
 		background-color: #E5E5E5;
 	}
+}
+
+.navbar-nav > li > .dropdown-menu {
+	margin-top: -1px;
 }
 
 .dropdown-menu > li > a {

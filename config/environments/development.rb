@@ -37,8 +37,14 @@ Rails.application.configure do
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
 
-  config.twilio_account_sid  = "AC0c4bc1334eb07102c5c95b20c0a14835"
-  config.twilio_auth_token   = "6bb18c6aa2aeb152d6a954b8dc9e3f73"
+  config.twilio_account_sid  = ENV["TWILIO_SID"]
+  config.twilio_auth_token   = ENV["TWILIO_AUTH_TOKEN"]
+
+  # Setup Keys for S3
+  config.aws_access_key_id     = ENV["AWS_ACCESS_KEY"]
+  config.aws_secret_access_key = ENV["AWS_SECRET_KEY"]
+  config.bucket_name           = ENV["AWS_BUCKET_NAME"]
+  config.aws_asset_host        = ENV["AWS_ASSET_HOST"]
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true

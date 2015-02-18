@@ -1,0 +1,17 @@
+@import 'palette';
+
+.form-admin-options {
+  background-color: $primary_color;
+  padding: 16px;
+  margin-bottom: 15px;
+  label {
+    color: white;
+  }
+  .form-title {
+    color: white;
+    padding-bottom: 14px;
+    font-weight: bold;
+    border-bottom: 2px solid;
+    margin-bottom: 14px;
+  }
+}
