@@ -25,7 +25,7 @@ class CounselingSessionsController < ApplicationController
   # POST /counseling_sessions.json
   def create
     @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
-    @counseling_session.start_datetime = DateTime.strptime("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}", '%B %d, %Y %I:%M%P')
+    @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
 
     respond_to do |format|
       if @counseling_session.save

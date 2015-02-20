@@ -210,6 +210,8 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.3.0)
       launchy (~> 2.2)
+    local_time (1.0.2)
+      coffee-rails
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -328,6 +330,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails (~> 2.3.0)
   letter_opener
+  local_time
   pg
   rack-timeout
   rails (= 4.1.3)

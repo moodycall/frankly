@@ -15,6 +15,18 @@
 .availability_day_wrapper {
 	border: 1px solid #666;
 	margin: 10px 0px;
+	.bootstrap-switch .bootstrap-switch-handle-on,
+	.bootstrap-switch .bootstrap-switch-handle-off,
+	.bootstrap-switch .bootstrap-switch-label {
+		padding: 5px 12px;
+	}
+	.radio, .checkbox {
+		position: inherit;
+		display: block;
+		margin-top: 12px;
+		margin-bottom: 10px;
+		margin-left: 20px;
+	}
 }
 
 .availability_day_title {

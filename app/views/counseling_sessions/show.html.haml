@@ -5,8 +5,8 @@
   .row
     .col-sm-6
       %p.session_timeline
-        = @counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P -")
-        = @counseling_session.estimated_endtime.strftime("%l:%M%P")
+        = @counseling_session.start_datetime.in_time_zone.strftime("%B %e, %Y at %l:%M%P -")
+        = @counseling_session.estimated_endtime.in_time_zone.strftime("%l:%M%P")
     .col-sm-6
       %p.text-right.text-muted
         %em

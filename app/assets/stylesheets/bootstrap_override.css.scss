@@ -22,11 +22,13 @@ ul, ol {
 	margin-bottom: 0px;
 }
 
-a {
+a,
+.btn-link {
 	color: $primary_color;
 	&:hover {
 		color: $primary_color_dark;
 		opacity: .5;
+		text-decoration: none;
 	}
 }
 

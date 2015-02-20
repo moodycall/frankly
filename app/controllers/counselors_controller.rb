@@ -6,17 +6,14 @@ class CounselorsController < ApplicationController
   # GET /counselors
   # GET /counselors.json
   def index
-    @specialty = Specialty.find_by_name "#{params[:specialty]}"
+    @specialty = Specialty.find(1)
 
-    if params[:datetime].present?
-      @date = Date.parse(params[:datetime])
+    if params[:specialty]
+      @specialty = Specialty.find_by_name "#{params[:specialty]}"
     end
 
-    if @specialty.present?
-      @counselors = @specialty.counselors
-    else
-      @counselors = Counselor.all
-    end
+    @counselors = @specialty.counselors
+
   end
 
   # GET /counselors/1
@@ -69,6 +66,25 @@ class CounselorsController < ApplicationController
   # PATCH/PUT /counselors/1
   # PATCH/PUT /counselors/1.json
   def update
+
+    # We want to build from scratch when counselor updates their availability
+    if params[:counselor][:availability_intervals_attributes]
+      @counselor.availability_intervals.destroy_all
+      params[:counselor][:availability_intervals_attributes].to_a.each do |time|
+        if time[1][:start_time].present?
+          original_start_time = time[1][:start_time]
+          original_end_time   = time[1][:end_time]
+          start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
+          end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
+          # We want to store UTC time for consistancy
+          time[1][:start_time] = start_time_as_utc
+          time[1][:end_time]   = end_time_as_utc
+        else
+          params[:counselor][:availability_intervals_attributes].delete(time[0])
+        end
+      end
+    end
+
     respond_to do |format|
       if @counselor.update(counselor_params)
         format.html { redirect_to @counselor, notice: 'Counselor was successfully updated.' }

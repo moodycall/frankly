@@ -29,6 +29,12 @@ jQuery ->
 
   $(window).resize ->
     new_height = $(window).height()
-    $('.counselor_availability_wrapper').height(new_height)
+    $('.counselor_availability_wrapper').css("min-height", new_height)
 
   $(window).resize()
+
+  $(".counselor-time-button").click ->
+    $(".selected_time").val($(this).attr("data-time"))
+
+  $(".counselor_availability_day_wrapper").each ->
+    $(".availability_time_button_wrapper:nth-child(7)").nextAll().wrapAll("<div class='extra-times-for-day'></div>")

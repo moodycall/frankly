@@ -42,6 +42,8 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails', '~> 2.3.0'
 # Image Manipulation
 gem "rmagick"
+# Timezone
+gem 'local_time'
 # Image Uploading
 gem "carrierwave"
 #  S3 File storage

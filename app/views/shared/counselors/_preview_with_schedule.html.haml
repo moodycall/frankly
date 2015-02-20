@@ -35,23 +35,18 @@
           (#{counselor.ratings.count})
 
       .counselor_availability_preview_wrapper
+        - if counselor.availability_by_dts(@dts).count > 0
+          - counselor.availability_by_dts(@dts).take(5).each do |interval|
+            .col-xs-4.col-sm-2
+              .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{counselor.slug}ScheduleModal", "data-time" => "#{time_as_local(interval)}"}
+                = time_as_local(interval)
+        - else
+          .col-xs-5.col-sm-3
+            .btn.btn-primary.btn-block{ :disabled => :disabled } 
+              No Availability
         .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            7:00pm
-        .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            7:30pm
-        .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            8:00pm
-        .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            8:30pm
-        .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            9:00pm
-        .col-xs-4.col-sm-2
-          .btn.btn-primary.btn-block{"data-toggle" => "modal", "data-target" => "#myModal"}
-            9:30pm
+          = link_to counselor_path(counselor, :datetime => @dts), :class => "btn btn-link" do
+            .fa.fa-search-plus
+            View Profile
 
 %hr

@@ -28,6 +28,18 @@
 	}
 }
 
+#counselor_dts_change_form {
+	background-color: $primary_color;
+	padding: 15px;
+	color: white;
+	.form-control {
+		height: 41px;
+	}
+	.fa {
+		padding: 6px 0px;
+	}
+}
+
 .search_results_overview {
 	color: $primary_color;
 	padding: 20px 0px;
@@ -99,6 +111,12 @@
 	padding: 30px;
 	height: auto;
 	margin-bottom: -50px;
+	.availability_time_button_wrapper {
+		padding: 3px;
+	}
+	.counselor_availability_day_wrapper {
+		margin: 0px;
+	}
 }
 
 .counselor_availability_preview_wrapper {

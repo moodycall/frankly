@@ -14,6 +14,7 @@
 //= require jquery-ui
 //= require best_in_place
 //= require best_in_place.purr
+//= require local_time
 //= require jquery_ujs
 //= require bootstrap
 //= require bootstrap-switch

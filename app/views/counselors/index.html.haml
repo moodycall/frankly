@@ -10,9 +10,9 @@
       - else
         Available
 
-      - if @date.present?
+      - if @dts.present?
         on
-        = @date.strftime("%B %e, %Y")
+        = @dts.strftime("%B %e, %Y")
   
   - @counselors.each do |counselor|
     = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
