@@ -60,6 +60,7 @@ class CounselingSessionsController < ApplicationController
         render :new
       end
     else
+      # If the is no current_user we want to save their search data and create the user
       session[:pending_session_counselor_id] = params[:counseling_session][:counselor_id]
       session[:pending_session_time]         = params[:counseling_session][:time]
       session[:pending_session_date]         = params[:counseling_session][:day]
