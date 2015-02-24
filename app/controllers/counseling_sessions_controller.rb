@@ -53,6 +53,7 @@ class CounselingSessionsController < ApplicationController
 
 
       if @counseling_session.save
+        session.delete(:pending_session_counselor_id)
         @counseling_session.create_opentok_session # Create  opentok session for later use
         redirect_to @counseling_session, notice: 'Counseling session was successfully created.'
       else
