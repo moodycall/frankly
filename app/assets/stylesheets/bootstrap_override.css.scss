@@ -54,6 +54,7 @@ hr.green {
 	font-size: 14px;
 	line-height: 1.42857;
 	border-radius: 5px;
+	text-transform: capitalize;
 }
 
 .btn-primary {
@@ -272,6 +273,50 @@ textarea.form-control {
 
 .alert {
 	margin-bottom: 0px;
+}
+
+.modal-header {
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+	min-height: 16.42857px;
+	background-color: $primary_color;
+	color: white;
+	h4.modal-title {
+		font-weight: 100;
+		text-align: center;
+		font-size: 16px;
+	}
+}
+
+.mock-modal-wrapper {
+	background-color: #FFF;
+	border: 1px solid #999;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	border-radius: 0px;
+	
+	background-clip: padding-box;
+	margin-top: 40px;
+	.header {
+		padding: 15px;
+		border-bottom: 1px solid #e5e5e5;
+		min-height: 16.42857px;
+		background-color: #32a878;
+		color: white;
+		h1 {
+			font-weight: 100;
+			text-align: center;
+			font-size: 16px;
+			margin: 0px;
+		}
+	}
+	.body {
+		padding: 15px;
+	}
+	.footer {
+		padding: 15px;
+		text-align: right;
+		border-top: 1px solid #e5e5e5;
+	}
 }
 
 // BOOTSTRAP SWITCH OVERRIDES

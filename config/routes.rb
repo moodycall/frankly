@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   resources :prompts,
             :controller => "admin_facing/prompts"
 
+  # resources :counseling_sessions,
+  #           :controller => "admin_facing/counseling_sessions"
+
   # PUBLIC/USER PAGES
   # We want to keep admin information seperated as an added level of security
 

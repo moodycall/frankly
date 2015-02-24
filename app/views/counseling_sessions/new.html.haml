@@ -1,6 +1,8 @@
 .container
-  %h1 New Counseling Session
+  .row
+    .col-sm-4.col-sm-offset-4
+      .mock-modal-wrapper
+        .header
+          %h1 Session with #{@counselor.user.name}
 
-  = render 'form'
-
-  = link_to 'Back', counseling_sessions_path
+        = render 'form'

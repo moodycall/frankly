@@ -1,4 +1,6 @@
 class CounselingSession < ActiveRecord::Base
+	require "opentok"
+
 	extend FriendlyId
   friendly_id :secure_id, use: [:slugged, :history, :finders]
 
@@ -15,6 +17,18 @@ class CounselingSession < ActiveRecord::Base
 	before_create :_generate_secure_id
 	before_create :_set_default_values
 	after_save :_create_before_prompts_for_client
+
+	def create_opentok_session
+		api_key    = Rails.configuration.opentok_api_key
+    api_secret = Rails.configuration.opentok_api_secret
+
+    opentok    = OpenTok::OpenTok.new api_key, api_secret 
+    session    = opentok.create_session :media_mode => :routed
+    session_id = session.session_id
+
+    self.opentok_session_id = session_id
+    self.save
+	end
 
 	def price_in_dollars
 		price_in_cents / 100

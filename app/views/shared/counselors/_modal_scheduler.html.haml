@@ -7,9 +7,9 @@
           %span{"aria-hidden" => "true"} &times;
           %span.sr-only Close
         %h4#myModalLabel.modal-title
-          Schedule a Session with #{counselor.user.name}
-      .modal-body
-        = simple_form_for(counselor.counseling_sessions.new) do |f|
+          Schedule with #{counselor.user.name}
+      = simple_form_for(counselor.counseling_sessions.new) do |f|
+        .modal-body
           = f.error_notification
 
           %label
@@ -22,5 +22,5 @@
             = f.hidden_field :day, :value => @dts
             = f.input :time, collection: counselor.availability_by_dts(@dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
 
-          .form-actions
-            = f.submit "Schedule Session", :class => "btn btn-primary btn-block btn-lg"
+        .modal-footer
+          = f.submit "Schedule Session", :class => "btn btn-primary btn-block btn-lg"

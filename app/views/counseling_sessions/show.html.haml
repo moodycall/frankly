@@ -13,13 +13,62 @@
           = current_user.session_count_with_counselor(@counseling_session.counselor.id).ordinalize
           session with
           = @counseling_session.counselor.user.name
+      %p.text-right
+        #countdown_clock.text-right
 
-  %h4
-    Your Session Starts in:
-  #countdown_clock
+  #userDiv.hidden
+    This is you
+
+  #connectedToDiv
+
+  #clock
+
+%script{:src => "//static.opentok.com/webrtc/v2.2/js/opentok.min.js"}
 
 :javascript
-  $('#countdown_clock').countdown("#{@counseling_session.start_datetime.strftime("%Y/%m/%e %T")}", function(event) {
+
+  var Time = Date.now();
+
+  $('#countdown_clock').countdown("#{@counseling_session.start_datetime.strftime("%Y/%m/%d %T")}", function(event) {
     var totalHours = event.offset.totalDays * 24 + event.offset.hours;
     $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+  });
+
+  var updateClock = function() {
+      function pad(n) {
+          return (n < 10) ? '0' + n : n;
+      }
+
+      var now = new Date();
+      var s = pad(now.getUTCHours()) + ':' +
+              pad(now.getUTCMinutes()) + ':' +
+              pad(now.getUTCSeconds());
+
+      $('#clock').html(s);
+
+      var delay = 1000 - (now % 1000);
+      setTimeout(updateClock, delay);
+  };
+
+  updateClock();
+
+  var apiKey = '45162982';
+  var sessionId = "#{@counseling_session.opentok_session_id}"; 
+  var token = "#{@token}";
+  
+  var session = OT.initSession(apiKey, sessionId); 
+  session.on({ 
+      streamCreated: function(event) { 
+        session.subscribe(event.stream, 'connectedToDiv', {insertMode: 'append', width:900, height:600}); 
+        $("#connectedToDiv .OT_subscriber").css({"margin-left": "auto", "margin-right": "auto"});
+      }
+  });
+  var publisher = OT.initPublisher("userDiv")
+
+  session.connect(token, function(error) {
+    if (error) {
+      console.log(error.message);
+    } else {
+      session.publish(publisher, {width:50, height:25});
+    }
   });
