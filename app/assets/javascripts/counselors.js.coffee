@@ -37,4 +37,16 @@ jQuery ->
     $(".selected_time").val($(this).attr("data-time"))
 
   $(".counselor_availability_day_wrapper").each ->
-    $(".availability_time_button_wrapper:nth-child(7)").nextAll().wrapAll("<div class='extra-times-for-day'></div>")
+    $(this).children(".availability_time_button_wrapper:nth-child(7)").nextAll().wrapAll("<div class='extra-times-for-day' />")
+
+  $(".extra-times-for-day").after("<div class='col-xs-6 col-sm-3 availability_time_button_wrapper'><div class='btn btn-primary btn-block expand-extra-times'>More</div></div>")
+
+  $(".expand-extra-times").click ->
+    # Clean up Previous Selection
+    $(".extra-times-for-day").hide()
+    $(".expand-extra-times").show()
+    
+    #Manipulate Selected
+    parent = $(this).closest(".row")
+    parent.children(".extra-times-for-day").show()
+    $(this).hide()
