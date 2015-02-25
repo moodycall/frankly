@@ -10,6 +10,7 @@
           = link_to "Prompts", prompts_url(:subdomain => "admin")
         %li
           = link_to "Counseling Sessions", counseling_session_overviews_url(:subdomain => "admin")
+
 %nav.navbar.navbar-default{:role => "navigation"}
   .container-fluid
     / Brand and toggle get grouped for better mobile display
@@ -44,12 +45,12 @@
                 = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
       %ul.nav.navbar-nav.navbar-right
         %li
-          = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%y-%m-%d")), :id => "primaryNavFavorites"
+          = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%y-%m-%d"), :subdomain => false), :id => "primaryNavFavorites"
         - if user_signed_in?
           %li
-            = link_to 'Dashboard', user_dashboard_url
+            = link_to 'Dashboard', user_dashboard_url(:subdomain => false)
           %li
-            = link_to 'Favorites', favorite_counselors_url, :id => "primaryNavFavorites"
+            = link_to 'Favorites', favorite_counselors_url(:subdomain => false), :id => "primaryNavFavorites"
           %li.dropdown
             %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
               .user_navigation_icon
@@ -62,26 +63,26 @@
                 %li.dropdown-header
                   Counselor Options
                 %li
-                  = link_to counselor_path(current_user.counselor) do
+                  = link_to counselor_url(current_user.counselor, :subdomain => false) do
                     .fa.fa-briefcase
                     Profile
 
                 %li
-                  = link_to availability_counselor_path(current_user.counselor) do
+                  = link_to availability_counselor_url(current_user.counselor, :subdomain => false) do
                     .fa.fa-calendar
                     Availability
                 %li.divider
               %li
-                = link_to credit_cards_url, :id => "primaryNavPayments" do
+                = link_to credit_cards_url(:subdomain => false), :id => "primaryNavPayments" do
                   .fa.fa-credit-card
                   Payments
               %li
-                = link_to edit_user_registration_url, :id => "primaryNavSettings" do
+                = link_to edit_user_registration_url(:subdomain => false), :id => "primaryNavSettings" do
                   .fa.fa-cog
                   Settings
               %li.divider
               %li
-                = link_to destroy_user_session_url, method: :delete do
+                = link_to destroy_user_session_url(:subdomain => false), method: :delete do
                   .fa.fa-sign-out
                   Logout
         - else
