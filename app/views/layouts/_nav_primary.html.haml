@@ -1,3 +1,15 @@
+- if current_user and current_user.is_admin
+  #admin_navigation
+    .container-fluid
+      %ul.list-inline
+        %li.text-primary
+          .fa.fa-lock
+        %li
+          = link_to "Specialties", specialties_url(:subdomain => "admin")
+        %li
+          = link_to "Prompts", prompts_url(:subdomain => "admin")
+        %li
+          = link_to "Counseling Sessions", counseling_session_overviews_url(:subdomain => "admin")
 %nav.navbar.navbar-default{:role => "navigation"}
   .container-fluid
     / Brand and toggle get grouped for better mobile display

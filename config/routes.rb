@@ -2,15 +2,21 @@ Rails.application.routes.draw do
 
   # ADMIN PAGES
   # We want to keep admin information seperated as an added level of security
-  resources :specialties,
-            :controller => "admin_facing/specialties",
-            :except     => [:show]
+  constraints(:subdomain => 'admin') do
+    
+    resources :specialties,
+              :controller => "admin_facing/specialties",
+              :except     => [:show]
 
-  resources :prompts,
-            :controller => "admin_facing/prompts"
+    resources :prompts,
+              :controller => "admin_facing/prompts"
 
-  # resources :counseling_sessions,
-  #           :controller => "admin_facing/counseling_sessions"
+    resources :counseling_sessions,
+              :as         => :counseling_session_overviews,
+              :controller => "admin_facing/counseling_sessions",
+              :only       => [:index]
+
+  end
 
   # PUBLIC/USER PAGES
   # We want to keep admin information seperated as an added level of security

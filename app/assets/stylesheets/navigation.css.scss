@@ -1,0 +1,10 @@
+@import 'palette';
+
+#admin_navigation {
+  padding: 5px 5px;
+  border-bottom: 1px solid #32a878;
+  text-transform: uppercase;
+  .list-inline > li {
+    font-size: 12px;
+  }
+}

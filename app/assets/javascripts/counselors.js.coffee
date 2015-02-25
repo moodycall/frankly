@@ -4,6 +4,10 @@
 
 jQuery ->
 
+  $('.toggle_trigger').click ->
+    toggleable_class = $(this).attr('data-toggleable')
+    $(toggleable_class).fadeToggle()
+
   $('textarea').autosize();
   
   $('.best_in_place').best_in_place()
