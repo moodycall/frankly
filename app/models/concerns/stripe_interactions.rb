@@ -17,8 +17,8 @@ module StripeInteractions
       self.stripe_charge_id = charge.id
       self.save
 
-    rescue Stripe::CardError: Cannot charge a customer that has no active card
-      # Send error if no card if on file
+    rescue Stripe::CardError
+      # Send error if no card if on file :: Cannot charge a customer that has no active card
       unless user.sent_initial_cc_request_dts.present?
         UserMailer.provide_cc_info(user_id).deliver
         user.sent_initial_cc_request_dts = Time.now
