@@ -41,9 +41,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # the current user in place.
   def update
     if params[:stripeToken].present?
-      recipient = Stripe::Recipient.retrieve(current_user.stripe_recipient_id)
-      recipient.bank_account = params[:stripeToken]
-      recipient.save
+      if current_user.stripe_recipient_id.present?
+        recipient = Stripe::Recipient.retrieve(current_user.stripe_recipient_id)
+        recipient.bank_account = params[:stripeToken]
+        recipient.save
+      else
+        recipient = Stripe::Recipient.create(
+          :name => current_user.name,
+          :type => "individual",
+          :email => current_user.email,
+          :bank_account => params[:stripeToken]
+        )
+        current_user.stripe_recipient_id = recipient.id
+        current_user.save!
+      end
     end
 
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
@@ -148,7 +159,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
                                                                   :email,
                                                                   :password,
                                                                   :password_conf,
-                                                                  :current_password)}
+                                                                  :current_password,
+                                                                  :stripe_recipient_id)}
   end
 
   def account_update_params

@@ -10,6 +10,7 @@ class CounselingSession < ActiveRecord::Base
   has_many :prompts, through: :session_prompts
 
 	belongs_to :counselor
+	belongs_to :payout
 	belongs_to :client, :class_name => "User"
 
 	attr_accessor :time, :day

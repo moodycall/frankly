@@ -1,10 +1,11 @@
 @import 'palette';
 
-#admin_navigation {
-  padding: 5px 5px;
-  border-bottom: 1px solid #32a878;
-  text-transform: uppercase;
-  .list-inline > li {
-    font-size: 12px;
-  }
+.admin-dropdown {
+  border-left: 1px solid #eee;
+}
+
+.navbar-default .navbar-nav > .open > a.admin-dropdown,
+.navbar-default .navbar-nav > .open > a.admin-dropdown:hover,
+.navbar-default .navbar-nav > .open > a.admin-dropdown:focus {
+  border-color: #eee;
 }

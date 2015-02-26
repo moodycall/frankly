@@ -19,7 +19,7 @@ class CounselingSessionsController < ApplicationController
     if @counseling_session.opentok_session_id.present?
       @token = opentok.generate_token @counseling_session.opentok_session_id,
           :role        => :moderator,
-          :expire_time => @counseling_session.estimated_endtime,
+          # :expire_time => @counseling_session.estimated_endtime,
           :data        => "name=#{current_user.name}"
     else
       @counseling_session.create_opentok_session

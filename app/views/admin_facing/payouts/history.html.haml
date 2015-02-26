@@ -1,0 +1,30 @@
+.container
+  %h1 Payout History
+
+  .row
+    .col-sm-9
+      .table-responsive
+        %table.table
+          %thead
+            %tr
+              %th User
+              %th Stripe Transfer ID
+              %th Sent Date
+              %th.text-right Sessions
+              %th.text-right Total
+              %th
+              
+          %tbody
+            - @payouts.each do |payout|
+              %tr
+                %td= payout.user.name
+                %td= payout.stripe_transfer_id
+                %td= payout.funds_sent_dts.strftime("%B %e, %Y") if payout.funds_sent_dts
+                %td.text-right= payout.counseling_sessions.count
+                %td.text-right= number_to_currency(payout.total_in_dollars)
+                %td.text-right
+                  = link_to 'Show', payout, :class => "btn btn-default btn-sm"
+                  / = link_to 'Edit', edit_payout_path(payout)
+    .col-sm-3
+      = render "admin_facing/payouts/navigation"
+

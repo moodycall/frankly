@@ -4,6 +4,15 @@ Rails.application.routes.draw do
   # We want to keep admin information seperated as an added level of security
   constraints(:subdomain => 'admin') do
     
+    resources :payouts,
+              :controller => "admin_facing/payouts" do
+
+      collection do
+        put :bulk_transfer
+        get :history
+      end
+    end
+
     resources :specialties,
               :controller => "admin_facing/specialties",
               :except     => [:show]
@@ -12,9 +21,13 @@ Rails.application.routes.draw do
               :controller => "admin_facing/prompts"
 
     resources :counseling_sessions,
-              :as         => :counseling_session_overviews,
+              :as         => :admin_counseling_session_overviews,
               :controller => "admin_facing/counseling_sessions",
               :only       => [:index]
+
+    resources :counselors,
+              :as         => :admin_counselor_overviews,
+              :controller => "admin_facing/counselors"
 
   end
 

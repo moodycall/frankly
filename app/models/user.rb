@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :credit_cards
   has_many :favorite_counselors
   has_many :ratings, as: :rater
+  has_many :payouts
 
   has_many :session_prompts
   has_many :prompts, through: :session_prompts

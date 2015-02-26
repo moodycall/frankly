@@ -1,0 +1,38 @@
+.container
+  %h1
+    Payout ##{@payout.secure_id}
+  
+  %p.lead
+    #{@payout.user.name}
+
+  %p.lead
+    %b Stripe transfer:
+    = @payout.stripe_transfer_id
+
+  .table-responsive
+    %table.table
+      %tr
+        %th
+          Session ID
+        %th
+          Start Date
+        %th
+          Client
+        %th.text-right
+          Counselor Net
+
+      - @payout.counseling_sessions.each do |session|
+        %tr
+          %td
+            = session.secure_id
+          %td
+            = session.start_datetime.in_time_zone.strftime("%B %e, %Y")
+          %td
+            = session.client.name
+          %td.text-right
+            = number_to_currency(session.counselor.session_net_profit_in_dollars)
+
+      %tr
+        %td.text-right{ :colspan => 4 }
+          %strong
+            = number_to_currency(@payout.total_in_dollars)

@@ -1,16 +1,3 @@
-- if current_user and current_user.is_admin
-  #admin_navigation
-    .container-fluid
-      %ul.list-inline
-        %li.text-primary
-          .fa.fa-lock
-        %li
-          = link_to "Specialties", specialties_url(:subdomain => "admin")
-        %li
-          = link_to "Prompts", prompts_url(:subdomain => "admin")
-        %li
-          = link_to "Counseling Sessions", counseling_session_overviews_url(:subdomain => "admin")
-
 %nav.navbar.navbar-default{:role => "navigation"}
   .container-fluid
     / Brand and toggle get grouped for better mobile display
@@ -85,6 +72,35 @@
                 = link_to destroy_user_session_url(:subdomain => false), method: :delete do
                   .fa.fa-sign-out
                   Logout
+
+          - if current_user and current_user.is_admin
+            %li.dropdown
+              %a.dropdown-toggle.admin-dropdown{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
+                .fa.fa-lock
+              %ul.dropdown-menu.timezone_picker{:role => "menu"}
+                %li.dropdown-header
+                  Admin Options
+                %li
+                  = link_to specialties_url(:subdomain => "admin") do
+                    .fa.fa-flag
+                    Specialties
+                %li
+                  = link_to prompts_url(:subdomain => "admin") do
+                    .fa.fa-comment
+                    Prompts
+                %li
+                  = link_to admin_counselor_overviews_url(:subdomain => "admin") do
+                    .fa.fa-briefcase
+                    Counselors
+                %li
+                  = link_to admin_counseling_session_overviews_url(:subdomain => "admin") do
+                    .fa.fa-laptop
+                    Counseling Sessions
+                %li
+                  = link_to payouts_url(:subdomain => "admin") do
+                    .fa.fa-money
+                    Payouts
+
         - else
           %li
             = link_to "Login", new_user_session_url

@@ -23,6 +23,33 @@ class Counselor < ActiveRecord::Base
 		self.user.name
 	end
 
+	def name_with_identifier
+		"#{user_id}  #{user.name}"
+	end
+
+	def self.payable_counselors
+		counselors = Counselor.select do |counselor|
+			counselor.payable_sessions.count > 0
+		end
+		counselors
+	end
+
+	def payable_sessions
+		counseling_sessions.select do |session|
+			session.estimated_endtime < Time.now and
+			session.refund_amount_in_cents == nil and
+			session.payout_id.nil?
+		end
+	end
+
+	def payable_total_in_dollars
+		payable_sessions.count * session_net_profit_in_dollars
+	end
+
+	def payable_total_in_cents
+		(payable_sessions.count * session_net_profit_in_dollars) * 100
+	end
+
 	def is_user_favorite(user_id)
 		user = User.find(user_id)
 		if user.favorite_counselors.where(:counselor_id => self.id).present?
@@ -30,6 +57,14 @@ class Counselor < ActiveRecord::Base
 		else
 			return false
 		end
+	end
+
+	def session_net_profit_in_cents
+		(session_net_profit_in_dollars * 100).to_i 
+	end
+	
+	def session_net_profit_in_dollars
+		session_rate_in_dollars - session_fee_in_dollars
 	end
 
 	def public_rating
@@ -49,8 +84,16 @@ class Counselor < ActiveRecord::Base
 		hourly_rate_in_cents * 0.01
 	end
 
-	def session_rate
+	def hourly_fee_in_dollars
+		hourly_fee_in_cents * 0.01
+	end
+
+	def session_rate_in_dollars
 		hourly_rate_in_dollars / 2
+	end
+
+	def session_fee_in_dollars
+		hourly_fee_in_dollars / 2
 	end
 
 	def minutely_rate_in_cents

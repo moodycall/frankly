@@ -1,0 +1,81 @@
+.container
+  .row
+    .col-md-6
+
+      .counselor_professional_overview_wrapper
+        = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
+
+        .counselor_professional_bio_wrapper
+          %h3.counselor_professional_bio_title
+            Professional Biography
+          %p.counselor_professional_bio
+            = best_in_place @counselor, :bio, :type => :textarea
+
+        %hr
+
+        .counselor_professional_experience_wrapper
+          %h3.counselor_professional_experience_title
+            Professional Experience
+          %p.counselor_professional_experience
+            %ul
+              %li
+                = distance_of_time_in_words(Time.now, @counselor.profession_start_date, include_seconds: false)
+                Experience
+              %li
+                Joined MoodyCall
+                = distance_of_time_in_words(Time.now, @counselor.user.created_at, include_seconds: false)
+                ago
+        
+        %hr
+
+        .row
+          .col-md-6
+            %h4
+              Licensed In
+          .col-md-6
+            %h4
+              Education
+          .col-md-6
+            %h4
+              Certications
+
+      %hr
+
+      .counselor_comments_wrapper
+        %h3.counselor_comments_title
+          Reviews
+        .row
+          - @counselor.ratings.each do |rating|
+            = rating.comment
+
+      / %p
+      /   %b Hourly rate in cents:
+      /   = number_to_currency(@counselor.hourly_rate_in_dollars)
+
+      / %p
+      /   = counselor_url(@counselor)
+
+    .col-md-6
+      .counselor_availability_wrapper
+        %h2.counselor_availability_title.text-center
+          Schedule a Session
+
+        = form_tag counselor_path, :id => "counselor_dts_change_form", method: :get do |f|
+          .row
+            .col-sm-1
+              .fa.fa-calendar-o.fa-2x
+            .col-sm-7
+              = date_field_tag :datetime, @dts, :class => "form-control", :input_html => { :class => "form-control"}
+            .col-sm-4
+              = submit_tag "Change Time", :class => "btn btn-primary btn-dark btn-lg btn-block"
+
+        %hr
+
+        = render "availability_day", :dts => @dts
+        = render "availability_day", :dts => @dts + 1.day
+        = render "availability_day", :dts => @dts + 2.day
+
+  = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor}
+
+:javascript
+  $('.star:nth-child(#{@counselor.public_rating})').attr("checked", "checked");

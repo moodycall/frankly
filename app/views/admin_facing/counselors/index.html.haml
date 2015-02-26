@@ -1,0 +1,45 @@
+.container
+
+  %h1
+    All Counselors
+
+  .table-responsive
+    %table.table
+      %thead
+        %tr
+          %th ID
+          %th Name
+          %th.text-right Session Rate
+          %th.text-right Session Fee
+          %th.text-right Total Sessions
+          %th.text-right Payable Sessions
+          %th.text-right Payable Total
+          %th
+          
+      %tbody
+        - @counselors.each_with_index do |counselor, index|
+          %tr{ :class => "row_#{index}"}
+            %td
+              = counselor.id
+            %td
+              = counselor.user.name
+            %td.text-right
+              = number_to_currency(counselor.session_rate_in_dollars)
+            %td.text-right
+              = number_to_currency(counselor.session_fee_in_dollars)
+            %td.text-right
+              = counselor.counseling_sessions.count
+            %td.text-right
+              = counselor.payable_sessions.count
+            %td.text-right
+              = number_to_currency(counselor.payable_total_in_dollars)
+            %td
+              %span.toggle_trigger{ :href => "", :data => { :toggleable => ".row_collapsible_#{index}"} }
+                .fa.fa-info-circle.text-muted
+          %tr.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
+            %td{ :colspan => 7 }
+              %strong
+              
+
+:javascript
+  $('#counselor_search').show()

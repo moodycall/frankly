@@ -1,0 +1,25 @@
+%h3
+  = (dts).strftime("%B %e, %Y")
+
+.row.counselor_availability_day_wrapper
+  - if (dts > (Time.zone.now + @counselor.advanced_scheduling_in_weeks.weeks)) # First make sure the dts is within range of when scheduling can take place with a counselor
+    %p.text-center
+      Sorry, this is too far in advance to schedule a session.
+      %br
+      %em
+        #{(dts).strftime("%B %e, %Y")}
+  - elsif @counselor.availability_by_dts(dts).count > 0 # Then make sure the counselor has availabilities on dts
+    - @counselor.availability_by_dts(dts).each do |interval|
+      .col-xs-6.col-sm-3.availability_time_button_wrapper
+        - if (dts).in_time_zone > Time.zone.now
+          .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@counselor.slug}ScheduleModal", "data-time" => "#{time_as_local(interval)}"}
+            = time_as_local(interval)
+        - else
+          .btn.btn-primary.btn-block{:disabled => "disabled"}
+            = time_as_local(interval)
+  - else # Otherwise, there aren't any openings
+    %p.text-center
+      Sorry, there are no openings for
+      %br
+      %em
+        #{(dts).strftime("%B %e, %Y")}
