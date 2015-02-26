@@ -13,6 +13,8 @@
           %th.text-right Duration
           %th.text-right Price
           %th
+            / %span.toggle_trigger{ :href => "", :data => { :toggleable => ".expandable"} }
+            /   .fa.fa-info-circle.text-muted
           
       %tbody
         - @counseling_sessions.each_with_index do |counseling_session, index|
@@ -30,11 +32,18 @@
             %td
               %span.toggle_trigger{ :href => "", :data => { :toggleable => ".row_collapsible_#{index}"} }
                 .fa.fa-info-circle.text-muted
-          %tr.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
-            %td{ :colspan => 8 }
+          %tr.expandable.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
+            %td{ :colspan => 1 }
               %strong
-                OpenTok Session ID
+                OpenTok Session
+            %td{ :colspan => 7 }
               = counseling_session.opentok_session_id
+          %tr.expandable.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
+            %td{ :colspan => 1 }
+              %strong
+                Stripe Charge
+            %td{ :colspan => 7 }
+              = counseling_session.stripe_charge_id
 
 
 

@@ -1,4 +1,5 @@
 class CounselingSession < ActiveRecord::Base
+	include StripeInteractions
 	require "opentok"
 
 	extend FriendlyId
@@ -37,6 +38,12 @@ class CounselingSession < ActiveRecord::Base
 
 	def estimated_endtime
 		start_datetime + estimate_duration_in_minutes.minutes
+	end
+
+	def self.chargeable_sessions
+		self.where(:stripe_charge_id => nil).select do |session|
+			session.start_datetime - 2.days > Time.now
+		end
 	end
 
 	private

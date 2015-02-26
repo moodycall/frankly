@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  config.action_mailer.default_url_options = { host: 'lvh.me:3000' }
+  config.action_mailer.default_url_options = { host: 'lvh.me:5000' }
   config.session_store :cookie_store, key: '_moodycall_session', domain: ".lvh.me"
 
   config.action_mailer.delivery_method = :letter_opener

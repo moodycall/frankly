@@ -1,0 +1,13 @@
+= "#{@greeting} #{@user.name},"
+
+%p
+  It looks like you need to add a Credit Card to your MoodyCall Account.
+
+%p
+  Without a card on file, we won't be able to process payment or authorize any upcoming sessions.
+
+= link_to "Add a Credit Card", new_credit_card_url
+
+%p
+  Thanks!
+  

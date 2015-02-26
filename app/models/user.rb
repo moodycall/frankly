@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-
+  include StripeInteractions
+  
 	has_one :counselor
   has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards

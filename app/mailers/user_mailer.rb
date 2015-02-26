@@ -13,4 +13,12 @@ class UserMailer < ActionMailer::Base
 
     mail to: "#{@pre.user.email}"
   end
+
+  def provide_cc_info(user_id)
+    @greeting = "Hello"
+    @user     = User.find(user_id)
+
+    mail to: "#{@user.email}",
+    subject: "Please Add a Credit Card"
+  end
 end
