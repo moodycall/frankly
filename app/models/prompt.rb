@@ -70,7 +70,7 @@ class Prompt < ActiveRecord::Base
 
   def _generate_secure_id
     unless self.secure_id.present?
-      self.secure_id = "#{SecureRandom.hex(3).upcase}"
+      self.secure_id = "PR#{SecureRandom.hex(3).upcase}"
       self.slug      = self.secure_id
     end
   end

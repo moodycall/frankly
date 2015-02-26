@@ -1,7 +1,20 @@
-%p
-  %b Name:
-  = @specialty.name
+.container
+  %h1
+    = @specialty.name
 
-= link_to 'Edit', edit_specialty_path(@specialty)
-\|
-= link_to 'Back', specialties_path
+  %h2
+    Counselors
+
+  .table-responsive
+    %table.table
+      %tr
+        %th
+          Name
+        %th
+
+      - @specialty.counselors.each do |counselor|
+        %tr
+          %td
+            = counselor.user.name
+          %td.text-right
+            = link_to "View Profile", counselor_path(counselor), :class => "btn btn-default btn-sm"

@@ -2,25 +2,26 @@
   %h1 Specialties
 
   .row
-    .col-md-8
+    .col-md-9
       %table.table
         %thead
           %tr
             %th Name
-            %th Status
-            %th Counselors
+            %th.text-center Status
+            %th.text-right Counselors
             %th
             
         %tbody
           - @specialties.each do |specialty|
             %tr
               %td= specialty.name
-              %td= specialty.is_active
-              %td= specialty.counselors.count
+              %td.text-center
+                .fa{ :class => "#{specialty.is_active ? "fa-eye" : "fa-eye-slash"}"}
+              %td.text-right= specialty.counselors.count
               %td
                 .btn-group.pull-right
                   = link_to 'Edit', edit_specialty_path(specialty), :class => "btn btn-default btn-sm"
-    .col-md-4
+    .col-md-3
       .well
         %h3
           New Specialty

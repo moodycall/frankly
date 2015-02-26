@@ -14,8 +14,7 @@ Rails.application.routes.draw do
     end
 
     resources :specialties,
-              :controller => "admin_facing/specialties",
-              :except     => [:show]
+              :controller => "admin_facing/specialties"
 
     resources :prompts,
               :controller => "admin_facing/prompts"
@@ -27,7 +26,8 @@ Rails.application.routes.draw do
 
     resources :counselors,
               :as         => :admin_counselor_overviews,
-              :controller => "admin_facing/counselors"
+              :controller => "admin_facing/counselors",
+              :only       => [:index]
 
   end
 

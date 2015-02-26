@@ -5,22 +5,26 @@ class AdminFacing::PromptsController < AdminFacingController
   # GET /prompts
   # GET /prompts.json
   def index
-    @prompts = Prompt.all
+    @prompts     = Prompt.all
+    @page_title  = "Prompts"
   end
 
   # GET /prompts/1
   # GET /prompts/1.json
   def show
     @upcoming_deliveries = @prompt.session_prompts.where(:sent_email_dts => nil, :sent_sms_dts => nil).all
+    @page_title    = "Prompt ##{@prompt.secure_id}"
   end
 
   # GET /prompts/new
   def new
     @prompt = Prompt.new
+    @page_title    = "New Prompt"
   end
 
   # GET /prompts/1/edit
   def edit
+    @page_title    = "Edit Prompt ##{@payout.secure_id}"
   end
 
   # POST /prompts

@@ -6,16 +6,20 @@ class AdminFacing::SpecialtiesController < AdminFacingController
   # GET /specialties.json
   def index
     @specialty = Specialty.new
-    @specialties = Specialty.all
+    @specialties = Specialty.order(:is_active => :desc, :name => :asc).all
+
+    @page_title    = "Specialties"
   end
 
   # GET /specialties/new
   def new
     @specialty = Specialty.new
+    @page_title    = "New Specialty"
   end
 
   # GET /specialties/1/edit
   def edit
+    @page_title    = "Edit #{@specialty.name}"
   end
 
   # POST /specialties

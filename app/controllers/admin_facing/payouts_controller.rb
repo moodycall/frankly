@@ -7,6 +7,7 @@ class AdminFacing::PayoutsController < AdminFacingController
   def index
     @payouts = Payout.where(:stripe_transfer_id => nil).all
     @tab_name = "current"
+    @page_title    = "Payouts"
     respond_with(@payouts)
   end
 
@@ -14,6 +15,7 @@ class AdminFacing::PayoutsController < AdminFacingController
     @payouts = Payout.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
 
     @tab_name = "history"
+    @page_title    = "Payout History"
   end
 
   def bulk_transfer
@@ -29,15 +31,18 @@ class AdminFacing::PayoutsController < AdminFacingController
   end
 
   def show
+    @page_title    = "Payout ##{@payout.secure_id}"
     respond_with(@payout)
   end
 
   def new
     @payout = Payout.new
+    @page_title    = "New Payout"
     respond_with(@payout)
   end
 
   def edit
+    @page_title    = "Edit Payout ##{@payout.secure_id}"
   end
 
   def create

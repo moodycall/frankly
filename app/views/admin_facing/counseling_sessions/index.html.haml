@@ -1,5 +1,5 @@
 #main.container
-  %h1 All Counseling Sessions
+  %h1 Counseling Sessions
 
   .table-responsive
     %table.table
@@ -21,7 +21,7 @@
             %td= counseling_session.start_datetime.in_time_zone.strftime("%b %e, %Y %I:%M%P")
             %td= counseling_session.client.name
             %td= link_to counseling_session.counselor.user.name, counselor_url(counseling_session.counselor, :subdomain => false)
-            %td.text-right= link_to "##{counseling_session.payout_id}", payout_path(counseling_session.payout) if counseling_session.payout.present?
+            %td.text-right= link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout) if counseling_session.payout.present?
             %td.text-right
               = counseling_session.estimate_duration_in_minutes
               min
@@ -31,7 +31,7 @@
               %span.toggle_trigger{ :href => "", :data => { :toggleable => ".row_collapsible_#{index}"} }
                 .fa.fa-info-circle.text-muted
           %tr.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
-            %td{ :colspan => 7 }
+            %td{ :colspan => 8 }
               %strong
                 OpenTok Session ID
               = counseling_session.opentok_session_id

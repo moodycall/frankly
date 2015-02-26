@@ -6,6 +6,9 @@ class FavoriteCounselorsController < ApplicationController
   # GET /favorite_counselors.json
   def index
     @favorite_counselors = current_user.favorite_counselors.all
+
+    @page_title    = "Favorite Counselors"
+    @page_subtitle = "Choose from a list of your favorit counselors"
   end
 
   # POST /favorite_counselors

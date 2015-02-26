@@ -14,12 +14,16 @@ class CounselorsController < ApplicationController
 
     @counselors = @specialty.counselors
 
+    @page_title = "Search Counselors"
+    @page_subtitle = "Find the right counselor for you."
   end
 
   # GET /counselors/1
   # GET /counselors/1.json
   def show
     @hide_search = true
+    @page_title    = "#{@counselor.user.name}"
+    @page_subtitle = "A counselor, specializing in #{@counselor.specialties.map {|specialty| specialty.name}.join(",")}"
   end
 
   # GET /counselors/new
@@ -30,21 +34,19 @@ class CounselorsController < ApplicationController
       @counselor = Counselor.new
       @counselor.bio = "I'm passionate about help people reach their full potential. I look forward to leveraging my professional experience to help you reach your full potential."
     end
-    # unless current_user.counselor.present?
-    #   @counselor = current_user.build_counselor
-    #   if @counselor.save
-    #     redirect_to counselor_url(@counselor), notice: 'Great! A preview of your profile has been created for you. Update your information to become an active counselor.'
-    #   end
-    # else
-    #   redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor with MoodyCall. Take a look at your profile listed below.'
-    # end
+    @page_title    = "Become a Counselor"
+    @page_subtitle = "Join MoodyCall as a counselor."
   end
 
   # GET /counselors/1/edit
   def edit
+    @page_title    = "Edit Your Profile"
+    @page_subtitle = ""
   end
 
   def availability
+    @page_title    = "Availability for #{@counselor.user.name}"
+    @page_subtitle = ""
   end
 
   # POST /counselors

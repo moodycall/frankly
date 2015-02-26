@@ -48,7 +48,9 @@ gem 'local_time'
 gem "carrierwave"
 #  S3 File storage
 gem "fog"
-
+# Meta Data
+gem 'meta-tags'
+# Video Sharing
 gem "opentok", "~> 2.2.4"
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'

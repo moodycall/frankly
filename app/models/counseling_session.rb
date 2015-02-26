@@ -102,7 +102,7 @@ class CounselingSession < ActiveRecord::Base
 
 	def _generate_secure_id
 		unless self.secure_id.present?
-			self.secure_id = "#{Time.now.strftime('%y%m%d')}#{SecureRandom.hex(2).upcase}"
+			self.secure_id = "CS#{Time.now.strftime('%y%m%d')}#{SecureRandom.hex(2).upcase}"
 			self.slug 		 = self.secure_id
 		end
 	end
