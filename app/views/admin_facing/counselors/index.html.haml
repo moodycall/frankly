@@ -9,6 +9,7 @@
         %tr
           %th ID
           %th Name
+          %th Public Rating
           %th.text-right Session Rate
           %th.text-right Session Fee
           %th.text-right Total Sessions
@@ -23,6 +24,8 @@
               = counselor.id
             %td
               = counselor.user.name
+            %td
+              = render "shared/counselors/public_rating", :counselor => counselor
             %td.text-right
               = number_to_currency(counselor.session_rate_in_dollars)
             %td.text-right

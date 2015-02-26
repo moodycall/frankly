@@ -16,6 +16,10 @@ class CounselingSessionsController < ApplicationController
     api_secret = Rails.configuration.opentok_api_secret
     opentok    = OpenTok::OpenTok.new api_key, api_secret
 
+    unless @counseling_session.rating.present?
+      @rating = @counseling_session.build_rating
+    end
+
     if @counseling_session.opentok_session_id.present?
       @token = opentok.generate_token @counseling_session.opentok_session_id,
           :role        => :moderator,

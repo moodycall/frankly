@@ -15,11 +15,18 @@
 		= link_to counseling_session_path(session) do
 			%h3.counselor_name.session_preview_counselor_title
 				= session.counselor.user.name
-			.counselor_pubic_rating_wrapper
-				%input.star{:name => "counselor_star_#{session.secure_id}", :type => "radio", :disabled => :disabled}
-				%input.star{:name => "counselor_star_#{session.secure_id}", :type => "radio", :disabled => :disabled}
-				%input.star{:name => "counselor_star_#{session.secure_id}", :type => "radio", :disabled => :disabled}
-				%input.star{:name => "counselor_star_#{session.secure_id}", :type => "radio", :disabled => :disabled}
-				%input.star{:name => "counselor_star_#{session.secure_id}", :type => "radio", :disabled => :disabled}
+			
+		.counselor_pubic_rating_wrapper
+			%input.star{:name => "counselor_star_#{session.id}", :type => "radio", :disabled => :disabled}
+			%input.star{:name => "counselor_star_#{session.id}", :type => "radio", :disabled => :disabled}
+			%input.star{:name => "counselor_star_#{session.id}", :type => "radio", :disabled => :disabled}
+			%input.star{:name => "counselor_star_#{session.id}", :type => "radio", :disabled => :disabled}
+			%input.star{:name => "counselor_star_#{session.id}", :type => "radio", :disabled => :disabled}
+			.counselor_ratings_total.text-muted
+				(#{session.counselor.ratings.count})
+
 			%br
 			= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+
+:javascript
+	$('.star:nth-child(#{session.counselor.public_rating})').attr("checked", "checked");
