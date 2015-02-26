@@ -40,9 +40,12 @@
               %span.toggle_trigger{ :href => "", :data => { :toggleable => ".row_collapsible_#{index}"} }
                 .fa.fa-info-circle.text-muted
           %tr.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
-            %td{ :colspan => 7 }
+            %td{ :colspan => 9 }
               %strong
-              
+                Stripe Transfer ID
+              = counselor.user.stripe_recipient_id
+  
+  = will_paginate @counselors, previous_label: h("<"), next_label: h(">")
 
 :javascript
   $('#counselor_search').show()

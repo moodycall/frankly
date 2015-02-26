@@ -1,5 +1,5 @@
 #main.container
-  %h1 Counseling Sessions
+  %h1 Upcoming Counseling Sessions
 
   .row
     .col-sm-9
@@ -8,7 +8,3 @@
       = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
     .col-sm-3
       = render "admin_facing/counseling_sessions/navigation"
-
-  %br
-
-  / = link_to 'New Counseling session', new_counseling_session_path

@@ -46,6 +46,10 @@ class CounselingSession < ActiveRecord::Base
 		end
 	end
 
+	def self.upcoming_sessions
+		self.where("start_datetime > ?", Time.now).order(:start_datetime => :asc).all
+	end
+
 	private
 
 	def _create_before_prompts_for_client

@@ -12,7 +12,7 @@ class CounselorsController < ApplicationController
       @specialty = Specialty.find_by_name "#{params[:specialty]}"
     end
 
-    @counselors = @specialty.counselors
+    @counselors = @specialty.counselors.sort_by(&:popularity).reverse.paginate(:page => params[:page], :per_page => 15)
 
     @page_title = "Search Counselors"
     @page_subtitle = "Find the right counselor for you."

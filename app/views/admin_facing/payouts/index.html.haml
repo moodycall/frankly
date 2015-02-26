@@ -1,52 +1,31 @@
 .container
-  %h1 Counselor Payouts
+  %h1 All Payouts
 
   .row
 
     .col-sm-9
-      = form_tag bulk_transfer_payouts_path, method: :put do
-        .table-responsive
-          %table.table
-            %thead
+      .table-responsive
+        %table.table
+          %thead
+            %tr
+              %th User
+              %th Stripe Transfer ID
+              %th Sent Date
+              %th.text-right Sessions
+              %th.text-right Total
+              %th
+              
+          %tbody
+            - @payouts.each do |payout|
               %tr
-                %th
-                %th User
-                %th Stripe recipient ID
-                %th.text-right Sessions
-                %th.text-right Total
-                %th
-                
-            %tbody
-              - @payouts.each do |payout|
-                %tr
-                  %td
-                    - if payout.user.stripe_recipient_id.present?
-                      = check_box_tag "payout_ids[]", payout.id, false, :class => "checkable"
-                  %td= payout.user.name
-                  %td
-                    - if payout.user.stripe_recipient_id.present?
-                      = payout.user.stripe_recipient_id
-                    - else 
-                      %em.text-muted
-                        Banking Info Required
-                  %td.text-right= payout.counseling_sessions.count
-                  %td.text-right= number_to_currency(payout.total_in_dollars)
-                  %td.text-right
-                    = link_to 'Show', payout, :class => "btn btn-default btn-sm"
-                    / = link_to 'Edit', edit_payout_path(payout)
-
-            %tfooter
-              %th
-              %th
-              %th.text-right
-                Totals
-              %th.text-right
-                = @payouts.total_sessions_payable
-              %th.text-right
-                = number_to_currency(@payouts.total_funds_payable_in_dollars)
-              %th
-
-        = submit_tag "Send Payouts", :class => "btn btn-primary"
+                %td= payout.user.name
+                %td= payout.stripe_transfer_id
+                %td= payout.funds_sent_dts.strftime("%B %e, %Y") if payout.funds_sent_dts
+                %td.text-right= payout.counseling_sessions.count
+                %td.text-right= number_to_currency(payout.total_in_dollars)
+                %td.text-right
+                  = link_to 'Show', payout, :class => "btn btn-default btn-sm"
+                  / = link_to 'Edit', edit_payout_path(payout)
 
     .col-sm-3
       = render "admin_facing/payouts/navigation"

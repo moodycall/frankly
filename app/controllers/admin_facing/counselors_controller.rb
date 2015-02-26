@@ -5,13 +5,7 @@ class AdminFacing::CounselorsController < AdminFacingController
   # GET /counselors
   # GET /counselors.json
   def index
-    @specialty = Specialty.find(1)
-
-    if params[:specialty]
-      @specialty = Specialty.find_by_name "#{params[:specialty]}"
-    end
-
-    @counselors = @specialty.counselors
+    @counselors = Counselor.paginate(:page => params[:page], :per_page => 15)
     @page_title    = "Counselors"
     @page_subtitle = ""
   end

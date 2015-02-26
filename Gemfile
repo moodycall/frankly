@@ -54,6 +54,8 @@ gem 'meta-tags'
 gem "opentok", "~> 2.2.4"
 # Setup delayed Jobs
 gem 'delayed_job_active_record'
+# Pagination
+gem 'will_paginate', '> 3.0'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

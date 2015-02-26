@@ -5,17 +5,17 @@ class AdminFacing::PayoutsController < AdminFacingController
   respond_to :html
 
   def index
-    @payouts = Payout.where(:stripe_transfer_id => nil).all
-    @tab_name = "current"
-    @page_title    = "Payouts"
+    @payouts = Payout.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
+    @tab_name = "index"
+    @page_title    = "All Payouts"
     respond_with(@payouts)
   end
 
-  def history
-    @payouts = Payout.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
+  def upcoming
+    @payouts = Payout.where(:stripe_transfer_id => nil).all
 
-    @tab_name = "history"
-    @page_title    = "Payout History"
+    @tab_name = "upcoming"
+    @page_title    = "Upcoming Payouts"
   end
 
   def bulk_transfer

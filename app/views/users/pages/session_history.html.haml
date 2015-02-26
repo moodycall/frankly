@@ -1,0 +1,12 @@
+.container
+	.row
+		.col-sm-6
+			%h1
+				Full Session History
+
+	.row
+		- current_user.previous_sessions.order("start_datetime desc").each do |session|
+			.col-md-6
+				= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
+				%br
+		

@@ -19,5 +19,7 @@
 
     = render partial: "shared/counselors/modal_scheduler", locals: {counselor: counselor}
 
+  = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
+
 :javascript
   $('#counselor_search').show()

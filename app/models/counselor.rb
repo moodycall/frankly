@@ -80,6 +80,10 @@ class Counselor < ActiveRecord::Base
 		end
 	end
 
+	def popularity
+		public_rating * ratings.count
+	end
+
 	def hourly_rate_in_dollars
 		hourly_rate_in_cents * 0.01
 	end

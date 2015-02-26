@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
       collection do
         put :bulk_transfer
-        get :history
+        get :upcoming
       end
     end
 
@@ -22,7 +22,12 @@ Rails.application.routes.draw do
     resources :counseling_sessions,
               :as         => :admin_counseling_session_overviews,
               :controller => "admin_facing/counseling_sessions",
-              :only       => [:index]
+              :only       => [:index] do
+
+      collection do
+        get :upcoming
+      end
+    end
 
     resources :counselors,
               :as         => :admin_counselor_overviews,
@@ -58,6 +63,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => {:registrations => "users/registrations"}
 
   get 'dashboard' => 'users/pages#dashboard', as: :user_dashboard
+  get 'session-history' => 'users/pages#session_history', as: :user_session_history
   root "pages#home"
 
 end

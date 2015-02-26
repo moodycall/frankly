@@ -1,10 +1,10 @@
 .list-group
-  = link_to payouts_path, :class => "list-group-item #{"active" if @tab_name == "current"}" do
+  = link_to upcoming_payouts_path, :class => "list-group-item #{"active" if @tab_name == "upcoming"}" do
     .fa.fa-clock-o
-    Current Payouts
-  = link_to history_payouts_path, :class => "list-group-item #{"active" if @tab_name == "history"}" do
+    Upcoming Payouts
+  = link_to payouts_path, :class => "list-group-item #{"active" if @tab_name == "index"}" do
     .fa.fa-book
-    History
+    All Payouts
 
 .text-center
   = link_to new_payout_path, :class => "btn btn-link" do

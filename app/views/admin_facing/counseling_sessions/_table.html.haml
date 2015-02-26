@@ -1,0 +1,43 @@
+.table-responsive
+  %table.table
+    %thead
+      %tr
+        %th ID
+        %th Start datetime
+        %th Client
+        %th Counselor
+        %th.text-right Payout ID
+        %th.text-right Duration
+        %th.text-right Price
+        %th
+          / %span.toggle_trigger{ :href => "", :data => { :toggleable => ".expandable"} }
+          /   .fa.fa-info-circle.text-muted
+        
+    %tbody
+      - @counseling_sessions.each_with_index do |counseling_session, index|
+        %tr{ :class => "row_#{index}"}
+          %td= counseling_session.secure_id
+          %td= counseling_session.start_datetime.in_time_zone.strftime("%b %e, %Y %I:%M%P")
+          %td= counseling_session.client.name
+          %td= link_to counseling_session.counselor.user.name, counselor_url(counseling_session.counselor, :subdomain => false)
+          %td.text-right= link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout) if counseling_session.payout.present?
+          %td.text-right
+            = counseling_session.estimate_duration_in_minutes
+            min
+          %td.text-right
+            = number_to_currency(counseling_session.price_in_cents * 0.01)
+          %td
+            %span.toggle_trigger{ :href => "", :data => { :toggleable => ".row_collapsible_#{index}"} }
+              .fa.fa-info-circle.text-muted
+        %tr.expandable.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
+          %td{ :colspan => 1 }
+            %strong
+              OpenTok Session
+          %td{ :colspan => 7 }
+            = counseling_session.opentok_session_id
+        %tr.expandable.secondary_collapsible_row{ :class => "row_collapsible_#{index}"}
+          %td{ :colspan => 1 }
+            %strong
+              Stripe Charge
+          %td{ :colspan => 7 }
+            = counseling_session.stripe_charge_id

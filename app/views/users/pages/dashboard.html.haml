@@ -16,8 +16,10 @@
 				.fa.fa-book
 				Session History
 			%hr.green
-				- current_user.previous_sessions.order("start_datetime desc").each do |session|
+				- current_user.previous_sessions.order("start_datetime desc").last(5).each do |session|
 					= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
+				.text-center
+					= link_to "View Full History", user_session_history_path, :class => "btn btn-link"
 
 
 

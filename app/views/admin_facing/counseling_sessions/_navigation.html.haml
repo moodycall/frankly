@@ -1,0 +1,7 @@
+.list-group
+  = link_to upcoming_admin_counseling_session_overviews_path, :class => "list-group-item #{"active" if @tab_name == "upcoming"}" do
+    .fa.fa-clock-o
+    Upcoming Sessions
+  = link_to admin_counseling_session_overviews_path, :class => "list-group-item #{"active" if @tab_name == "index"}" do
+    .fa.fa-book
+    All Sessions

@@ -1,5 +1,25 @@
 @import 'palette';
 
+.pagination {
+	a, em, span {
+		position: relative;
+		float: left;
+		padding: 6px 12px;
+		margin-left: -1px;
+		line-height: 1.42857143;
+		color: $primary_color;
+		text-decoration: none;
+		background-color: #fff;
+		border: 1px solid #ddd;
+	}
+	em {
+		color: $grey_dark;
+	}
+	.disabled {
+		display: none;
+	}
+}
+
 .hint {
 	font-size: 12px;
 	color: #bbb;
