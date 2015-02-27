@@ -16,6 +16,7 @@
 //= require best_in_place.purr
 //= require local_time
 //= require jquery_ujs
+//= require gritter
 //= require bootstrap
 //= require bootstrap-switch
 //= require jquery.timepicker

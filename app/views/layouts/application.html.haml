@@ -18,3 +18,7 @@
       = yield
     
     = render "layouts/footer"
+
+    - if current_user.session_starting_soon
+      - unless @counseling_session.present?
+        = js add_gritter("<br><div class='text-center'>#{link_to "Enter Session", counseling_session_path(current_user.session_starting_soon), :class => "btn btn-primary btn-lg"}</div>", :title => "Your session with<br>#{current_user.session_starting_soon.counselor.user.name}<br>starting now.", :sticky => true)

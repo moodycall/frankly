@@ -1,0 +1,26 @@
+// Place all the styles related to the Counselors controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import 'palette';
+
+.gritter-item.gritter-css3,
+.hover .gritter-item.gritter-css3 {
+	background: #fff;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 0px;
+	padding: 30px 20px;
+	border: 2px solid $primary_color;
+	color: $grey_dark;
+}
+
+.gritter-title {
+	font-family: helvetica neue, helvetica, arial, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 0 0 7px 0;
+	display: block;
+	text-shadow: none;
+	text-align: center;
+}

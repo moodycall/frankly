@@ -13,6 +13,9 @@ module Moodycall
     # -- all .rb files in that directory are automatically loaded.
 
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
+    Rails.application.config.assets.precompile += %w( ie-spacer.gif )
+    Rails.application.config.assets.precompile += %w( gritter.png )
+    Rails.application.config.assets.precompile += %w( gritter-close.png )
     config.assets.enabled = true
     
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.

@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
   end
 
   def session_starting_soon
-    if counseling_sessions.where("start_datetime > ?", (Time.zone.now - 5.minutes)).present?
-      counseling_sessions.where("start_datetime > ?", (Time.zone.now - 5.minutes)).first
+    if counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).present?
+      counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).first
     else
       return false
     end

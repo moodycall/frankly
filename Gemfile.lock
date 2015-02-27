@@ -188,6 +188,7 @@ GEM
       faraday_middleware (>= 0.9)
       hashie (>= 2.0, < 4.0)
       plissken
+    gritter (1.1.0)
     haml (4.0.6)
       tilt
     haml-rails (0.8.2)
@@ -352,6 +353,7 @@ DEPENDENCIES
   fog
   friendly_id (~> 5.0.0)
   fullcontact
+  gritter (= 1.1.0)
   haml-rails
   intercom-rails
   jbuilder (~> 2.0)
