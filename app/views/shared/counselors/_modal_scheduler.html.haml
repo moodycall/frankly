@@ -22,5 +22,17 @@
             = f.hidden_field :day, :value => @dts
             = f.input :time, collection: counselor.availability_by_dts(@dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
 
+          .counseling_session_price_wrapper
+            %table
+              %tr
+                %td
+                  %strong
+                    Session Cost
+                %td.text-right
+                  = number_to_currency(counselor.session_rate_in_dollars)
+              %tr
+                %td.text-center.text-muted.small{ :colspan => 2 }
+                  To be billed at Time of Session
+
         .modal-footer
           = f.submit "Schedule Session", :class => "btn btn-primary btn-block btn-lg"

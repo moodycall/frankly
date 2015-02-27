@@ -33,6 +33,21 @@ class User < ActiveRecord::Base
     counseling_sessions.where("start_datetime <= ?", Time.zone.now)
   end
 
+  def current_card
+    if credit_cards.where(:is_active => true).present?
+      credit_cards.where(:is_active => true).order(:created_at => :asc).first
+    else
+      return false
+    end
+  end
+
+  def session_starting_soon
+    if counseling_sessions.where("start_datetime > ?", (Time.zone.now - 5.minutes)).present?
+      counseling_sessions.where("start_datetime > ?", (Time.zone.now - 5.minutes)).first
+    else
+      return false
+    end
+  end
   private
   
   def _create_stripe_customer_id

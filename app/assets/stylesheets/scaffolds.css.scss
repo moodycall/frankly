@@ -63,7 +63,8 @@ a:hover {
 .field_with_errors {
   padding: 2px;
   background-color: red;
-  display: table;
+  display: block;
+  color: white;
 }
 
 #error_explanation {

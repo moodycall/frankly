@@ -12,21 +12,25 @@ class CounselingSessionsController < ApplicationController
   # GET /counseling_sessions/1
   # GET /counseling_sessions/1.json
   def show
-    api_key    = Rails.configuration.opentok_api_key
-    api_secret = Rails.configuration.opentok_api_secret
-    opentok    = OpenTok::OpenTok.new api_key, api_secret
+    if (@counseling_session.start_datetime - 5.minutes) < Time.zone.now
+      api_key    = Rails.configuration.opentok_api_key
+      api_secret = Rails.configuration.opentok_api_secret
+      opentok    = OpenTok::OpenTok.new api_key, api_secret
 
-    unless @counseling_session.rating.present?
-      @rating = @counseling_session.build_rating
-    end
+      unless @counseling_session.rating.present?
+        @rating = @counseling_session.build_rating
+      end
 
-    if @counseling_session.opentok_session_id.present?
-      @token = opentok.generate_token @counseling_session.opentok_session_id,
-          :role        => :moderator,
-          # :expire_time => @counseling_session.estimated_endtime,
-          :data        => "name=#{current_user.name}"
+      if @counseling_session.opentok_session_id.present?
+        @token = opentok.generate_token @counseling_session.opentok_session_id,
+            :role        => :moderator,
+            # :expire_time => @counseling_session.estimated_endtime,
+            :data        => "name=#{current_user.name}"
+      else
+        @counseling_session.create_opentok_session
+      end
     else
-      @counseling_session.create_opentok_session
+      redirect_to user_dashboard_path, :notice => "You may enter your session 5 minutes before it's scheduled to begin."
     end
   end
 
@@ -52,6 +56,7 @@ class CounselingSessionsController < ApplicationController
   # POST /counseling_sessions.json
   def create
     if current_user.present?
+      # If they're already a user, we'll want to let them create a session
       @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
       @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
 
@@ -59,7 +64,11 @@ class CounselingSessionsController < ApplicationController
       if @counseling_session.save
         session.delete(:pending_session_counselor_id)
         @counseling_session.create_opentok_session # Create  opentok session for later use
-        redirect_to @counseling_session, notice: 'Counseling session was successfully created.'
+        if current_user.current_card
+          redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
+        else
+          redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
+        end
       else
         render :new
       end
