@@ -7,7 +7,7 @@
         %span.icon-bar
         %span.icon-bar
         %span.icon-bar
-      =link_to root_url(:subdomain => false) do
+      =link_to root_url() do
         =image_tag "logos/primary.png", :class => "navbar-brand hidden-special"
         =image_tag "logos/primary-white.png", :class => "navbar-brand visible-special"
     / Collect the nav links, forms, and other content for toggling
@@ -32,12 +32,12 @@
                 = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
       %ul.nav.navbar-nav.navbar-right
         %li
-          = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%y-%m-%d"), :subdomain => false), :id => "primaryNavFavorites"
+          = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%y-%m-%d")), :id => "primaryNavFavorites"
         - if user_signed_in?
           %li
-            = link_to 'Dashboard', user_dashboard_url(:subdomain => false)
+            = link_to 'Dashboard', user_dashboard_url()
           %li
-            = link_to 'Favorites', favorite_counselors_url(:subdomain => false), :id => "primaryNavFavorites"
+            = link_to 'Favorites', favorite_counselors_url(), :id => "primaryNavFavorites"
           %li.dropdown
             %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
               .user_navigation_icon
@@ -50,26 +50,26 @@
                 %li.dropdown-header
                   Counselor Options
                 %li
-                  = link_to counselor_url(current_user.counselor, :subdomain => false) do
+                  = link_to counselor_url(current_user.counselor) do
                     .fa.fa-briefcase
                     Profile
 
                 %li
-                  = link_to availability_counselor_url(current_user.counselor, :subdomain => false) do
+                  = link_to availability_counselor_url(current_user.counselor) do
                     .fa.fa-calendar
                     Availability
                 %li.divider
               %li
-                = link_to credit_cards_url(:subdomain => false), :id => "primaryNavPayments" do
+                = link_to credit_cards_url(), :id => "primaryNavPayments" do
                   .fa.fa-credit-card
                   Payments
               %li
-                = link_to edit_user_registration_url(:subdomain => false), :id => "primaryNavSettings" do
+                = link_to edit_user_registration_url(), :id => "primaryNavSettings" do
                   .fa.fa-cog
                   Settings
               %li.divider
               %li
-                = link_to destroy_user_session_url(:subdomain => false), method: :delete do
+                = link_to destroy_user_session_url(), method: :delete do
                   .fa.fa-sign-out
                   Logout
 
@@ -81,23 +81,23 @@
                 %li.dropdown-header
                   Admin Options
                 %li
-                  = link_to specialties_url(:subdomain => "admin") do
+                  = link_to specialties_url() do
                     .fa.fa-flag
                     Specialties
                 %li
-                  = link_to prompts_url(:subdomain => "admin") do
+                  = link_to prompts_url() do
                     .fa.fa-comment
                     Prompts
                 %li
-                  = link_to admin_counselor_overviews_url(:subdomain => "admin") do
+                  = link_to admin_counselor_overviews_url() do
                     .fa.fa-briefcase
                     Counselors
                 %li
-                  = link_to admin_counseling_session_overviews_url(:subdomain => "admin") do
+                  = link_to admin_counseling_session_overviews_url() do
                     .fa.fa-laptop
                     Counseling Sessions
                 %li
-                  = link_to payouts_url(:subdomain => "admin") do
+                  = link_to payouts_url() do
                     .fa.fa-money
                     Payouts
 
