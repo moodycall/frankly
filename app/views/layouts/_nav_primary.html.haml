@@ -81,23 +81,23 @@
                 %li.dropdown-header
                   Admin Options
                 %li
-                  = link_to specialties_url() do
+                  = link_to specialties_url(:subdomain => "admin") do
                     .fa.fa-flag
                     Specialties
                 %li
-                  = link_to prompts_url() do
+                  = link_to prompts_url(:subdomain => "admin") do
                     .fa.fa-comment
                     Prompts
                 %li
-                  = link_to admin_counselor_overviews_url() do
+                  = link_to admin_counselor_overviews_url(:subdomain => "admin") do
                     .fa.fa-briefcase
                     Counselors
                 %li
-                  = link_to admin_counseling_session_overviews_url() do
+                  = link_to admin_counseling_session_overviews_url(:subdomain => "admin") do
                     .fa.fa-laptop
                     Counseling Sessions
                 %li
-                  = link_to payouts_url() do
+                  = link_to payouts_url(:subdomain => "admin") do
                     .fa.fa-money
                     Payouts
 
