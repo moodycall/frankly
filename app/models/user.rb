@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def paid_counseling_sessions
+    counseling_sessions.where.not(:stripe_charge_id => nil).all
+  end
+
   def session_starting_soon
     if counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).present?
       counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).first

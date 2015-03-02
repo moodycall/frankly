@@ -1,5 +1,13 @@
 @import 'palette';
 
+.hidden-default {
+	display: none;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
 .pagination {
 	a, em, span {
 		position: relative;

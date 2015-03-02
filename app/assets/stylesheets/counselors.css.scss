@@ -87,22 +87,22 @@
 			display: inline;
 		}
 	}
+}
 
-	.counselor_favorite_wrapper {
-		padding: 5px 0px;
-		a {
-			color: $grey_medium;
-		}
-		a:hover {
-			color: $moody_red;
-			opacity: 1;
-		}
-		.favorited {
-			color: $moody_red;
-		}
-		.favorited:hover {
-			color: $grey_medium;
-		}
+.counselor_favorite_wrapper {
+	padding: 5px 0px;
+	a {
+		color: $grey_medium;
+	}
+	a:hover {
+		color: $moody_red;
+		opacity: 1;
+	}
+	.favorited {
+		color: $moody_red;
+	}
+	.favorited:hover {
+		color: $grey_medium;
 	}
 }
 

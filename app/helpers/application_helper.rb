@@ -10,4 +10,10 @@ module ApplicationHelper
   def parse_dts(string)
     DateTime.parse(string)
   end
+
+  def cents_to_dollars(total_in_cents)
+    if total_in_cents
+      number_to_currency(total_in_cents * 0.01)
+    end
+  end
 end

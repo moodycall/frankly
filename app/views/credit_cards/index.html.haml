@@ -3,21 +3,38 @@
 
   .row
     .col-md-6
-      %h3 Credit Cards
+      %h3 Credit Card
 
-      %table.table
-        %thead
-          %tr
-            %th Name
-            %th Last Digits
-            %th
-            
-        %tbody
-          - @credit_cards.each do |credit_card|
+      %p
+        You security is our priority,
+        %span.toggle_trigger.pointer{"data-toggleable" => ".toggleable_security_overview"}
+          click here to learn more.
+      
+      .toggleable_security_overview.hidden-default
+        %p
+          For you security, no Credit Card information is stored on our system.
+          %br
+          All transactions and payment information is securely processed using Stripe Payment Processor.
+
+      .well
+        %table.table
+          %thead
             %tr
-              %td= credit_card.name
-              %td= credit_card.last_four
-              %td= link_to 'Remove', deactivate_credit_card_path(credit_card), :data => { :confirm => 'Are you sure?' }
+              %th Name
+              %th Last Digits
+              %th
+              
+          %tbody
+            - @credit_cards.each do |credit_card|
+              %tr
+                %td= credit_card.name
+                %td
+                  %small
+                    xxxx-xxxx-xxxx-
+                  = credit_card.last_four
+                %td.text-right
+                  = link_to deactivate_credit_card_path(credit_card), :data => { :confirm => 'Are you sure?' } do
+                    .fa.fa-trash
 
       - if @credit_cards.count > 0
         .text-right
@@ -26,6 +43,23 @@
         .text-center
           = link_to 'New Credit Card', new_credit_card_path, :class => "btn btn-primary"
 
-
     .col-md-6
       %h3 Payment History
+      %p
+        Review previously charged sessions.
+      %table.table
+        %tr
+          %th
+            Counselor
+          %th
+            Session Time
+          %th.text-right
+            Total
+        - current_user.paid_counseling_sessions.each do |counseling_session|
+          %tr
+            %td
+              = counseling_session.counselor.user.name
+            %td
+              = counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+            %td.text-right
+              = cents_to_dollars(counseling_session.price_in_cents)
