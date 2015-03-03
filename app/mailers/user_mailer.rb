@@ -21,4 +21,13 @@ class UserMailer < ActionMailer::Base
     mail to: "#{@user.email}",
     subject: "Please Add a Credit Card"
   end
+
+  def counseling_session_charge_confirmation(counseling_session_id)
+    @counseling_session = CounselingSession.find(counseling_session_id)
+    @client             = @counseling_session.client
+    @greeting           = "Hello"
+
+    mail to: "#{@client.email}",
+    subject: "Charged for Counseling Session via MoodyCall"
+  end
 end

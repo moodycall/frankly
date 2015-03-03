@@ -1,4 +1,5 @@
 class Payout < ActiveRecord::Base
+  include StripeInteractions
 
   extend FriendlyId
   friendly_id :slug, use: [:slugged, :history, :finders]
@@ -10,20 +11,6 @@ class Payout < ActiveRecord::Base
 
   def total_in_dollars
     total_in_cents * 0.01
-  end
-
-  def transfer_funds
-    # Create a transfer to the specified recipient
-    transfer = Stripe::Transfer.create(
-      :amount => total_in_cents, # amount in cents
-      :currency => "usd",
-      :recipient => user.stripe_recipient_id,
-      :statement_descriptor => "Payout from MoodyCall | #{id}"
-    )
-
-    self.stripe_transfer_id = transfer.id
-    self.funds_sent_dts     = Time.now
-    self.save
   end
 
   def self.total_funds_payable_in_cents

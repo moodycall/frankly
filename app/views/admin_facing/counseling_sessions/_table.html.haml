@@ -39,5 +39,10 @@
           %td{ :colspan => 1 }
             %strong
               Stripe Charge
-          %td{ :colspan => 7 }
+          %td{ :colspan => 1 }
+            = cents_to_dollars(counseling_session.stripe_processing_fee_in_cents)
+            fee
+          %td{ :colspan => 3 }
             = counseling_session.stripe_charge_id
+          %td{ :colspan => 3 }
+            = counseling_session.stripe_balance_transaction_id

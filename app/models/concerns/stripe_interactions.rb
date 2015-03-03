@@ -14,7 +14,8 @@ module StripeInteractions
         :description => "#{description}"
       )
 
-      self.stripe_charge_id = charge.id
+      self.stripe_charge_id              = charge.id
+      self.stripe_balance_transaction_id = charge.balance_transaction
       self.save
 
     rescue Stripe::CardError
@@ -25,6 +26,27 @@ module StripeInteractions
         user.save
       end
     end
+  end
+
+  def update_transaction_total(balance_transaction_id)
+    transaction = Stripe::BalanceTransaction.retrieve("#{balance_transaction_id}")
+    self.stripe_processing_fee_in_cents = transaction.fee
+
+    self.save
+  end
+
+  def transfer_funds(total_in_cents)
+    # Create a transfer to the specified recipient
+    transfer = Stripe::Transfer.create(
+      :amount => total_in_cents, # amount in cents
+      :currency => "usd",
+      :recipient => self.stripe_recipient_id,
+      :statement_descriptor => "Payout from MoodyCall | #{self.id}"
+    )
+
+    self.stripe_transfer_id = transfer.id
+    self.funds_sent_dts     = Time.now
+    self.save
   end
 
   module ClassMethods
