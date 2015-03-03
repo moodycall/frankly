@@ -1,3 +1,5 @@
+- @modal_target_id = "#{counselor.slug}ScheduleModal"
+
 .counselor_preview_wrapper.preview_with_schedule
   .row
     .col-sm-2
@@ -31,7 +33,7 @@
         - if counselor.availability_by_dts(@dts).count > 0
           - counselor.availability_by_dts(@dts).take(5).each do |interval|
             .col-xs-4.col-sm-2
-              .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{counselor.slug}ScheduleModal", "data-time" => "#{time_as_local(interval)}"}
+              .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@modal_target_id}", "data-time" => "#{time_as_local(interval)}"}
                 = time_as_local(interval)
         - else
           .col-xs-5.col-sm-3
@@ -43,3 +45,5 @@
             View Profile
 
 %hr
+
+= render partial: "shared/counselors/modal_scheduler", locals: {counselor: counselor, target_id: @modal_target_id, dts: @dts}

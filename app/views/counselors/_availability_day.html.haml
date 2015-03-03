@@ -1,3 +1,5 @@
+- @modal_target_id = "#{@counselor.slug}-#{dts.to_s.parameterize}"
+
 %h3
   = (dts).strftime("%B %e, %Y")
 
@@ -12,7 +14,7 @@
     - @counselor.availability_by_dts(dts).each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
         - if (dts).in_time_zone > Time.zone.now
-          .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@counselor.slug}ScheduleModal", "data-time" => "#{time_as_local(interval)}"}
+          .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@modal_target_id}", "data-time" => "#{time_as_local(interval)}"}
             = time_as_local(interval)
         - else
           .btn.btn-primary.btn-block{:disabled => "disabled"}
@@ -23,3 +25,5 @@
       %br
       %em
         #{(dts).strftime("%B %e, %Y")}
+
+= render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: @modal_target_id, dts: dts}

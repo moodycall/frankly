@@ -1,5 +1,5 @@
 / Modal
-.modal.fade{"aria-hidden" => "true", :id => "#{counselor.slug}ScheduleModal", "aria-labelledby" => "#{counselor.slug}ScheduleModal", :role => "dialog", :tabindex => "-1"}
+.modal.fade{"aria-hidden" => "true", :id => target_id, :role => "dialog", :tabindex => "-1"}
   .modal-dialog.modal-sm
     .modal-content
       .modal-header
@@ -15,12 +15,12 @@
           %label
             Session Day
           %h4.text-center
-            = @dts.strftime("%B %d, %Y")
+            = dts.strftime("%B %d, %Y")
 
           .form-inputs
             = f.hidden_field :counselor_id, :value => counselor.id
-            = f.hidden_field :day, :value => @dts
-            = f.input :time, collection: counselor.availability_by_dts(@dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
+            = f.hidden_field :day, :value => dts
+            = f.input :time, collection: counselor.availability_by_dts(dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
 
           .counseling_session_price_wrapper
             %table

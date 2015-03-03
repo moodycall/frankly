@@ -17,8 +17,6 @@
   - @counselors.each do |counselor|
     = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
 
-    = render partial: "shared/counselors/modal_scheduler", locals: {counselor: counselor}
-
   = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
 
 :javascript

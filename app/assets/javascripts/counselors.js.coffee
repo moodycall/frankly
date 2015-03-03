@@ -38,7 +38,8 @@ jQuery ->
   $(window).resize()
 
   $(".counselor-time-button").click ->
-    $(".selected_time").val($(this).attr("data-time"))
+    time = $(this).attr("data-time")
+    $(".selected_time").val(time)
 
   $(".counselor_availability_day_wrapper").each ->
     $(this).children(".availability_time_button_wrapper:nth-child(7)").nextAll().wrapAll("<div class='extra-times-for-day' />")
