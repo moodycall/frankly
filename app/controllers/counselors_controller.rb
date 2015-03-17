@@ -40,6 +40,9 @@ class CounselorsController < ApplicationController
 
   # GET /counselors/1/edit
   def edit
+    unless @counselor.counseling_licenses.present?
+      @counselor.counseling_licenses.build
+    end
     @page_title    = "Edit Your Profile"
     @page_subtitle = ""
   end
@@ -134,6 +137,7 @@ class CounselorsController < ApplicationController
                                         :available_saturday,
                                         :available_sunday,
                                         { :specialty_ids => [] },
-                                        availability_intervals_attributes: [:day_of_week, :start_time, :end_time])
+                                        availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
+                                        counseling_licenses_attributes: [:license_number, :state, :established_on_date])
     end
 end

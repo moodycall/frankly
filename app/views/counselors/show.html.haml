@@ -32,6 +32,9 @@
           .col-md-6
             %h4
               Licensed In
+            - @counselor.counseling_licenses.each do |license|
+              = license.state
+              = license.license_number
           .col-md-6
             %h4
               Education

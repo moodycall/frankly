@@ -11,8 +11,10 @@ class Counselor < ActiveRecord::Base
 	has_many :ratings, as: :rateable
 	has_many :specializations
 	has_many :specialties, :through => :specializations
+	has_many :counseling_licenses
 
 	accepts_nested_attributes_for :availability_intervals
+	accepts_nested_attributes_for :counseling_licenses
 	
 	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id
