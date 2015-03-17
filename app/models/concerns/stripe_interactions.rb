@@ -49,6 +49,15 @@ module StripeInteractions
     self.save
   end
 
+  def issue_refund
+    charge = Stripe::Charge.retrieve(self.stripe_charge_id)
+
+    refund = charge.refunds.create
+
+    self.stripe_refund_id = refund.id
+    self.save
+  end
+
   module ClassMethods
   end
 end

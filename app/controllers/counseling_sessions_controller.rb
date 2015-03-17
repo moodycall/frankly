@@ -1,7 +1,7 @@
 class CounselingSessionsController < ApplicationController
   require "opentok"
   before_action :authenticate_user!, :except => [:create]
-  before_action :set_counseling_session, only: [:show, :edit, :update, :destroy]
+  before_action :set_counseling_session, only: [:show, :edit, :update, :destroy, :cancel]
 
   # GET /counseling_sessions
   # GET /counseling_sessions.json
@@ -93,6 +93,21 @@ class CounselingSessionsController < ApplicationController
         format.html { render :edit }
         format.json { render json: @counseling_session.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def cancel
+    @counseling_session.cancelled_on_dts = Time.now
+    @counseling_session.save
+
+    if @counseling_session.is_refundable
+      redirect_to user_dashboard_path, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and refunded."
+      CounselorMailer.client_cancellation(@counseling_session.id).deliver
+      UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+    else
+      redirect_to user_dashboard_path, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled."
+      CounselorMailer.client_cancellation(@counseling_session.id).deliver
+      UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
     end
   end
 

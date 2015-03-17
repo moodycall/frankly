@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303215431) do
+ActiveRecord::Schema.define(version: 20150317183310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,8 @@ ActiveRecord::Schema.define(version: 20150303215431) do
     t.string   "opentok_session_id"
     t.string   "stripe_balance_transaction_id"
     t.integer  "stripe_processing_fee_in_cents"
+    t.datetime "cancelled_on_dts"
+    t.string   "stripe_refund_id"
   end
 
   create_table "counselors", force: true do |t|

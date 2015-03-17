@@ -32,6 +32,15 @@ class CounselingSession < ActiveRecord::Base
     self.save
 	end
 
+	def is_cancellable
+		self.start_datetime > Time.now and self.cancelled_on_dts == nil ? true : false
+	end
+
+	def is_refundable
+		self.stripe_charge_id ? true : false
+		
+	end
+
 	def price_in_dollars
 		price_in_cents / 100
 	end
@@ -41,7 +50,7 @@ class CounselingSession < ActiveRecord::Base
 	end
 
 	def self.chargeable_sessions
-		self.where(:stripe_charge_id => nil).select do |session|
+		self.where(:stripe_charge_id => nil, :cancelled_on_dts => nil).select do |session|
 			session.start_datetime - 2.days > Time.now
 		end
 	end

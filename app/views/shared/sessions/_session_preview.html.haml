@@ -25,8 +25,14 @@
 			.counselor_ratings_total.text-muted
 				(#{session.counselor.ratings.count})
 
-			%br
+		%p
 			= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+
+		- if session.is_cancellable
+			.cancel_counseling_session_wrapper.text-danger.small.hidden-default
+				= link_to cancel_counseling_session_path(session), :class => "text-danger" do
+					.fa.fa-close
+					Cancel Session
 
 :javascript
 	$('.star:nth-child(#{session.counselor.public_rating})').attr("checked", "checked");

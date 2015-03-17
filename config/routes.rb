@@ -52,6 +52,10 @@ Rails.application.routes.draw do
 
   resources :counseling_sessions do
     resources :ratings
+
+    member do
+      get :cancel
+    end
   end
 
   resources :counselors do

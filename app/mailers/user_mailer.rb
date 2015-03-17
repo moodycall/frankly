@@ -30,4 +30,14 @@ class UserMailer < ActionMailer::Base
     mail to: "#{@client.email}",
     subject: "Charged for Counseling Session via MoodyCall"
   end
+
+  def counseling_session_cancellation(counseling_session_id)
+    @counseling_session = CounselingSession.find(counseling_session_id)
+    @client             = @counseling_session.client
+    @counselor          = @counseling_session.counselor.user
+    @greeting           = "Hello"
+
+    mail to: "#{@client.email}",
+    subject: "Counseling Session Cancellation"
+  end
 end
