@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   		get :availability
       get :certifications
       get :licenses
+      get :education
   	end
   end
 

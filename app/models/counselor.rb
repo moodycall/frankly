@@ -13,6 +13,7 @@ class Counselor < ActiveRecord::Base
 	has_many :specialties, :through => :specializations
 	has_many :counseling_licenses
 	has_many :counseling_certifications
+	has_many :counseling_degrees
 
 	accepts_nested_attributes_for :availability_intervals
 	accepts_nested_attributes_for :counseling_licenses

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  counselor_id: 1
+  degree_type: MyString
+  name: MyString
+  institution: MyString
+  year_of_completion: MyString
+
+two:
+  counselor_id: 1
+  degree_type: MyString
+  name: MyString
+  institution: MyString
+  year_of_completion: MyString
