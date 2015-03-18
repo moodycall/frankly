@@ -1,6 +1,6 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :availability]
+  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :availability, :licenses, :certifications]
   respond_to :html, :json
 
   # GET /counselors
@@ -42,6 +42,25 @@ class CounselorsController < ApplicationController
   def edit
     unless @counselor.counseling_licenses.present?
       @counselor.counseling_licenses.build
+    end
+    unless @counselor.counseling_certifications.present?
+      @counselor.counseling_certifications.build
+    end
+    @page_title    = "Edit Your Profile"
+    @page_subtitle = ""
+  end
+
+  def licenses
+    unless @counselor.counseling_licenses.present?
+      @counselor.counseling_licenses.build
+    end
+    @page_title    = "Edit Your Profile"
+    @page_subtitle = ""
+  end
+
+  def certifications
+    unless @counselor.counseling_certifications.present?
+      @counselor.counseling_certifications.build
     end
     @page_title    = "Edit Your Profile"
     @page_subtitle = ""
@@ -138,6 +157,7 @@ class CounselorsController < ApplicationController
                                         :available_sunday,
                                         { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
-                                        counseling_licenses_attributes: [:license_number, :state, :established_on_date])
+                                        counseling_licenses_attributes: [:license_number, :state, :established_on_date],
+                                        counseling_certifications_attributes: [:name])
     end
 end

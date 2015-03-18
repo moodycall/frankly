@@ -25,22 +25,12 @@
       = f.label :bio, :label => "Biography"
       = f.input :bio, :placeholder => "Biography", input_html: { :class => "form-control" }, :label => false
     .form-group
-      = f.input :profession_start_date, :placeholder => "Profession Start Date", :label => false, as: :string, input_html: { :class => "form-control floatlabel datepicker" }
+      = f.input :profession_start_date, :label => "Profession Start Date", as: :string, input_html: { :class => "form-control datepicker" }
     .form-group
       = f.input :photo, :label => "Profile Photo", input_html: { :class => "form-control" }
 
     .form-group
       = f.association :specialties, input_html: { :class => "form-control" }
-
-    .form-group
-      = f.association :counseling_licenses do |license|
-        .row
-          .col-sm-4
-            = license.input :license_number, input_html: { :class => "form-control" }
-          .col-sm-4
-            = license.input :state, collection: CounselingLicense.states, input_html: { :class => "form-control" },:include_blank => false, :label => "Licensed in"
-          .col-sm-4
-            = license.input :established_on_date, as: :string, input_html: { :class => "form-control datepicker" }, :label => "Licensed Since"
 
     %hr
 

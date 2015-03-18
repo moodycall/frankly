@@ -1,0 +1,80 @@
+.container
+  .row
+    .col-sm-6.col-sm-offset-3
+      = render "edit_nav"
+      
+      = simple_form_for(@counselor) do |f|
+        = f.error_notification
+
+        .form-inputs
+          #addable_items_wrapper
+            = f.association :counseling_certifications do |license|
+              .addable_item_wrapper.form-group
+                .row
+                  .col-sm-12
+                    = license.input :name, input_html: { :class => "form-control" }, :label => "Certification Name"
+
+
+          .text-center
+            #add-item.btn.btn-default.btn-sm
+              Add Another Certification
+
+          %hr
+          
+        .form-actions
+          = f.submit "Update Profile", :class => "btn btn-primary btn-block btn-lg"
+
+:javascript
+
+  var i = $(".addable_item_wrapper").length;
+
+  $(document.body).on('click', "#add-item", function() {
+  
+    // Duplicate Previous Attendee Fields Record
+    dup = $(".addable_item_wrapper").last().clone();
+    dup.attr("id", "attendee_" + i);
+
+    // Build Previous and New ID idenfiers for nested attributes, initial is _0_
+    var old_id_attr   = "_" + (i - 1) + "_",
+        new_id_attr   = "_" + i + "_",
+        old_name_attr = "[" + (i - 1) + "]",
+        new_name_attr = "[" + i + "]";
+
+    // Update Inputs from each input to reflect next attendee
+    // Failing to do this would result in each record saving over the previous 
+    $(dup).find("input, select").each(function() {
+      if($(this).attr("id")) {
+        var old_input_id = $(this).attr('id'),
+            new_input_id = old_input_id.replace(old_id_attr, new_id_attr);
+        $(this).attr("id", new_input_id);
+      }
+
+      if($(this).attr("name")) {
+        var old_input_name = $(this).attr('name'),
+            new_input_name = old_input_name.replace(old_name_attr, new_name_attr);
+        $(this).attr("name", new_input_name);
+      }
+
+      $(dup).find("input.string").val("");
+    });
+
+    // Update Labels from each input to reflect next attendee
+    // Failing to do this would result in each record saving over the previous 
+    $(dup).find("label").each(function() {
+      if($(this).attr("for")) {
+        var old_label_for = $(this).attr('for'),
+            new_label_for = old_label_for.replace(old_id_attr, new_id_attr);
+        $(this).attr("for", new_label_for);
+      }
+      if($(this).attr("name")) {
+        var old_label_name = $(this).attr('name'),
+            new_label_name = old_label_name.replace(old_name_attr, new_name_attr);
+        $(this).attr("name", new_label_name);
+      }
+    });
+
+    dup.appendTo("#addable_items_wrapper").hide().slideDown();
+
+    i += 1;
+
+  });

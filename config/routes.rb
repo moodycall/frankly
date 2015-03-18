@@ -61,6 +61,8 @@ Rails.application.routes.draw do
   resources :counselors do
   	member do
   		get :availability
+      get :certifications
+      get :licenses
   	end
   end
 

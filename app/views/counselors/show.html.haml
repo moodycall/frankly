@@ -42,6 +42,9 @@
             %h4
               Certications
 
+            - @counselor.counseling_certifications.each do |certification|
+              = certification.name
+
       %hr
 
       .counselor_comments_wrapper

@@ -12,9 +12,11 @@ class Counselor < ActiveRecord::Base
 	has_many :specializations
 	has_many :specialties, :through => :specializations
 	has_many :counseling_licenses
+	has_many :counseling_certifications
 
 	accepts_nested_attributes_for :availability_intervals
 	accepts_nested_attributes_for :counseling_licenses
+	accepts_nested_attributes_for :counseling_certifications
 	
 	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id

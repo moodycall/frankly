@@ -93,6 +93,15 @@
 	}
 }
 
+.list-counselor-edit-options li {
+	a {
+		padding: 5px;
+	}
+	&.active a {
+		border-bottom: 2px solid $primary_color;
+	}
+}
+
 .counselor_favorite_wrapper {
 	padding: 5px 0px;
 	a {

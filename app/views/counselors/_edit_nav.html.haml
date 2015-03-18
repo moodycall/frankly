@@ -1,0 +1,13 @@
+%h1 Counselor Settings
+
+%br
+
+%ul.list-inline.list-counselor-edit-options
+  %li{ :class => "#{'active' if current_page? edit_counselor_path}"}
+    = link_to "General Info", edit_counselor_path(@counselor)
+  %li{ :class => "#{'active' if current_page? certifications_counselor_path}"}
+    = link_to "Licenses", certifications_counselor_path(@counselor)
+  %li{ :class => "#{'active' if current_page? licenses_counselor_path}"}
+    = link_to "Certifications", licenses_counselor_path(@counselor)
+
+%br
