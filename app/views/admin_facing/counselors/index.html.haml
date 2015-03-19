@@ -7,7 +7,7 @@
     %table.table
       %thead
         %tr
-          %th ID
+          %th
           %th Name
           %th Public Rating
           %th.text-right Session Rate
@@ -21,9 +21,10 @@
         - @counselors.each_with_index do |counselor, index|
           %tr{ :class => "row_#{index}"}
             %td
-              = counselor.id
+              = link_to edit_counselor_url(counselor) do
+                .fa.fa-pencil
             %td
-              = counselor.user.name
+              = link_to counselor.user.name, counselor_url(counselor)
             %td
               = render "shared/counselors/public_rating", :counselor => counselor
             %td.text-right
