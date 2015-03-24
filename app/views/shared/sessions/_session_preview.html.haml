@@ -6,7 +6,7 @@
 		= link_to favorite_counselors_path(:counselor => session.counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => session.counselor.id)) do
 			.fa.fa-heart
 	.media-left.media-middle
-		%a{:href => "#"}
+		= link_to counseling_session_path(session) do
 			-if session.counselor.user.photo.present?
 				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
 			-else
