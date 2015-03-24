@@ -8,8 +8,8 @@
       = link_to 'Favorites', favorite_counselors_url(), :id => "primaryNavFavorites"
     %li.dropdown
       %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
-        .user_navigation_icon
-          .fa.fa-user
+        Hey, 
+        = current_user.first_name
       %ul.dropdown-menu{:role => "menu"}
 
         // COUNSELOR OPTIONS

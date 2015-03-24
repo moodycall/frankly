@@ -40,6 +40,10 @@ class User < ActiveRecord::Base
       return false
     end
   end
+  
+  def first_name
+    name.scan(/\w+/).first
+  end
 
   def paid_counseling_sessions
     counseling_sessions.where.not(:stripe_charge_id => nil).all
