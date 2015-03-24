@@ -153,12 +153,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:name,
                                                            :email,
                                                            :password,
-                                                           :password_conf)}
+                                                           :password_confirmation)}
     
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:name,
                                                                   :email,
                                                                   :password,
-                                                                  :password_conf,
+                                                                  :password_confirmation,
                                                                   :current_password,
                                                                   :stripe_recipient_id)}
   end
