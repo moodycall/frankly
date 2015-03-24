@@ -11,7 +11,7 @@
     = form_tag counselors_path, method: :get do |g|
       .row
         .col-sm-8
-          = select_tag :specialty, options_from_collection_for_select(Specialty.all, :name, :name), :class => "form-control", :label => false, :include_blank => false
+          = select_tag :specialty, options_from_collection_for_select(Specialty.staffed_specialties, :name, :name), :class => "form-control", :label => false, :include_blank => false
         .col-sm-4
           = submit_tag "Find a Counselor", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
