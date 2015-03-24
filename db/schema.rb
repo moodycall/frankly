@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318184857) do
+ActiveRecord::Schema.define(version: 20150324184619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,11 +82,11 @@ ActiveRecord::Schema.define(version: 20150318184857) do
     t.boolean  "send_session_sms_alerts",      default: false, null: false
     t.boolean  "send_session_email_alerts",    default: true,  null: false
     t.integer  "advanced_scheduling_in_weeks", default: 4,     null: false
-    t.boolean  "available_monday",             default: true,  null: false
-    t.boolean  "available_tuesday",            default: true,  null: false
-    t.boolean  "available_wednesday",          default: true,  null: false
-    t.boolean  "available_thursday",           default: true,  null: false
-    t.boolean  "available_friday",             default: true,  null: false
+    t.boolean  "available_monday",             default: false, null: false
+    t.boolean  "available_tuesday",            default: false, null: false
+    t.boolean  "available_wednesday",          default: false, null: false
+    t.boolean  "available_thursday",           default: false, null: false
+    t.boolean  "available_friday",             default: false, null: false
     t.boolean  "available_saturday",           default: false, null: false
     t.boolean  "available_sunday",             default: false, null: false
     t.datetime "created_at"
