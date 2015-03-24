@@ -52,14 +52,20 @@
           %th
             Counselor
           %th
-            Session Time
+            Date
           %th.text-right
             Total
-        - current_user.paid_counseling_sessions.each do |counseling_session|
+        - if current_user.paid_counseling_sessions.count > 0
+          - current_user.paid_counseling_sessions.each do |counseling_session|
+            %tr
+              %td
+                = counseling_session.counselor.user.name
+              %td
+                = counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+              %td.text-right
+                = cents_to_dollars(counseling_session.price_in_cents)
+        - else 
           %tr
-            %td
-              = counseling_session.counselor.user.name
-            %td
-              = counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
-            %td.text-right
-              = cents_to_dollars(counseling_session.price_in_cents)
+            %td.text-center{ :colspan => 3 }
+              You haven't paid for any session yet.
+

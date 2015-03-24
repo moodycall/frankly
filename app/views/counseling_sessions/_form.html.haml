@@ -9,7 +9,7 @@
     .form-inputs
       = f.hidden_field :counselor_id, :value => @counselor.id
       = f.hidden_field :day, :value => @dts
-      = f.input :time, collection: @counselor.availability_by_dts(@dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
+      = f.input :time, collection: @counselor.availability_by_dts(@dts).map { |interval| DateTime.parse(time_as_local(interval)).in_time_zone.strftime("%I:%M%P")}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
 
   .footer
     = f.button :submit, :class => "btn btn-primary btn-lg btn-block"
