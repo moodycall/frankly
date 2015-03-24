@@ -23,6 +23,8 @@
         = link_to counselor_path(counselor) do
           %h2.counselor_name
             = counselor.user.name
+            %span.small.text-muted
+              View Profile
 
       .counselor_specialties_wrapper
         = raw counselor.specialties.map {|specialty| link_to specialty.name, "", :class => "counselor_specialty"}.join(" ")
@@ -42,7 +44,7 @@
         .col-xs-4.col-sm-2
           = link_to counselor_path(counselor, :datetime => @dts), :class => "btn btn-link" do
             .fa.fa-search-plus
-            View Profile
+            More
 
 %hr
 
