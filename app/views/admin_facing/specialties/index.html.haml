@@ -16,7 +16,7 @@
             %tr
               %td= specialty.name
               %td.text-center
-                .fa{ :class => "#{specialty.is_active ? "fa-eye" : "fa-eye-slash"}"}
+                .fa.fa-lg{ :class => "#{specialty.is_active ? "fa-eye" : "fa-eye-slash"}"}
               %td.text-right= specialty.counselors.count
               %td
                 .btn-group.pull-right
