@@ -18,6 +18,6 @@
       = render "shared/counselors/public_rating", :counselor => counselor
 
       .counselor_favorite_wrapper
-        = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("favorited" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
+        = link_to favorite_counselors_path(:counselor => counselor), :method => :post, :class => ("#{ "favorited" if counselor.is_user_favorite(current_user.id) == true}" if current_user and current_user.favorite_counselors.where(:counselor_id => counselor.id)) do
           .fa.fa-heart
           Favorite
