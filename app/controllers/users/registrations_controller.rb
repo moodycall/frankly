@@ -159,6 +159,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
                                                                   :email,
                                                                   :password,
                                                                   :password_confirmation,
+                                                                  :send_session_sms_alerts,
+                                                                  :send_session_email_alerts,
                                                                   :current_password,
                                                                   :stripe_recipient_id)}
   end
