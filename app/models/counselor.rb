@@ -18,6 +18,7 @@ class Counselor < ActiveRecord::Base
 	accepts_nested_attributes_for :availability_intervals
 	accepts_nested_attributes_for :counseling_licenses
 	accepts_nested_attributes_for :counseling_certifications
+	accepts_nested_attributes_for :counseling_degrees
 	
 	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id
