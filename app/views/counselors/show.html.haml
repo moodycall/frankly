@@ -19,12 +19,11 @@
           %p.counselor_professional_experience
             %ul
               %li
-                = distance_of_time_in_words(Time.now, @counselor.profession_start_date, include_seconds: false)
-                Experience
+                Began Counseling in 
+                = @counselor.profession_start_date.strftime("%Y")
               %li
-                Joined MoodyCall
-                = distance_of_time_in_words(Time.now, @counselor.user.created_at, include_seconds: false)
-                ago
+                Joined MoodyCall in
+                = @counselor.user.created_at.strftime("%Y")
         
         %hr
 
