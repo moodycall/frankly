@@ -71,6 +71,6 @@ class AdminFacing::SpecialtiesController < AdminFacingController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def specialty_params
-      params.require(:specialty).permit(:name)
+      params.require(:specialty).permit(:name, :is_active)
     end
 end
