@@ -24,7 +24,7 @@ class AdminFacing::PromptsController < AdminFacingController
 
   # GET /prompts/1/edit
   def edit
-    @page_title    = "Edit Prompt ##{@payout.secure_id}"
+    @page_title    = "Edit Prompt ##{@prompt.secure_id}"
   end
 
   # POST /prompts
