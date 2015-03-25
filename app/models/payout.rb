@@ -9,6 +9,16 @@ class Payout < ActiveRecord::Base
 
   before_create :_generate_secure_id
 
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+
+      all.each do |payout|
+        csv << payout.attributes.values_at(*column_names)
+      end
+    end
+  end
+
   def total_in_dollars
     total_in_cents * 0.01
   end

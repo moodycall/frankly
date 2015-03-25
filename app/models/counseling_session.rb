@@ -20,6 +20,16 @@ class CounselingSession < ActiveRecord::Base
 	before_create :_set_default_values
 	after_save :_create_before_prompts_for_client
 
+	def self.to_csv(options = {})
+	  CSV.generate(options) do |csv|
+	    csv << column_names
+
+	    all.each do |counseling_session|
+	      csv << counseling_session.attributes.values_at(*column_names)
+	    end
+	  end
+	end
+
 	def create_opentok_session
 		api_key    = Rails.configuration.opentok_api_key
     api_secret = Rails.configuration.opentok_api_secret

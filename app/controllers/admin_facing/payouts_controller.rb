@@ -8,7 +8,11 @@ class AdminFacing::PayoutsController < AdminFacingController
     @payouts = Payout.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
     @tab_name = "index"
     @page_title    = "All Payouts"
-    respond_with(@payouts)
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @payouts.to_csv }
+    end
   end
 
   def upcoming
@@ -16,6 +20,11 @@ class AdminFacing::PayoutsController < AdminFacingController
 
     @tab_name = "upcoming"
     @page_title    = "Upcoming Payouts"
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data @payouts.to_csv }
+    end
   end
 
   def bulk_transfer

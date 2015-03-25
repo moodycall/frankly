@@ -7,7 +7,10 @@
     All Payouts
 
 .text-center
+  = link_to url_for(:format => "csv"), :class => "btn btn-link" do
+    .fa.fa-download
+    Download CSV
+
   = link_to new_payout_path, :class => "btn btn-link" do
     .fa.fa-plus
     New Payout
-

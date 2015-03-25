@@ -7,6 +7,11 @@ class AdminFacing::CounselingSessionsController < AdminFacingController
     @tab_name      = "index"
     @page_title    = "Counseling Sessions"
     @page_subtitle = ""
+    
+    respond_to do |format|
+      format.html
+      format.csv { send_data @counseling_sessions.to_csv }
+    end
   end
 
   def upcoming

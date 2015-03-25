@@ -5,3 +5,8 @@
   = link_to admin_counseling_session_overviews_path, :class => "list-group-item #{"active" if @tab_name == "index"}" do
     .fa.fa-book
     All Sessions
+
+.text-center
+  = link_to admin_counseling_session_overviews_path(:format => "csv"), :class => "btn btn-link" do
+    .fa.fa-download
+    Download CSV
