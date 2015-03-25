@@ -25,18 +25,28 @@
             .form-group
               = f.input :current_password, input_html: { :class => "form-control floatlabel" }, hint: "we need your current password to confirm your changes", required: true, :label => false, :placeholder => "Current Password"
 
-          - if current_user.counselor
-            %h2 Payment Info
-            %label
-              %input#display_bank_details{:type => "checkbox"}
-              Update Bank Details
-            #bank_details_wrapper
+          -# - if current_user.counselor
+          -#   %h2 Payment Info
+          -#   %label
+          -#     %input#display_bank_details{:type => "checkbox"}
+          -#     Update Bank Details
+          -#   #bank_details_wrapper
+          -#     .form-group
+          -#       %input.form-control.floatlabel.country{:placeholder => "Country Code"}
+          -#     .form-group
+          -#       %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
+          -#     .form-group
+          -#       %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+
+          .row
+            .col-md-6
               .form-group
-                %input.form-control.floatlabel.country{:placeholder => "Country Code"}
+                = f.label :send_session_sms_alerts, :label => "Send Session Text Alerts"
+                = f.input :send_session_sms_alerts, input_html: { :class => "boolean-switch" }, :label => false
+            .col-md-6
               .form-group
-                %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
-              .form-group
-                %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+                = f.label :send_session_email_alerts, :label => "Send Session Email Alerts"
+                = f.input :send_session_email_alerts, input_html: { :class => "boolean-switch" }, :label => false
 
           / %h3 Cancel my account
           / %p
