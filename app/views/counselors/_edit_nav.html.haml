@@ -5,11 +5,14 @@
 %ul.list-inline.list-counselor-edit-options
   %li{ :class => "#{'active' if current_page? edit_counselor_path}"}
     = link_to "General Info", edit_counselor_path(@counselor)
+
   %li{ :class => "#{'active' if current_page? education_counselor_path}"}
     = link_to "Education", education_counselor_path(@counselor)
-  %li{ :class => "#{'active' if current_page? certifications_counselor_path}"}
-    = link_to "Licenses", certifications_counselor_path(@counselor)
+
   %li{ :class => "#{'active' if current_page? licenses_counselor_path}"}
-    = link_to "Certifications", licenses_counselor_path(@counselor)
+    = link_to "Licenses", licenses_counselor_path(@counselor)
+
+  %li{ :class => "#{'active' if current_page? certifications_counselor_path}"}
+    = link_to "Certifications", certifications_counselor_path(@counselor)
 
 %br
