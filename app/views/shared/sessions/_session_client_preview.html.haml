@@ -1,0 +1,23 @@
+.media.session_preview
+	.session_preview_icon
+		%span.helper
+			.fa{ :class => "fa-#{icon}"}
+	.media-left.media-middle
+		= link_to counseling_session_path(session) do
+			= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
+	.media-body
+		= link_to counseling_session_path(session) do
+			%h3.counselor_name.session_preview_counselor_title
+				= session.client.name
+
+		%p
+			= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+
+		- if session.is_cancellable
+			.cancel_counseling_session_wrapper.text-danger.small.hidden-default
+				= link_to cancel_counseling_session_path(session), "data-confirm" => 'Are you sure you want to cancel this session? It cannot be undone.', :class => "text-danger" do
+					.fa.fa-close
+					Cancel Session
+
+:javascript
+	$('.star:nth-child(#{session.counselor.public_rating})').attr("checked", "checked");

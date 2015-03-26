@@ -4,9 +4,22 @@
 			%h1
 				Full Session History
 
+	- if current_user.counselor.present?
+		.btn-group.counselor-toggle
+			= link_to url_for(), :class => "btn btn-primary #{'active' unless params[:q]}" do
+				Client Sessions
+			= link_to url_for(:q => :counselor), :class => "btn btn-primary #{'active' if params[:q]}" do
+				Counselor Sessions
+
+	%br
+	%br
+
 	.row
 		- current_user.previous_sessions.order("start_datetime desc").each do |session|
 			.col-md-6
-				= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
+				- if params[:q].present?
+					= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
+				- else
+					= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
 				%br
 		

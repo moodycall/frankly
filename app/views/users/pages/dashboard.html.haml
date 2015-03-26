@@ -3,25 +3,25 @@
 		.col-sm-6
 			%h1 Dashboard
 
-	/ - if current_user.session_starting_soon
-	/ 	.panel.panel-primary	
-	/ 		.panel-body.bg-success
-	/ 			.row
-	/ 				.col-sm-9.col-md-9.col-lg-10
-	/ 					%h3.lead
-	/ 						Your session with #{current_user.session_starting_soon.counselor.user.name} starting now.
-	/ 				.col-sm-3.col-md-3.col-lg-2.text-center
-	/ 					= link_to "Enter Session", counseling_session_path(current_user.session_starting_soon), :class => "btn btn-primary"
+	- if current_user.counselor.present?
+		.btn-group.counselor-toggle
+			= link_to url_for(), :class => "btn btn-primary #{'active' unless params[:q]}" do
+				Client Sessions
+			= link_to url_for(:q => :counselor), :class => "btn btn-primary #{'active' if params[:q]}" do
+				Counselor Sessions	
 
 	.row
 		.col-md-6
 			%h3
 				.fa.fa-clock-o
-				Upcoming Sessions
+				= "Upcoming Sessions #{'as Counselor' if params[:q] == "counselor"}"
 			%hr.green
 			- if @upcoming_sessions.count > 0
 				- @upcoming_sessions.each do |session|
-					= render ("shared/sessions/session_preview"), :session => session, :icon => "clock-o"
+					- if params[:q].present?
+						= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
+					- else
+						= render ("shared/sessions/session_preview"), :session => session, :icon => "clock-o"
 			- else
 				%p.text-center
 					You currently have no upcoming sessions.
@@ -31,11 +31,14 @@
 		.col-md-6
 			%h3
 				.fa.fa-book
-				Session History
+				= "Session History #{'as Counselor' if params[:q] == "counselor"}"
 			%hr.green
 				- if @previous_sessions.count > 0
 					- @previous_sessions.each do |session|
-						= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
+						- if params[:q].present?
+							= render ("shared/sessions/session_client_preview"), :session => session, :icon => "check-circle-o"
+						- else
+							= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
 					.text-center
 						= link_to "View Full History", user_session_history_path, :class => "btn btn-link"
 				- else

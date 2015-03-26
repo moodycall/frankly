@@ -352,7 +352,11 @@ textarea.form-control {
 	}
 }
 
-// BOOTSTRAP SWITCH OVERRIDES
+.btn-group > .btn, .btn-group-vertical > .btn {
+  min-width: 180px;
+}
+
+/*BOOTSTRAP SWITCH OVERRIDES*/
 .bootstrap-switch .bootstrap-switch-handle-on,
 .bootstrap-switch .bootstrap-switch-handle-off,
 .bootstrap-switch .bootstrap-switch-label {
