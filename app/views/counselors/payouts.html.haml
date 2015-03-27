@@ -1,0 +1,75 @@
+.container
+  .row
+    .col-md-8
+      %h1 All Payouts
+      .table-responsive
+        %table.table
+          %thead
+            %tr
+              %th Sent Date
+              %th.text-right Sessions
+              %th.text-right Total
+              
+          %tbody
+            - @payouts.each do |payout|
+              %tr
+                %td= payout.funds_sent_dts.strftime("%B %e, %Y") if payout.funds_sent_dts
+                %td.text-right= payout.counseling_sessions.count
+                %td.text-right= number_to_currency(payout.total_in_dollars)
+    .col-md-4
+      %h2 Bank Details
+
+      .well
+        %p
+          Enter account information to send fund to a different bank account.
+        #bank_details_wrapper
+          .form-group
+            %input.form-control.floatlabel.country{:placeholder => "Country Code"}
+          .form-group
+            %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
+          .form-group
+            %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+
+:javascript
+  // This identifies your website in the createToken call below
+  Stripe.setPublishableKey('pk_test_E0zSFId2UQvPIozfMjD863F7');
+
+  var bankDetails = $("#display_bank_details");
+  var bankDetailsWrapper = $("#bank_details_wrapper");
+
+  bankDetails.click(function() {
+    var stripeResponseHandler = function(status, response) {
+      var $form = $('#edit_user');
+
+      if (response.error) {
+        // Show the errors on the form
+        $form.find('.payment-errors').text(response.error.message);
+        $form.find('button').prop('disabled', false);
+      } else {
+        // token contains id, last4, and card type
+        var token = response.id;
+        // Insert the token into the form so it gets submitted to the server
+        $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+        // and re-submit
+        $form.get(0).submit();
+      }
+    };
+
+    jQuery(function($) {
+      $('#edit_user').submit(function(e) {
+        var $form = $(this);
+
+        // Disable the submit button to prevent repeated clicks
+        $form.find('button').prop('disabled', true);
+
+        Stripe.bankAccount.createToken({
+          country: $('.country').val(),
+          routingNumber: $('.routing-number').val(),
+          accountNumber: $('.account-number').val()
+        }, stripeResponseHandler);
+
+        // Prevent the form from submitting with the default action
+        return false;
+      });
+    });
+  })

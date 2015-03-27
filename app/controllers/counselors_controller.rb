@@ -1,6 +1,6 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :availability, :licenses, :certifications, :education]
+  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :payouts, :availability, :licenses, :certifications, :education]
   respond_to :html, :json
 
   # GET /counselors
@@ -24,6 +24,13 @@ class CounselorsController < ApplicationController
     @hide_search = true
     @page_title    = "#{@counselor.user.name}"
     @page_subtitle = "A counselor, specializing in #{@counselor.specialties.map {|specialty| specialty.name}.join(",")}"
+  end
+
+  def payouts
+    @hide_search = true
+    @payouts = @counselor.user.payouts.all
+    @page_title    = "#{@counselor.user.name} Payouts"
+    @page_subtitle = ""
   end
 
   # GET /counselors/new

@@ -27,6 +27,10 @@
             = link_to availability_counselor_url(current_user.counselor) do
               .fa.fa-calendar
               Availability
+          %li
+            = link_to payouts_counselor_url(current_user.counselor) do
+              .fa.fa-money
+              Payouts
           %li.divider
         %li
           = link_to favorite_counselors_url(), :id => "primaryNavFavorites" do
