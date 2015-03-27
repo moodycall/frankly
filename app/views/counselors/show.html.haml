@@ -62,7 +62,7 @@
                 %input.star{:name => "rating_star_#{rating.id}", :type => "radio", :disabled => :disabled}
                 %input.star{:name => "rating_star_#{rating.id}", :type => "radio", :disabled => :disabled}
               .rating_date_wrapper.small.text-muted
-                = rating.counseling_session.start_datetime.strftime("%b %e, %Y %I:%M%P")
+                = rating.counseling_session.start_datetime.strftime("%b %e, %Y")
 
             :javascript
               $('.star:nth-child(#{rating.stars})').attr("checked", "checked");
