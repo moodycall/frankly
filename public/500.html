@@ -1,66 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>We're sorry, but something went wrong (500)</title>
+  <title>MoodyCall 500</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-  body {
-    background-color: #EFEFEF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-  div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
-
-  div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-
-  h1 {
-    font-size: 100%;
-    color: #730E15;
-    line-height: 1.5em;
-  }
-
-  div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
+  <style type="text/css">
+    h1 {
+      font-size: 160px;
+    }
+    .dialog {
+      margin-top: 20px;
+    }
+    .btn-primary {
+      color: #FFF;
+      background-color: #32a878;
+    }
+    .btn {
+      display: inline-block;
+      margin-bottom: 0;
+      font-weight: 500;
+      letter-spacing: .5px;
+      text-align: center;
+      vertical-align: middle;
+      touch-action: manipulation;
+      cursor: pointer;
+      background-image: none;
+      border: 1px solid rgba(0, 0, 0, 0);
+      white-space: nowrap;
+      font-size: 14px;
+      line-height: 1.42857;
+      border-radius: 5px;
+      text-transform: capitalize;
+    }
+    .btn-primary:hover {
+      color: #FFF;
+      background-color: #267e5a;
+      border: 1px solid rgba(0, 0, 0, 0);
+    }
+    .text-primary {
+      color: #32a878;
+    }
+    img {
+      max-width: 300px;
+    }
   </style>
 </head>
 
 <body>
-  <!-- This file lives in public/500.html -->
+
+  <!-- This file lives in public/404.html -->
   <div class="dialog">
-    <div>
-      <h1>We're sorry, but something went wrong.</h1>
+    <div class="text-center">
+      <img src="/assets/logos/primary.png">
+      <h1 class="text-primary">500</h1>
+      <p>Oh no! It looks something went wrong.</p>
+      <p>Click the link below and we'll get you back on track.</p>
     </div>
-    <p>If you are the application owner check the logs for more information.</p>
   </div>
+
+  <hr>
+
+  <div class="text-center">
+    <div onclick="goBack()" class="btn btn-primary btn-lg">Go Back</div>
+  </div>
+
+  <script>
+    function goBack() {
+      window.history.back();
+    }
+  </script>
 </body>
 </html>
