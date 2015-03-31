@@ -7,7 +7,7 @@
   .home_search_wrapper
     %h4.text-center.text-white
       %em
-        What kind of counseling do you need?
+        To get started, pick your counseling or coaching topic here.
     = form_tag counselors_path, method: :get do |g|
       .row
         .col-sm-5
@@ -15,7 +15,7 @@
         .col-sm-4
           = date_field_tag :datetime, Time.now.strftime("%Y-%m-%d"), :class => "form-control"
         .col-sm-3
-          = submit_tag "Search", :class => "btn btn-primary btn-dark btn-lg btn-block"
+          = submit_tag "View Now!", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
 :javascript
   $("nav").addClass("nav-special");

@@ -22,13 +22,15 @@
       .well
         %p
           Enter account information to send fund to a different bank account.
-        #bank_details_wrapper
-          .form-group
-            %input.form-control.floatlabel.country{:placeholder => "Country Code"}
-          .form-group
-            %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
-          .form-group
-            %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+        = simple_form_for(@counselor.user, url: registration_path(@counselor.user), html: { method: :put, :id => "bank_details_wrapper" }) do |f|
+          #bank_details_wrapper
+            .form-group
+              %input.form-control.floatlabel.country{:placeholder => "Country Code"}
+            .form-group
+              %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
+            .form-group
+              %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+          = submit_tag "Submit Bank Credentials", :class => "btn btn-primary btn-block btn-lg"
 
 :javascript
   // This identifies your website in the createToken call below
