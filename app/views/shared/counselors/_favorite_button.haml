@@ -1,0 +1,11 @@
+.counselor_favorite_wrapper
+  - if counselor.is_user_favorite(current_user.id) == true
+    = link_to favorite_counselor_path(current_user.favorite_counselors.where(:counselor_id => counselor.id).first), :method => :delete do
+      %span.favorited
+        .fa.fa-heart
+        Favorite
+  - else
+    = link_to favorite_counselors_path(:counselor => counselor), :method => :post do
+      %span
+        .fa.fa-heart
+        Favorite

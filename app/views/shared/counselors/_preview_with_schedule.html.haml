@@ -13,11 +13,8 @@
     .col-sm-10
 
       - if current_user.present?
-        .counselor_favorite_wrapper.pull-right
-          = link_to favorite_counselors_path(:counselor => counselor), :method => :post do
-            %span{ :class => "#{ "favorited" if counselor.is_user_favorite(current_user.id) == true}"}
-              .fa.fa-heart
-              Favorite
+        .pull-right
+          = render "shared/counselors/favorite_button", :counselor => counselor
 
       .counselor_name_wrapper
         = link_to counselor_path(counselor) do

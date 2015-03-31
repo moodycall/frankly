@@ -19,7 +19,7 @@ class FavoriteCounselorsController < ApplicationController
     @favorite_counselor.counselor = @counselor
 
     if @favorite_counselor.save
-      redirect_to favorite_counselors_path, notice: 'Favorite counselor was successfully created.'
+      redirect_to :back, notice: 'The counselor was successfully added to your favorites.'
     else
       redirect_to counselor_path(@counselor), notice: "We were unable to favorite this counselor. It's most likely because you have already added them as a favorite."
     end
@@ -29,10 +29,8 @@ class FavoriteCounselorsController < ApplicationController
   # DELETE /favorite_counselors/1.json
   def destroy
     @favorite_counselor.destroy
-    respond_to do |format|
-      format.html { redirect_to favorite_counselors_url, notice: 'Favorite counselor was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+
+    redirect_to :back, notice: 'The Counselor has been removed from your favorites.'
   end
 
   private
