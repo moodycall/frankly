@@ -60,10 +60,9 @@ class CounselingSessionsController < ApplicationController
       @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
       @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
 
-
       if @counseling_session.save
         session.delete(:pending_session_counselor_id)
-        @counseling_session.create_opentok_session # Create  opentok session for later use
+        # @counseling_session.create_opentok_session # Create  opentok session for later use
         if current_user.current_card
           redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
         else
