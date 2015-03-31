@@ -27,7 +27,7 @@ class CreditCardsController < ApplicationController
     @credit_card.last_four      = card.last4
 
     if @credit_card.save
-      redirect_to credit_cards_path, notice: 'Credit card was successfully created.'
+      redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
     else
       render :new
     end

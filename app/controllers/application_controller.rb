@@ -37,15 +37,4 @@ class ApplicationController < ActionController::Base
     @dts = params[:datetime] ? Date.parse(params[:datetime]) : Time.zone.now
   end
 
-  private
-
-  def authenticate_user!
-    if user_signed_in?
-      super
-    else
-      redirect_to new_user_registration_path, :notice => 'Please signup or login before you continue.'
-      ## if you want render 404 page
-      ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
-    end
-  end
 end
