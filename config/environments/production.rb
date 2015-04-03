@@ -2,7 +2,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   config.action_mailer.default_url_options = { host: 'moodycall.org' }
-  config.session_store :cookie_store, key: '_moodycall_session', domain: ".moodycall.org"
+  config.session_store :cookie_store, key: '_moodycall_session', domain: :all
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -82,4 +82,14 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.twilio_account_sid  = ENV["TWILIO_SID"]
+  config.twilio_auth_token   = ENV["TWILIO_AUTH_TOKEN"]
+
+  config.aws_access_key_id       = ENV["AWS_PUBLIC"]
+  config.aws_secret_access_key   = ENV["AWS_SECRET"]
+  config.bucket_name             = ENV["AWS_BUCKET"]
+
+  config.opentok_api_key         = ENV["OPENTOK_PUBLIC"]
+  config.opentok_api_secret      = ENV["OPENTOK_SECRET"]
 end
