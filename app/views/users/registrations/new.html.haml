@@ -11,7 +11,7 @@
 						.form-group
 							= f.input :email, required: true, :placeholder => "Email", :label => false, input_html: { :class => "form-control floatlabel" }
 						.form-group
-							= f.input :password, required: true, :placeholder => "Password", :label => false, input_html: { :class => "form-control floatlabel" }
+							= f.input :password, required: true, :placeholder => "Password", :label => false, input_html: { :class => "form-control floatlabel" }, :hint => "Must be atleast 8 characters"
 						.form-group
 							= f.input :password_confirmation, required: true, :placeholder => "Repeat Password", :label => false, input_html: { :class => "form-control floatlabel" }
 					.form-actions

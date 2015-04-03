@@ -13,4 +13,5 @@ class CounselingDegree < ActiveRecord::Base
       [ 'M.D.',  'Doctor of Medicine' ],
     ]
   end
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325160022) do
+ActiveRecord::Schema.define(version: 20150403171746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150325160022) do
     t.string   "slug"
     t.integer  "user_id"
     t.integer  "hourly_rate_in_cents",         default: 6000,  null: false
-    t.integer  "hourly_fee_in_cents",          default: 750,   null: false
+    t.integer  "hourly_fee_in_cents",          default: 1500,  null: false
     t.boolean  "send_session_sms_alerts",      default: false, null: false
     t.boolean  "send_session_email_alerts",    default: true,  null: false
     t.integer  "advanced_scheduling_in_weeks", default: 4,     null: false
