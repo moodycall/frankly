@@ -4,6 +4,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'moodycall.org' }
   config.session_store :cookie_store, key: '_moodycall_session', domain: :all
 
+  config.action_mailer.smtp_settings = {
+    :address   => 'smtp.mandrillapp.com',
+    :port      => 587,
+    :user_name => ENV['MANDRILL_SMTP_USERNAME'],
+    :password  => ENV['MANDRILL_SMTP_PASSWORD']
+  }
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
