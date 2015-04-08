@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       get :licenses
       get :education
       get :payouts
+      put :update_bank
   	end
   end
 

@@ -1,6 +1,6 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_counselor, only: [:show, :edit, :update, :destroy, :payouts, :availability, :licenses, :certifications, :education]
+  before_action :set_counselor, only: [:update_bank, :show, :edit, :update, :destroy, :payouts, :availability, :licenses, :certifications, :education]
   respond_to :html, :json
 
   # GET /counselors
@@ -86,6 +86,25 @@ class CounselorsController < ApplicationController
     @page_subtitle = ""
   end
 
+  def update_bank
+    if @counselor.user.stripe_recipient_id.present?
+      recipient = Stripe::Recipient.retrieve(@counselor.user.stripe_recipient_id)
+      recipient.bank_account = params[:stripeToken]
+      recipient.save
+    else
+      recipient = Stripe::Recipient.create(
+        :name => @counselor.user.name,
+        :type => "individual",
+        :email => @counselor.user.email,
+        :bank_account => params[:stripeToken]
+      )
+      @counselor.user.stripe_recipient_id = recipient.id
+      @counselor.user.save!
+    end
+
+    redirect_to :back, :notice => "Bank information was successfully updated. New payout will be deposited into new bank account."
+  end
+
   # POST /counselors
   # POST /counselors.json
   def create
@@ -106,27 +125,11 @@ class CounselorsController < ApplicationController
   # PATCH/PUT /counselors/1.json
   def update
 
-    # We want to build from scratch when counselor updates their availability
-    if params[:counselor][:availability_intervals_attributes]
-      @counselor.availability_intervals.destroy_all
-      params[:counselor][:availability_intervals_attributes].to_a.each do |time|
-        if time[1][:start_time].present?
-          original_start_time = time[1][:start_time]
-          original_end_time   = time[1][:end_time]
-          start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
-          end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
-          # We want to store UTC time for consistancy
-          time[1][:start_time] = start_time_as_utc
-          time[1][:end_time]   = end_time_as_utc
-        else
-          params[:counselor][:availability_intervals_attributes].delete(time[0])
-        end
-      end
-    end
+    handle_availability_intervals
 
     respond_to do |format|
       if @counselor.update(counselor_params)
-        format.html { redirect_to @counselor, notice: 'Counselor was successfully updated.' }
+        format.html { redirect_to :back, notice: 'Counselor was successfully updated.' }
         format.json { render :show, status: :ok, location: @counselor }
       else
         format.html { render :edit }
@@ -178,6 +181,26 @@ class CounselorsController < ApplicationController
     end
 
   protected
+
+  def handle_availability_intervals
+    # We want to build from scratch when counselor updates their availability
+    if params[:counselor][:availability_intervals_attributes]
+      @counselor.availability_intervals.destroy_all
+      params[:counselor][:availability_intervals_attributes].to_a.each do |time|
+        if time[1][:start_time].present?
+          original_start_time = time[1][:start_time]
+          original_end_time   = time[1][:end_time]
+          start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
+          end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
+          # We want to store UTC time for consistancy
+          time[1][:start_time] = start_time_as_utc
+          time[1][:end_time]   = end_time_as_utc
+        else
+          params[:counselor][:availability_intervals_attributes].delete(time[0])
+        end
+      end
+    end
+  end
 
   def authenticate_user!
     if user_signed_in?

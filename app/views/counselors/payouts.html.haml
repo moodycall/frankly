@@ -22,7 +22,7 @@
       .well
         %p
           Enter account information to send fund to a different bank account.
-        = simple_form_for(@counselor.user, url: registration_path(@counselor.user), html: { method: :put, :id => "bank_details_wrapper" }) do |f|
+        = simple_form_for(@counselor, url: update_bank_counselor_path(@counselor), html: { method: :put, :id => "bank_details_wrapper" }) do |f|
           #bank_details_wrapper
             .form-group
               %input.form-control.floatlabel.country{:placeholder => "Country Code"}
@@ -36,12 +36,8 @@
   // This identifies your website in the createToken call below
   Stripe.setPublishableKey('pk_test_E0zSFId2UQvPIozfMjD863F7');
 
-  var bankDetails = $("#display_bank_details");
-  var bankDetailsWrapper = $("#bank_details_wrapper");
-
-  bankDetails.click(function() {
-    var stripeResponseHandler = function(status, response) {
-      var $form = $('#edit_user');
+  var stripeResponseHandler = function(status, response) {
+      var $form = $('#bank_details_wrapper');
 
       if (response.error) {
         // Show the errors on the form
@@ -58,7 +54,7 @@
     };
 
     jQuery(function($) {
-      $('#edit_user').submit(function(e) {
+      $('#bank_details_wrapper').submit(function(e) {
         var $form = $(this);
 
         // Disable the submit button to prevent repeated clicks
@@ -74,4 +70,3 @@
         return false;
       });
     });
-  })
