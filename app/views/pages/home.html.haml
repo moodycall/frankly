@@ -13,7 +13,7 @@
         .col-sm-5
           = select_tag :specialty, options_from_collection_for_select(Specialty.staffed_specialties, :name, :name), :class => "form-control", :label => false, :include_blank => false
         .col-sm-4
-          = date_field_tag :datetime, Time.now.strftime("%Y-%m-%d"), :class => "form-control"
+          = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control"
         .col-sm-3
           = submit_tag "View Now!", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
