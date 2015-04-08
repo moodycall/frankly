@@ -29,54 +29,17 @@
 
         .row
           .col-md-6
-            %h4
-              Licensed In
-            - @counselor.counseling_licenses.each do |license|
-              = license.state
-              = license.license_number
-          .col-md-6
-            %h4
-              Education
-            - @counselor.counseling_degrees.each do |degree|
-              = degree.degree_type
-              in
-              = degree.name
-              %br
-              = degree.institution
-          .col-md-6
-            %h4
-              Certications
+            = render "counselors/public_licenses"
 
-            - @counselor.counseling_certifications.each do |certification|
-              = certification.name
+          .col-md-6
+            = render "counselors/public_education"
+
+          .col-md-6
+            = render "counselors/public_certifications"
 
       %hr
 
-      .counselor_comments_wrapper
-        %h3.counselor_comments_title
-          Reviews
-        .row
-          - @counselor.ratings.where.not(:comment => "", :counseling_session => nil).each do |rating|
-            .rating_wrapper
-              = rating.comment
-              .rating_star_wrapper 
-                .fa.fa-lg{ :class => "#{rating.stars.to_i >= 1 ? 'fa-star' : 'fa-star-o'}"}
-                .fa.fa-lg{ :class => "#{rating.stars.to_i >= 2 ? 'fa-star' : 'fa-star-o'}"}
-                .fa.fa-lg{ :class => "#{rating.stars.to_i >= 3 ? 'fa-star' : 'fa-star-o'}"}
-                .fa.fa-lg{ :class => "#{rating.stars.to_i >= 4 ? 'fa-star' : 'fa-star-o'}"}
-                .fa.fa-lg{ :class => "#{rating.stars.to_i >= 5 ? 'fa-star' : 'fa-star-o'}"}
-              .rating_date_wrapper.small.text-muted
-                = rating.counseling_session.start_datetime.strftime("%b %e, %Y")
-
-            :javascript
-              $('.star:nth-child(#{rating.stars})').attr("checked", "checked");
-
-      / %p
-      /   %b Hourly rate in cents:
-      /   = number_to_currency(@counselor.hourly_rate_in_dollars)
-
-      / %p
-      /   = counselor_url(@counselor)
+      = render "ratings/listing"
 
     .col-md-6
       .counselor_availability_wrapper
@@ -86,9 +49,10 @@
         = form_tag counselor_path, :id => "counselor_dts_change_form", method: :get do |f|
           .row
             .col-sm-1
-              .fa.fa-calendar-o.fa-2x
+              .trigger_calendar_picker
+                .fa.fa-calendar-o.fa-2x
             .col-sm-7
-              = date_field_tag :datetime, @dts, :class => "form-control", :input_html => { :class => "form-control"}
+              = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control", :input_html => { :class => "form-control"}
             .col-sm-4
               = submit_tag "Change Date", :class => "btn btn-primary btn-dark btn-lg btn-block"
 

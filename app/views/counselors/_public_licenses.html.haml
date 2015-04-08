@@ -1,0 +1,7 @@
+- if @counselor.counseling_licenses.count > 0
+  %h4
+    Licensed In
+
+  - @counselor.counseling_licenses.each do |license|
+    = license.state
+    = license.license_number

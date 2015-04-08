@@ -1,0 +1,6 @@
+- if @counselor.counseling_certifications.count > 0
+  %h4
+    Certications
+
+  - @counselor.counseling_certifications.each do |certification|
+    = certification.name

@@ -31,6 +31,12 @@ jQuery ->
   	maxTime: '11:30pm'
   $('.time_pair').datepair()
 
+  $( "#datetime" ).datepicker ->
+    dateFormat: "mm/dd/yyyy"
+
+  $(".trigger_calendar_picker").click ->
+    $("#datetime").datepicker("show");
+
   $(window).resize ->
     new_height = $(window).height()
     $('.counselor_availability_wrapper').css("min-height", new_height)

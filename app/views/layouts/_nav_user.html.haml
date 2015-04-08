@@ -1,6 +1,6 @@
 %ul.nav.navbar-nav.navbar-right
   %li
-    = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%y-%m-%d")), :id => "primaryNavSearch"
+    = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y")), :id => "primaryNavSearch"
   - if user_signed_in?
     %li
       = link_to 'Dashboard', user_dashboard_url()

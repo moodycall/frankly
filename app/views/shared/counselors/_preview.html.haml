@@ -13,7 +13,7 @@
           = counselor.user.name
 
       .counselor_specialties_wrapper
-        = raw counselor.specialties.map {|specialty| link_to specialty.name, "", :class => "counselor_specialty"}.join(" ")
+        = render "shared/counselors/specialty_listing", :counselor => counselor
 
       = render "shared/counselors/public_rating", :counselor => counselor
 

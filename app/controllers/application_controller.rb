@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_dts
-    @dts = params[:datetime] ? Date.parse(params[:datetime]) : Time.zone.now
+    @dts = params[:datetime] ? Date.strptime("#{params[:datetime]}", "%m/%d/%Y") : Time.zone.now
   end
 
 end
