@@ -40,10 +40,10 @@ class CounselingSessionsController < ApplicationController
     unless session[:pending_session_counselor_id].present?
       redirect_to counselors_path, notice: "Search for a Counselor you would like to schedule a session with."
     else
-      @counselor = Counselor.find(session[:pending_session_counselor_id])
-      @counseling_session = CounselingSession.new
-      @dts = DateTime.parse(session[:pending_session_date])
-      session[:pending_session_time]
+      @counselor               = Counselor.find(session[:pending_session_counselor_id])
+      @counseling_session      = CounselingSession.new
+      @counseling_session.time = session[:pending_session_time]
+      @dts                     = DateTime.parse(session[:pending_session_date])
       session[:pending_session_date]
     end
   end
