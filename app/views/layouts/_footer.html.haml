@@ -12,8 +12,8 @@
         %ul.list-unstyled
           %li
             = link_to 'Become a Counselor', new_counselor_path
-          -# %li
-          -#   = link_to 'Share with a Friend', ""
+          %li
+            = link_to 'Share with a Friend', "http://twitter.com/home?status=#{URI.encode("Searching for the right counselor? Checkout @moodycall, ")}#{root_url}", :target => "_blank"
           %li
             = link_to 'Schedule a Session', root_url
       .col-sm-4
@@ -29,9 +29,9 @@
           %li
             = link_to "FAQ", "http://www.moodycall.org/#!user-faq/ck5b", :id => "footerPrivacy", :target => "_blank"
           %li
-            = link_to "1.555.1234", "tel:15551234", :id => "footer_telephone"
+            = link_to "1.770.765.5697", "tel:17707655697", :id => "footer_telephone"
           %li
-            = link_to "support@moodycall.com", "", :id => "footer_email"
+            = link_to "info@moodycall.org", "", :id => "footer_email"
           %li
             = link_to "http://www.facebook.com/moodycall", :target => "_blank" do
               .fa.fa-facebook

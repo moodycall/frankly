@@ -10,7 +10,7 @@ class AdminFacing::CounselingSessionsController < AdminFacingController
     
     respond_to do |format|
       format.html
-      format.csv { send_data @counseling_sessions.to_csv }
+      format.csv { send_data CounselingSession.to_csv }
     end
   end
 

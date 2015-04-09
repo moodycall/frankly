@@ -23,9 +23,11 @@
         %p
           Enter account information to send fund to a different bank account.
         = simple_form_for(@counselor, url: update_bank_counselor_path(@counselor), html: { method: :put, :id => "bank_details_wrapper" }) do |f|
+          .payment-errors.alert.alert-danger.hidden-default
+          %br
           #bank_details_wrapper
-            .form-group
-              %input.form-control.floatlabel.country{:placeholder => "Country Code"}
+            .form-group.hidden-default
+              %input.form-control.floatlabel.country{:placeholder => "Country Code", :value => "US"}
             .form-group
               %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
             .form-group
@@ -41,7 +43,7 @@
 
       if (response.error) {
         // Show the errors on the form
-        $form.find('.payment-errors').text(response.error.message);
+        $form.find('.payment-errors').slideDown().text(response.error.message);
         $form.find('button').prop('disabled', false);
       } else {
         // token contains id, last4, and card type

@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_timezone
   before_action :set_dts
-  after_filter :save_location
+  before_action :save_location
 
   def save_location
     # save last url - this is needed for post-login redirect to whatever the user last visited.

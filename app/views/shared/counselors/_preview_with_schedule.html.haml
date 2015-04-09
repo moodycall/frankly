@@ -39,7 +39,7 @@
             .btn.btn-primary.btn-block{ :disabled => :disabled } 
               No Availability
         .col-xs-4.col-sm-2
-          = link_to counselor_path(counselor, :datetime => @dts), :class => "btn btn-link" do
+          = link_to counselor_path(counselor, :datetime => Time.zone.now.strftime("%m/%d/%Y")), :class => "btn btn-link" do
             .fa.fa-search-plus
             More
 
