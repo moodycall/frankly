@@ -20,6 +20,10 @@ class Counselor < ActiveRecord::Base
 	accepts_nested_attributes_for :counseling_certifications
 	accepts_nested_attributes_for :counseling_degrees
 	
+	validates_presence_of :bio,
+												:profession_start_date,
+												:photo
+												
 	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id
 

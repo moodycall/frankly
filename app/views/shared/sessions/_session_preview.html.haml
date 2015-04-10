@@ -3,8 +3,14 @@
 		%span.helper
 			.fa{ :class => "fa-#{icon}"}
 	.counselor_favorite_wrapper
-		= link_to favorite_counselors_path(:counselor => session.counselor), :method => :post, :class => ("favorited" if session.counselor.is_user_favorite(current_user.id) == true) do
-			.fa.fa-heart
+		- if session.counselor.is_user_favorite(current_user.id) == true
+			= link_to favorite_counselor_path(current_user.favorite_counselors.where(:counselor_id => session.counselor.id).first), :method => :delete do
+				%span.favorited
+					.fa.fa-heart
+		- else
+			= link_to favorite_counselors_path(:counselor => session.counselor), :method => :post do
+				%span
+					.fa.fa-heart
 	.media-left.media-middle
 		= link_to counseling_session_path(session) do
 			-if session.counselor.user.photo.present?

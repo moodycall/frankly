@@ -19,7 +19,7 @@
           %td= counseling_session.secure_id
           %td= counseling_session.start_datetime.in_time_zone.strftime("%b %e, %Y %I:%M%P")
           %td= counseling_session.client.name
-          %td= link_to counseling_session.counselor.user.name, counselor_url(counseling_session.counselor, :subdomain => false)
+          %td= link_to counseling_session.counselor.user.name, counselor_url(counseling_session.counselor, :subdomain => "")
           %td.text-right= link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout) if counseling_session.payout.present?
           %td.text-right
             = counseling_session.estimate_duration_in_minutes

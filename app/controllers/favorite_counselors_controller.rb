@@ -21,7 +21,7 @@ class FavoriteCounselorsController < ApplicationController
     if @favorite_counselor.save
       redirect_to :back, notice: 'The counselor was successfully added to your favorites.'
     else
-      redirect_to counselor_path(@counselor), notice: "We were unable to favorite this counselor. It's most likely because you have already added them as a favorite."
+      redirect_to :back, notice: "We were unable to favorite this counselor. It's most likely because you have already added them as a favorite."
     end
   end
 
