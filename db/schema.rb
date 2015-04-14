@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150403171746) do
+ActiveRecord::Schema.define(version: 20150414160830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20150403171746) do
   create_table "counseling_licenses", force: true do |t|
     t.string   "license_number"
     t.string   "state"
-    t.date     "established_on_date"
+    t.string   "established_on_date"
     t.integer  "counselor_id"
     t.datetime "created_at"
     t.datetime "updated_at"

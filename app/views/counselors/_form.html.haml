@@ -32,6 +32,12 @@
     .form-group
       = f.association :specialties, as: :check_boxes
 
+    .small.text-muted
+      %em
+        = link_to "Don't see your specialty? Let us know.", "mailto:info@moodycall.org"
+        -# %br
+        -# Don't let this stop you from finishing the signup process.
+
     %hr
 
     .row

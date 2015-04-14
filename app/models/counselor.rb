@@ -179,7 +179,7 @@ class Counselor < ActiveRecord::Base
   end
 
 	def _generate_default_information
-		self.bio = "I'm passionate about help people reach their full potential. I look forward to leveraging my professional experience to help you reach your full potential."
+		self.bio = "I'm passionate about helping people reach their full potential. I look forward to leveraging my professional experience to help you reach yours. Schedule a session with me today!"
 		self.profession_start_date = Time.now
 	end
 
