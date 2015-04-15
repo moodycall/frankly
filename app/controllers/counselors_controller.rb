@@ -39,7 +39,7 @@ class CounselorsController < ApplicationController
       redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor with MoodyCall. Take a look at your profile listed below.'
     else
       @counselor = Counselor.new
-      @counselor.bio = "I'm passionate about help people reach their full potential. I look forward to leveraging my professional experience to help you reach your full potential."
+      @counselor.bio = "I'm passionate about helping people reach their full potential. I look forward to leveraging my professional experience to help you reach yours. Schedule a session with me today!"
     end
     @page_title    = "Become a Counselor"
     @page_subtitle = "Join MoodyCall as a counselor."
@@ -175,7 +175,7 @@ class CounselorsController < ApplicationController
                                         :available_sunday,
                                         { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
-                                        counseling_licenses_attributes: [:license_number, :state, :established_on_date],
+                                        counseling_licenses_attributes: [:license_number, :license_type, :state, :established_on_date],
                                         counseling_certifications_attributes: [:name],
                                         counseling_degrees_attributes: [:degree_type, :name, :institution, :year_of_completion])
     end

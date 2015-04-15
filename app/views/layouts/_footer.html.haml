@@ -15,7 +15,7 @@
           %li
             = link_to 'Share with a Friend', "", :target => "_blank", "data-target" => "#footerShareModal", "data-toggle" => "modal"
           %li
-            = link_to 'Schedule a Session', root_url
+            = link_to 'Find a Counselor', counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y")), :id => "footerSearch"
       .col-sm-4
         %h3
           Support

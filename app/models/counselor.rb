@@ -24,7 +24,6 @@ class Counselor < ActiveRecord::Base
 												:profession_start_date,
 												:photo
 												
-	before_create :_generate_default_information
 	before_create :_create_stripe_recipient_id
 
 	mount_uploader :photo, ProfilePhotoUploader
@@ -177,11 +176,6 @@ class Counselor < ActiveRecord::Base
 	def parse_dts(string)
     DateTime.parse(string)
   end
-
-	def _generate_default_information
-		self.bio = "I'm passionate about helping people reach their full potential. I look forward to leveraging my professional experience to help you reach yours. Schedule a session with me today!"
-		self.profession_start_date = Time.now
-	end
 
 	def _create_stripe_recipient_id
 		unless user.stripe_recipient_id.present?
