@@ -5,7 +5,7 @@ class AdminFacing::PromptsController < AdminFacingController
   # GET /prompts
   # GET /prompts.json
   def index
-    @prompts     = Prompt.all
+    @prompts     = Prompt.order(:is_active => :desc).all
     @page_title  = "Prompts"
   end
 

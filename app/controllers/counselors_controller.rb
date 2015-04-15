@@ -12,7 +12,7 @@ class CounselorsController < ApplicationController
       @specialty = Specialty.find_by_name "#{params[:specialty]}"
     end
 
-    @counselors = @specialty.counselors.sort_by(&:popularity).reverse.paginate(:page => params[:page], :per_page => 15)
+    @counselors = @specialty.counselors.active_counselors.sort_by(&:popularity).reverse.paginate(:page => params[:page], :per_page => 15)
 
     @page_title = "Search Counselors"
     @page_subtitle = "Find the right counselor for you."
@@ -21,9 +21,13 @@ class CounselorsController < ApplicationController
   # GET /counselors/1
   # GET /counselors/1.json
   def show
-    @hide_search = true
-    @page_title    = "#{@counselor.user.name}"
-    @page_subtitle = "A counselor, specializing in #{@counselor.specialties.map {|specialty| specialty.name}.join(",")}"
+    unless @counselor.is_active or user_can_access_counselor
+      redirect_to counselors_path, :notice => "The counselor you're looking for is not currently available. Please search and select an active counselor."
+    else
+      @hide_search = true
+      @page_title    = "#{@counselor.user.name}"
+      @page_subtitle = "A counselor, specializing in #{@counselor.specialties.map {|specialty| specialty.name}.join(",")}"
+    end
   end
 
   def payouts
@@ -173,6 +177,7 @@ class CounselorsController < ApplicationController
                                         :available_friday,
                                         :available_saturday,
                                         :available_sunday,
+                                        :is_active,
                                         { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
                                         counseling_licenses_attributes: [:license_number, :license_type, :state, :established_on_date],
@@ -200,6 +205,16 @@ class CounselorsController < ApplicationController
         end
       end
     end
+  end
+
+  def user_can_access_counselor
+    if current_user and current_user.is_admin
+      true
+    elsif current_user and @counselor.user == current_user
+      true
+    else
+      false
+    end   
   end
 
   def authenticate_user!

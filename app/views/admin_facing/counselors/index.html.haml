@@ -24,7 +24,7 @@
               = link_to edit_counselor_url(counselor) do
                 .fa.fa-pencil
             %td
-              = link_to counselor.user.name, counselor_url(counselor)
+              = link_to counselor.user.name, counselor_url(counselor, :host => Rails.configuration.action_mailer.default_url_options[:host])
             %td
               = render "shared/counselors/public_rating", :counselor => counselor
             %td.text-right

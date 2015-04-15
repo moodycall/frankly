@@ -2,7 +2,7 @@ require 'admin_facing/admin_facing_controller.rb'
 class AdminFacing::CounselingSessionsController < AdminFacingController
 
   def index
-    @counseling_sessions = CounselingSession.paginate(:page => params[:page], :per_page => 15)
+    @counseling_sessions = CounselingSession.order(:start_datetime => :desc).paginate(:page => params[:page], :per_page => 15)
 
     @tab_name      = "index"
     @page_title    = "Counseling Sessions"

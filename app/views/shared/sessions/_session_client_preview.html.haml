@@ -3,10 +3,10 @@
 		%span.helper
 			.fa{ :class => "fa-#{icon}"}
 	.media-left.media-middle
-		= link_to counselor_path(counselor) do
+		= link_to counselor_path(session.counselor) do
 			= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
 	.media-body
-		= link_to counselor_path(counselor) do
+		= link_to counselor_path(session.counselor) do
 			%h3.counselor_name.session_preview_counselor_title
 				= session.client.name
 

@@ -12,7 +12,7 @@
         
     %tbody
       - @prompts.each do |prompt|
-        %tr
+        %tr{ :class => "#{prompt.is_active ? '' : 'inactive'}"}
           %td
             = prompt.name
           %td
@@ -36,3 +36,11 @@
   %br
 
   = link_to 'New Prompt', new_prompt_path, :class => "btn btn-primary btn-lg"
+  = link_to 'Drafts', "#", :class => "btn btn-link", :id => "draft_toggle"
+
+:javascript
+  $(".inactive").hide();
+
+  $("#draft_toggle").click(function() {
+    $(".inactive").fadeToggle();
+  })

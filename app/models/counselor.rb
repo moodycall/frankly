@@ -163,6 +163,11 @@ class Counselor < ActiveRecord::Base
     end
 	end
 
+	def self.active_counselors
+		self.where(:is_active => true)
+		
+	end
+
 	def upcoming_sessions
     counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime >= ?", Time.zone.now)
   end
