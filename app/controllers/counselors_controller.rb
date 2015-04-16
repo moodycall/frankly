@@ -116,7 +116,7 @@ class CounselorsController < ApplicationController
 
     respond_to do |format|
       if @counselor.save
-        format.html { redirect_to @counselor, notice: 'Counselor was successfully created.' }
+        format.html { redirect_to @counselor, notice: 'Your profile has been created. It will be publically visible once activated by an admin.' }
         format.json { render :show, status: :created, location: @counselor }
       else
         format.html { render :new }
