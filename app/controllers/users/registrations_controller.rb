@@ -162,6 +162,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
                                                                   :send_session_sms_alerts,
                                                                   :send_session_email_alerts,
                                                                   :phone,
+                                                                  :gender,
                                                                   :current_password,
                                                                   :stripe_recipient_id)}
   end

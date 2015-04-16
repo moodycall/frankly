@@ -15,4 +15,12 @@
   %li{ :class => "#{'active' if current_page? certifications_counselor_path}"}
     = link_to "Certifications", certifications_counselor_path(@counselor)
 
+  %li.pull-right.small
+    Status:
+    - if @counselor.is_active
+      %span.text-uppercase.text-success
+        Active
+    - else
+      %span.text-uppercase.text-warning
+        Inactive
 %br

@@ -14,7 +14,7 @@
                   .col-sm-2
                     = degree.input :degree_type, collection: CounselingDegree.degree_types, input_html: { :class => "form-control" }, :include_blank => false, :label => "Type"
                   .col-sm-3
-                    = degree.input :name, input_html: { :class => "form-control" }
+                    = degree.input :name, input_html: { :class => "form-control" }, :label => "Field of Study"
                   .col-sm-4
                     = degree.input :institution, input_html: { :class => "form-control" }
                   .col-sm-3

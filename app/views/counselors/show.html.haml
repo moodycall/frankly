@@ -3,13 +3,17 @@
     .col-md-6
 
       .counselor_professional_overview_wrapper
+        - unless @counselor.is_active
+          .alert.alert-warning
+            This profile is not currently active.
+          %br
         = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
 
         .counselor_professional_bio_wrapper
           %h3.counselor_professional_bio_title
             Professional Biography
           %p.counselor_professional_bio
-            = best_in_place @counselor, :bio, :type => :textarea
+            = @counselor.bio.gsub(/\n/, '<br/>').html_safe
 
         %hr
 

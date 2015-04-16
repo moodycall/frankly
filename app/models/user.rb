@@ -18,11 +18,21 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  GENDER_MALE     = 1
+  GENDER_FEMALE   = 2
+
   before_save :_create_stripe_customer_id
   before_create :_collect_details_from_full_contact
 
   def session_count_with_counselor(counselor_id)
     counseling_sessions.where(:counselor_id => counselor_id).count
+  end
+
+  def self.gender_options
+    {
+      GENDER_MALE     => "Male",
+      GENDER_FEMALE   => "Female"
+    }
   end
 
   def upcoming_sessions

@@ -11,7 +11,8 @@
             .form-group
               = f.input :name, input_html: { :class => "form-control floatlabel" }, :label => false, :placeholder => "Name"
             .form-group
-              = f.input :email, input_html: { :class => "form-control floatlabel" }, required: true, autofocus: true, :label => false, :placeholder => "Email"
+              = f.input :email, input_html: { :class => "form-control floatlabel" }, required: true, :label => false, :placeholder => "Email"
+
             / - if devise_mapping.confirmable? && resource.pending_reconfirmation?
             /   %p
             /     Currently waiting confirmation for: #{resource.unconfirmed_email}
@@ -19,30 +20,14 @@
             / .form-group
             /   = f.input :photo, input_html: { :class => "form-control" }, :label => "Personal Photo"
 
-            -# - if current_user.counselor
-            -#   %h2 Payment Info
-            -#   %label
-            -#     %input#display_bank_details{:type => "checkbox"}
-            -#     Update Bank Details
-            -#   #bank_details_wrapper
-            -#     .form-group
-            -#       %input.form-control.floatlabel.country{:placeholder => "Country Code"}
-            -#     .form-group
-            -#       %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
-            -#     .form-group
-            -#       %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
-
             .form-group
               = f.input :phone, :input_html => { :class => "form-control floatlabel" }, :placeholder => "Phone", :label => false
-            .row
-              .col-md-6
-                .form-group
-                  = f.label :send_session_sms_alerts, :label => "Send Session Text Alerts"
-                  = f.input :send_session_sms_alerts, input_html: { :class => "boolean-switch" }, :label => false
-              .col-md-6
-                .form-group
-                  = f.label :send_session_email_alerts, :label => "Send Session Email Alerts"
-                  = f.input :send_session_email_alerts, input_html: { :class => "boolean-switch" }, :label => false
+            .form-group
+              = f.input :gender, collection: User.gender_options, :value_method => :first, :label_method => :last, input_html: { :class => "form-control" }, :include_blank => false
+            .form-group
+              = f.input :send_session_sms_alerts, input_html: { :class => "" }, :label => "Send Session Text Alerts"
+            .form-group
+              = f.input :send_session_email_alerts, input_html: { :class => "" }, :label => "Send Session Email Alerts"
 
             / %h3 Cancel my account
             / %p

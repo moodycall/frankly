@@ -180,9 +180,9 @@ class CounselorsController < ApplicationController
                                         :is_active,
                                         { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
-                                        counseling_licenses_attributes: [:license_number, :license_type, :state, :established_on_date],
-                                        counseling_certifications_attributes: [:name],
-                                        counseling_degrees_attributes: [:degree_type, :name, :institution, :year_of_completion])
+                                        counseling_licenses_attributes: [:id, :license_number, :license_type, :state, :established_on_date],
+                                        counseling_certifications_attributes: [:id, :name],
+                                        counseling_degrees_attributes: [:id, :degree_type, :name, :institution, :year_of_completion])
     end
 
   protected
