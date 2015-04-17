@@ -13,10 +13,10 @@
 					.fa.fa-heart
 	.media-left.media-middle
 		= link_to counseling_session_path(session) do
-			-if session.counselor.user.photo.present?
-				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
+			-if session.counselor.photo.present?
+				= image_tag session.counselor.photo, :class => "counselor_image media-object session_preview_img"
 			-else
-				= image_tag session.counselor.user.photo, :class => "counselor_image media-object session_preview_img"
+				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
 	.media-body
 		= link_to counseling_session_path(session) do
 			%h3.counselor_name.session_preview_counselor_title

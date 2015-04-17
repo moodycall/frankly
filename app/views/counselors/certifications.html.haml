@@ -7,12 +7,17 @@
         = f.error_notification
 
         .form-inputs
-          #addable_items_wrapper
+          %table#addable_items_wrapper.table
+            %tr
+              %th
+                Certification Name
+              %th
             = f.association :counseling_certifications do |certifications|
-              .addable_item_wrapper.form-group
-                .row
-                  .col-sm-12
-                    = certifications.input :name, input_html: { :class => "form-control" }, :label => "Certification Name"
+              %tr.addable_item_wrapper.form-group
+                %td
+                  = certifications.input :name, input_html: { :class => "form-control" }, :label => false
+                %td.remove_item_wrapper
+                  .fa.fa-close
 
 
           .text-center

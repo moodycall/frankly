@@ -4,6 +4,24 @@
 
 jQuery ->
 
+  display_remove_icon = ->
+    if $(".remove_item_wrapper").length > 1
+      $(".remove_item_wrapper").find(".fa").fadeIn()
+    else
+      $(".remove_item_wrapper").find(".fa").fadeOut()
+
+  $(document.body).on('click', '.remove_item_wrapper', ->
+    if $(".remove_item_wrapper").length > 1
+      $(this).parent().remove()
+    
+    display_remove_icon()
+  ).click()
+
+  $(document.body).on 'click', '#add-item', ->
+    display_remove_icon()
+    
+  display_remove_icon()
+
   $('.toggle_trigger').click ->
     toggleable_class = $(this).attr('data-toggleable')
     $(toggleable_class).fadeToggle()

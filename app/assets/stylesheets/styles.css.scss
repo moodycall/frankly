@@ -90,6 +90,13 @@ hr {
   cursor: pointer;
 }
 
+.remove_item_wrapper {
+	 width: 30px;
+	 .fa {
+	 	cursor: pointer;
+	 }
+}
+
 .panel h3.lead {
 	margin: 2px 0px 0px 0px;
 }

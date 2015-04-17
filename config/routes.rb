@@ -66,6 +66,9 @@ Rails.application.routes.draw do
       get :education
       get :payouts
       put :update_bank
+      put :remove_degree
+      put :remove_certification
+      put :remove_license
   	end
   end
 

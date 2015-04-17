@@ -3,7 +3,7 @@
     = link_to 'Search', counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y")), :id => "primaryNavSearch"
   - if user_signed_in?
     %li
-      = link_to 'Dashboard', user_dashboard_url()
+      = link_to 'Dashboard', user_dashboard_url(:q => "#{current_user.counselor ? 'counselor' : ''}")
     %li.dropdown
       %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
         Hi 
