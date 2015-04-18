@@ -12,13 +12,13 @@
 				%span
 					.fa.fa-heart
 	.media-left.media-middle
-		= link_to counseling_session_path(session) do
+		= link_to counselor_path(session.counselor) do
 			-if session.counselor.photo.present?
 				= image_tag session.counselor.photo, :class => "counselor_image media-object session_preview_img"
 			-else
 				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
 	.media-body
-		= link_to counseling_session_path(session) do
+		= link_to counselor_path(session.counselor) do
 			%h3.counselor_name.session_preview_counselor_title
 				= session.counselor.user.name
 			
@@ -28,11 +28,18 @@
 		%p
 			= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
 
-		- if session.is_cancellable
-			.cancel_counseling_session_wrapper.text-danger.small.hidden-default
-				= link_to cancel_counseling_session_path(session), "data-confirm" => 'Are you sure you want to cancel this session? It cannot be undone.', :class => "text-danger" do
-					.fa.fa-close
-					Cancel Session
+		%ul.list-inline
+			- if session.is_enterable
+				%li
+					.enter_counseling_session_wrapper
+						= link_to "Enter Session", counseling_session_path(session)
+			- if session.is_cancellable
+				%li
+					.cancel_counseling_session_wrapper.text-danger.small.hidden-default
+						= link_to cancel_counseling_session_path(session), "data-confirm" => 'Are you sure you want to cancel this session? It cannot be undone.', :class => "text-danger" do
+							.fa.fa-close
+							Cancel Session
+
 
 :javascript
 	$('.star:nth-child(#{session.counselor.public_rating})').attr("checked", "checked");

@@ -24,6 +24,8 @@
               = f.input :phone, :input_html => { :class => "form-control floatlabel" }, :placeholder => "Phone", :label => false
             .form-group
               = f.input :gender, collection: User.gender_options, :value_method => :first, :label_method => :last, input_html: { :class => "form-control" }, :include_blank => false
+            %p
+              How would you prefer to recieve alerts and notifications about your upcoming counseling sessions?
             .form-group
               = f.input :send_session_sms_alerts, input_html: { :class => "" }, :label => "Send Session Text Alerts"
             .form-group

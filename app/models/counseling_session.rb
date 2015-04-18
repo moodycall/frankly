@@ -60,6 +60,10 @@ class CounselingSession < ActiveRecord::Base
 		self.start_datetime > Time.now and self.cancelled_on_dts == nil ? true : false
 	end
 
+  def is_enterable
+    self.start_datetime < 5.minutes.from_now and self.estimated_endtime > Time.now
+  end
+
 	def is_refundable
 		self.stripe_charge_id ? true : false
 		

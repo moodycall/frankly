@@ -21,7 +21,7 @@
         - @counselors.each_with_index do |counselor, index|
           %tr{ :class => "row_#{index}"}
             %td
-              = link_to edit_counselor_url(counselor) do
+              = link_to edit_counselor_url(counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]) do
                 .fa.fa-pencil
             %td
               = link_to counselor.user.name, counselor_url(counselor, :host => Rails.configuration.action_mailer.default_url_options[:host])

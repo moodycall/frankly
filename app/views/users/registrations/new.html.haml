@@ -7,13 +7,17 @@
 					= f.error_notification
 					.form-inputs
 						.form-group
-							= f.input :name, required: true, :placeholder => "Name", :label => false, autofocus: true, input_html: { :class => "form-control floatlabel" }
+							= f.input :name, required: true, autofocus: true, input_html: { :class => "form-control" }
 						.form-group
-							= f.input :email, required: true, :placeholder => "Email", :label => false, input_html: { :class => "form-control floatlabel" }
+							= f.input :gender, collection: User.gender_options, :value_method => :first, :label_method => :last, input_html: { :class => "form-control" }, :include_blank => false
 						.form-group
-							= f.input :password, required: true, :placeholder => "Password", :label => false, input_html: { :class => "form-control floatlabel" }, :hint => "Must be atleast 8 characters"
+							= f.input :email, required: true, input_html: { :class => "form-control" }
+						.form
+							= f.input :password, required: true, input_html: { :class => "form-control" }, :hint => "Must be atleast 8 characters"
 						.form-group
-							= f.input :password_confirmation, required: true, :placeholder => "Repeat Password", :label => false, input_html: { :class => "form-control floatlabel" }
+							= f.input :password_confirmation, required: true, input_html: { :class => "form-control" }, :hint => "Must match previous field"
 					.form-actions
 						= f.submit "Sign up", :class => "btn btn-primary btn-block btn-lg"
-			= render "users/shared/links"
+			%br
+			%p.text-right
+				= render "users/shared/links"
