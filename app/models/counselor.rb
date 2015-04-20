@@ -129,8 +129,12 @@ class Counselor < ActiveRecord::Base
       availability_intervals.where(:day_of_week => date.wday).each do |interval|
         daily_times.each do |time|
           if parse_dts(time).between?(parse_dts(interval.start_time), (parse_dts(interval.end_time) - 30.minutes))
-            if (date).in_time_zone > Time.now
-              available_times.push(time)
+						# Create actual datetime to measure against
+						t = parse_dts(time)
+						dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
+
+          	if dt > 30.minutes.from_now
+            	available_times.push(time)
             end
           end
         end

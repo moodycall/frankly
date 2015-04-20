@@ -129,6 +129,15 @@ class CounselorsController < ApplicationController
   # PATCH/PUT /counselors/1.json
   def update
 
+    raise "#{params}"
+    degree_array = params[:counselor][:counseling_degrees_attributes].map {|c| c[1]["id"] }
+    @counselor.counseling_degrees.each do |degree|
+      unless degree_array.include? "#{degree.id}"
+        raise "#foo"
+      end
+    end
+    
+
     handle_availability_intervals
 
     respond_to do |format|

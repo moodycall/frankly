@@ -16,4 +16,9 @@ module ApplicationHelper
       number_to_currency(total_in_cents * 0.01)
     end
   end
+
+  def generated_dts(date, time)
+    t = parse_dts(time)
+    dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
+  end
 end

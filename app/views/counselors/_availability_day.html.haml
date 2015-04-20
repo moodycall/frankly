@@ -13,7 +13,7 @@
   - elsif @counselor.availability_by_dts(dts).count > 0 # Then make sure the counselor has availabilities on dts
     - @counselor.availability_by_dts(dts).each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
-        - if (dts).in_time_zone > Time.zone.now
+        - if generated_dts(dts, interval) > 30.minutes.from_now
           .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@modal_target_id}", "data-time" => "#{time_as_local(interval)}"}
             = time_as_local(interval)
         - else
