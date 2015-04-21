@@ -1,0 +1,13 @@
+.container
+  .row
+    .col-sm-4.col-sm-offset-4
+      .user_form_wrapper
+        %h2 Resend confirmation instructions
+        = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+          = f.error_notification
+          = f.full_error :confirmation_token
+          .form-inputs
+            = f.input :email, required: true, autofocus: true, :input_html => { :class => "form-control"}
+          .form-actions
+            = f.submit "Resend confirmation instructions", :class => "btn btn-primary btn-block"
+        = render "users/shared/links"

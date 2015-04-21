@@ -1,0 +1,23 @@
+.container
+  .row
+    .col-sm-4.col-sm-offset-4
+      .user_form_wrapper
+        %h2
+          Change your password
+
+        = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+          = f.error_notification
+
+          = f.input :reset_password_token, as: :hidden
+          = f.full_error :reset_password_token
+
+          .form-inputs
+            .form-group
+              = f.input :password, label: "New password", required: true, autofocus: true, :input_html => { :class => "form-control"}
+            .form-group
+              = f.input :password_confirmation, label: "Confirm your new password", required: true, :input_html => { :class => "form-control"}
+        
+          .form-actions
+            = f.submit "Change my password", :class => "btn btn-block btn-primary"
+          
+        = render "users/shared/links"

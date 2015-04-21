@@ -69,6 +69,7 @@ class CounselorsController < ApplicationController
     unless @counselor.counseling_licenses.present?
       @counselor.counseling_licenses.build
     end
+
     @page_title    = "Edit Your Profile"
     @page_subtitle = ""
   end
@@ -77,6 +78,7 @@ class CounselorsController < ApplicationController
     unless @counselor.counseling_certifications.present?
       @counselor.counseling_certifications.build
     end
+
     @page_title    = "Edit Your Profile"
     @page_subtitle = ""
   end
@@ -85,6 +87,7 @@ class CounselorsController < ApplicationController
     unless @counselor.counseling_degrees.present?
       @counselor.counseling_degrees.build
     end
+
     @page_title    = "Edit Your Profile"
     @page_subtitle = ""
   end
@@ -133,12 +136,11 @@ class CounselorsController < ApplicationController
   # PATCH/PUT /counselors/1.json
   def update
 
-    # degree_array = params[:counselor][:counseling_degrees_attributes].map {|c| c[1]["id"] }
-    # @counselor.counseling_degrees.each do |degree|
-    #   unless degree_array.include? "#{degree.id}"
-    #     raise "#foo"
-    #   end
-    # end
+    remove_degrees
+
+    remove_licenses
+
+    remove_certifications
     
     handle_availability_intervals
 
@@ -197,6 +199,48 @@ class CounselorsController < ApplicationController
     end
 
   protected
+
+  def remove_certifications
+    if params[:counselor][:counseling_certifications_attributes].present?
+      params[:counselor][:counseling_certifications_attributes].each do |c|
+        unless c[1][:name].present?
+          if c[1][:id].present?
+            degree = CounselingCertification.find(c[1][:id])
+            degree.destroy
+            params[:counselor][:counseling_certifications_attributes].delete(c[0])
+          end
+        end
+      end
+    end
+  end
+
+  def remove_licenses
+    if params[:counselor][:counseling_licenses_attributes].present?
+      params[:counselor][:counseling_licenses_attributes].each do |c|
+        unless c[1][:license_number].present?
+          if c[1][:id].present?
+            degree = CounselingLicense.find(c[1][:id])
+            degree.destroy
+            params[:counselor][:counseling_licenses_attributes].delete(c[0])
+          end
+        end
+      end
+    end
+  end
+
+  def remove_degrees
+    if params[:counselor][:counseling_degrees_attributes].present?
+      params[:counselor][:counseling_degrees_attributes].each do |c|
+        unless c[1][:degree_type].present?
+          if c[1][:id].present?
+            degree = CounselingDegree.find(c[1][:id])
+            degree.destroy
+            params[:counselor][:counseling_degrees_attributes].delete(c[0])
+          end
+        end
+      end
+    end
+  end
 
   def handle_availability_intervals
     # We want to build from scratch when counselor updates their availability
