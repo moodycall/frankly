@@ -2,6 +2,8 @@
   %h4
     Licensed In
 
-  - @counselor.counseling_licenses.each do |license|
-    = license.state
-    = license.license_number
+  %ul.list-unstyled
+    - @counselor.counseling_licenses.each do |license|
+      %li
+        = license.state
+        = license.license_number

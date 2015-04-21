@@ -2,9 +2,11 @@
   %h4
     Education
 
-  - @counselor.counseling_degrees.each do |degree|
-    = degree.degree_type
-    in
-    = degree.name
-    %br
-    = degree.institution
+  %ul.list-unstyled
+    - @counselor.counseling_degrees.each do |degree|
+      %li
+        = degree.degree_type
+        in
+        = degree.name
+        from
+        = degree.institution

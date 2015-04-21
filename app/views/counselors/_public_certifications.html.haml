@@ -2,5 +2,7 @@
   %h4
     Certications
 
-  - @counselor.counseling_certifications.each do |certification|
-    = certification.name
+  %ul.list-unstyled
+    - @counselor.counseling_certifications.each do |certification|
+      %li
+        = certification.name
