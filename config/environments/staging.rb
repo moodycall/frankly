@@ -90,9 +90,9 @@ Rails.application.configure do
   config.twilio_account_sid  = ENV["TWILIO_SID"]
   config.twilio_auth_token   = ENV["TWILIO_AUTH_TOKEN"]
 
-  config.aws_access_key_id       = "AKIAJXY5CKQE5J4JLUQA"
-  config.aws_secret_access_key   = "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"
-  config.bucket_name             = "moody-dev"
+  config.aws_access_key_id       = ENV["AWS_ACCESS_KEY"]
+  config.aws_secret_access_key   = ENV["AWS_SECRET_KEY"]
+  config.bucket_name             = ENV["AWS_BUCKET_NAME"]
 
   config.opentok_api_key         = "45162982"
   config.opentok_api_secret      = "3f87f912c00f0d01581509783c21c80ba57e91d0"

@@ -153,7 +153,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:name,
                                                            :email,
                                                            :password,
-                                                           :password_confirmation)}
+                                                           :password_confirmation,
+                                                           :unconfirmed_email)}
     
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:name,
                                                                   :email,
@@ -164,7 +165,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
                                                                   :phone,
                                                                   :gender,
                                                                   :current_password,
-                                                                  :stripe_recipient_id)}
+                                                                  :stripe_recipient_id,
+                                                                  :unconfirmed_email)}
   end
 
   def account_update_params

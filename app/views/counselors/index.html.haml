@@ -13,6 +13,15 @@
       - if @dts.present?
         on
         = @dts.strftime("%B %e, %Y")
+
+  %ul.text-right.list-inline.small
+    %li
+      .fa.fa-filter
+    %li
+      = link_to "Male", ""
+    %li
+      = link_to "Female", ""
+  %hr
   
   - @counselors.each do |counselor|
     = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}

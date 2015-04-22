@@ -1,6 +1,6 @@
 - @modal_target_id = "#{counselor.slug}ScheduleModal"
 
-.counselor_preview_wrapper.preview_with_schedule
+.counselor_preview_wrapper.preview_with_schedule{ :data => {:gender => counselor.user.gender}}
   .row
     .col-sm-2
       .counselor_image_wrapper
