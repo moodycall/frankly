@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   GENDER_MALE     = 1
   GENDER_FEMALE   = 2
 
-  before_save :_create_stripe_customer_id
+  after_save :_create_stripe_customer_id
   before_create :_collect_details_from_full_contact
 
   def session_count_with_counselor(counselor_id)
