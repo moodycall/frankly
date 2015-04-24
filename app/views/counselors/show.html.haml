@@ -9,16 +9,16 @@
           %br
         = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
 
-        %hr
+        - if @counselor.next_available.present?
+          %hr
+          .text-center
+            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => "#{time_as_local(@counselor.next_available)}", :available => "#{@counselor.availability_by_dts(@dts).include?(@counselor.next_available + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+              Book Next Available
 
-        .text-center
-          .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => "#{time_as_local(@counselor.next_available)}", :available => "#{@counselor.availability_by_dts(@dts).include?(@counselor.next_available + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
-            Book Next Available
+            Begins in
+            = distance_of_time_in_words(Time.now, @counselor.next_available)
 
-          Begins in
-          = distance_of_time_in_words(Time.now, @counselor.next_available)
-
-          = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: @counselor.next_available}
+            = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: @counselor.next_available}
 
         %hr
 
