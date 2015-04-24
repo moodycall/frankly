@@ -155,20 +155,32 @@ class Counselor < ActiveRecord::Base
 		available_times
 	end
 
-	# def next_available
-	# 	if availability_by_dts(Time.now).count > 0
-	# 		availability_by_dts(Time.now).first
+	def next_available
+		if availability_by_dts(Time.now).count > 0
+			availability_by_dts(Time.now).first
 
-	# 	elsif availability_by_dts(Time.now + 1.day).count > 0
-	# 		availability_by_dts(Time.now + 1.day).first
+		elsif availability_by_dts(Time.now + 1.day).count > 0
+			availability_by_dts(Time.now + 1.day).first
 
-	# 	elsif availability_by_dts(Time.now + 2.day).count > 0
-	# 		availability_by_dts(Time.now + 2.day).first
+		elsif availability_by_dts(Time.now + 2.day).count > 0
+			availability_by_dts(Time.now + 2.day).first
 
-	# 	elsif availability_by_dts(Time.now + 3.day).count > 0
-	# 		availability_by_dts(Time.now + 3.day).first
-	# 	end
-	# end
+		elsif availability_by_dts(Time.now + 3.day).count > 0
+			availability_by_dts(Time.now + 3.day).first
+
+		elsif availability_by_dts(Time.now + 4.day).count > 0
+			availability_by_dts(Time.now + 4.day).first
+
+		elsif availability_by_dts(Time.now + 5.day).count > 0
+			availability_by_dts(Time.now + 5.day).first
+
+		elsif availability_by_dts(Time.now + 6.day).count > 0
+			availability_by_dts(Time.now + 6.day).first
+
+		elsif availability_by_dts(Time.now + 7.day).count > 0
+			availability_by_dts(Time.now + 7.day).first
+		end
+	end
 
 	def available_on_day(wday)
 		if wday == 0

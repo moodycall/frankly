@@ -9,6 +9,19 @@
           %br
         = render partial: "shared/counselors/preview", locals: {counselor: @counselor}
 
+        %hr
+
+        .text-center
+          .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => "#{time_as_local(@counselor.next_available)}", :available => "#{@counselor.availability_by_dts(@dts).include?(@counselor.next_available + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+            Book Next Available
+
+          Begins in
+          = distance_of_time_in_words(Time.now, @counselor.next_available)
+
+          = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: @counselor.next_available}
+
+        %hr
+
         .counselor_professional_bio_wrapper
           %h3.counselor_professional_bio_title
             Professional Biography
@@ -30,7 +43,6 @@
                 = @counselor.user.created_at.strftime("%Y")
         
         %hr
-
 
         = render "counselors/public_licenses"
 
@@ -58,9 +70,9 @@
             .col-sm-1
               .trigger_calendar_picker
                 .fa.fa-calendar-o.fa-2x
-            .col-sm-7
+            .col-sm-6
               = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control", :input_html => { :class => "form-control"}
-            .col-sm-4
+            .col-sm-5
               = submit_tag "Change Date", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
         %hr

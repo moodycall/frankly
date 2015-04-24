@@ -1,8 +1,9 @@
 - if @counselor.counseling_degrees.count > 0
   %h4
+    = image_tag "icons/edu.png", :class =>"counselor-detail-icon"
     Education
 
-  %ul.list-unstyled
+  %ul
     - @counselor.counseling_degrees.each do |degree|
       %li
         = degree.degree_type

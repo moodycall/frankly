@@ -1,8 +1,9 @@
 - if @counselor.counseling_licenses.count > 0
   %h4
+    = image_tag "icons/license.png", :class =>"counselor-detail-icon"
     Licensed In
 
-  %ul.list-unstyled
+  %ul
     - @counselor.counseling_licenses.each do |license|
       %li
         = license.state

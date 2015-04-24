@@ -247,11 +247,11 @@
                       %th
                         To
                       %th
-                    - @counselor.availability_intervals.where(:day_of_week => 7).each do |i|
+                    - @counselor.availability_intervals.where(:day_of_week => 0).each do |i|
                       = f.fields_for :availability_intervals, i do |a|
                         %tr.time_pair
                           %td.hidden
-                            = a.input :day_of_week, :value => 7
+                            = a.input :day_of_week, :value => 0
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -261,7 +261,7 @@
                           %td
                             .remove_row
                               x
-                  #add_sunday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#sunday_interval_table", "data-day-value" => "7"} Add Interval
+                  #add_sunday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#sunday_interval_table", "data-day-value" => "0"} Add Interval
 
 
         .form-actions

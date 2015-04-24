@@ -13,8 +13,8 @@
   - elsif @counselor.availability_by_dts(dts).count > 0 # Then make sure the counselor has availabilities on dts
     - @counselor.availability_by_dts(dts).each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
-        - if generated_dts(dts, interval) > 30.minutes.from_now
-          .btn.btn-primary.btn-block.counselor-time-button{"data-toggle" => "modal", "data-target" => "##{@modal_target_id}", "data-time" => "#{time_as_local(interval)}"}
+        - if interval > 30.minutes.from_now
+          .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => "#{time_as_local(interval)}", :available => "#{@counselor.availability_by_dts(@dts).include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
             = time_as_local(interval)
         - else
           .btn.btn-primary.btn-block{:disabled => "disabled"}

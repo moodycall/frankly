@@ -1,8 +1,9 @@
 - if @counselor.counseling_certifications.count > 0
   %h4
+    = image_tag "icons/cert.png", :class =>"counselor-detail-icon"
     Certications
 
-  %ul.list-unstyled
+  %ul
     - @counselor.counseling_certifications.each do |certification|
       %li
         = certification.name
