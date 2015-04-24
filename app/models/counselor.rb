@@ -131,10 +131,10 @@ class Counselor < ActiveRecord::Base
           if parse_dts(time).between?(parse_dts(interval.start_time), (parse_dts(interval.end_time) - 30.minutes))
 						# Create actual datetime to measure against
 						t = parse_dts(time)
-						dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
+    				dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
 
           	if dt > 30.minutes.from_now
-            	available_times.push(time)
+            	available_times.push(dt)
             end
           end
         end
@@ -142,12 +142,33 @@ class Counselor < ActiveRecord::Base
     end
 
 		booked_session_by_date(date).each do |booked_session|
-			time_to_remove = Time.zone.parse("#{booked_session.start_datetime.strftime("%I:%M%P")}").utc.strftime("%I:%M%P")
-      available_times.delete(time_to_remove)
+			all_times = available_times
+			if booked_session.estimate_duration_in_minutes == 60
+				time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc, Time.zone.parse("#{booked_session.start_datetime + 30.minutes}").utc]
+			else
+				time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc]
+			end
+
+			available_times = all_times.reject{ |e| time_to_remove.include? e }
     end
 
 		available_times
 	end
+
+	# def next_available
+	# 	if availability_by_dts(Time.now).count > 0
+	# 		availability_by_dts(Time.now).first
+
+	# 	elsif availability_by_dts(Time.now + 1.day).count > 0
+	# 		availability_by_dts(Time.now + 1.day).first
+
+	# 	elsif availability_by_dts(Time.now + 2.day).count > 0
+	# 		availability_by_dts(Time.now + 2.day).first
+
+	# 	elsif availability_by_dts(Time.now + 3.day).count > 0
+	# 		availability_by_dts(Time.now + 3.day).first
+	# 	end
+	# end
 
 	def available_on_day(wday)
 		if wday == 0

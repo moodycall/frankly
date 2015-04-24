@@ -10,8 +10,14 @@
 			%h3.counselor_name.session_preview_counselor_title
 				= session.client.name
 
-		%p
-			= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+		%ul.list-inline
+			%li
+				= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+			%li
+				•
+			%li
+				= session.estimate_duration_in_minutes
+				minutes
 
 		%ul.list-inline
 			- if session.is_enterable

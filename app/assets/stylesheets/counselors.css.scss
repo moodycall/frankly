@@ -42,7 +42,7 @@
 
 .search_results_overview {
 	color: $primary_color;
-	padding: 20px 0px;
+	padding: 20px 0px 5px;
 	font-size: 12px;
 }
 
@@ -90,6 +90,12 @@
 			margin-left: 5px;
 			display: inline;
 		}
+	}
+}
+
+#counselor_filter {
+	li.active {
+		 border-bottom: 2px solid $primary_color;
 	}
 }
 

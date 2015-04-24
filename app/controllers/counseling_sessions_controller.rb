@@ -128,6 +128,16 @@ class CounselingSessionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def counseling_session_params
-      params.require(:counseling_session).permit(:start_datetime, :estimate_duration_in_minutes, :actual_duration_in_minutes, :client_id, :counselor_id, :price_in_cents, :stripe_charge_id, :slug, :secure_id, :refund_amount_in_cents, :payout_id)
+      params.require(:counseling_session).permit(:start_datetime,
+                                                 :estimate_duration_in_minutes,
+                                                 :actual_duration_in_minutes,
+                                                 :client_id,
+                                                 :counselor_id,
+                                                 :price_in_cents,
+                                                 :stripe_charge_id,
+                                                 :slug,
+                                                 :secure_id,
+                                                 :refund_amount_in_cents,
+                                                 :payout_id)
     end
 end

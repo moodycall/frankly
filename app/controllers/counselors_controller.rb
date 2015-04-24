@@ -13,7 +13,8 @@ class CounselorsController < ApplicationController
     end
 
     @available_counselors = @specialty.counselors.active_counselors.sort_by(&:popularity).select do |c|
-      c.availability_by_dts(@dts).count > 0
+      c.availability_by_dts(@dts).count > 0 and
+      params[:gender] ? c.user.gender == params[:gender].to_i : c.user.gender > 0
     end
     
     @counselors = @available_counselors.reverse.paginate(:page => params[:page], :per_page => 15)

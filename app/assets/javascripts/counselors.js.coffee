@@ -10,6 +10,13 @@ jQuery ->
     else
       $(".remove_item_wrapper").find(".fa").fadeOut()
 
+  update_session_cost = (rate) ->
+    if $("#counseling_session_estimate_duration_in_minutes").val() == "60"
+      $("#session_cost_wrapper").html("$" + (rate * 2).toFixed(2))
+    else
+      $("#session_cost_wrapper").html("$" + rate.toFixed(2))
+
+
   $(document.body).on('click', '.remove_item_wrapper', ->
     if $(".remove_item_wrapper").length > 1
       $(this).parent().remove()
@@ -55,15 +62,44 @@ jQuery ->
   $(".trigger_calendar_picker").click ->
     $("#datetime").datepicker("show");
 
-  $(window).resize ->
+  $(window).resize( ->
     new_height = $(window).height()
     $('.counselor_availability_wrapper').css("min-height", new_height)
-
-  $(window).resize()
+  ).resize()
 
   $(".counselor-time-button").click ->
-    time = $(this).attr("data-time")
+    session_rate        = parseFloat($(this).attr("data-session-rate"))
+    time                = $(this).attr("data-time")
+
     $(".selected_time").val(time)
+    
+    $("#counseling_session_time").change()
+    $("#counseling_session_estimate_duration_in_minutes").change()
+    $("#counseling_session_estimate_duration_in_minutes").attr("data-session-rate", session_rate)
+
+    update_session_cost(session_rate)
+
+  $("#counseling_session_time").change ->
+    selected_time       = $(this).find("option:selected")
+    is_hourly_available = selected_time.attr("data-available")
+    session_rate        = parseFloat($(this).attr("data-session-rate"))
+
+    if (is_hourly_available == "false")
+      $("#counseling_session_estimate_duration_in_minutes").val("30")
+      $("#counseling_session_estimate_duration_in_minutes option[value='60']").hide()
+    else
+      $("#counseling_session_estimate_duration_in_minutes").val("60")
+      $("#counseling_session_estimate_duration_in_minutes option[value='60']").show()
+    
+    update_session_cost(session_rate)
+    $("#counseling_session_estimate_duration_in_minutes").change()
+
+  $("#counseling_session_estimate_duration_in_minutes").change ->
+    session_rate        = parseFloat($(this).attr("data-session-rate"))
+
+    console.log(session_rate)
+    update_session_cost(session_rate)
+
 
   $(".counselor_availability_day_wrapper").each ->
     $(this).children(".availability_time_button_wrapper:nth-child(7)").nextAll().wrapAll("<div class='extra-times-for-day' />")

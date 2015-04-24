@@ -14,17 +14,23 @@
         on
         = @dts.strftime("%B %e, %Y")
 
-  %ul.text-right.list-inline.small
-    %li
+  %ul#counselor_filter.list-inline.small
+    %li.text-muted
       .fa.fa-filter
-    %li
-      = link_to "Male", ""
-    %li
-      = link_to "Female", ""
+    %li{ :class => "#{params[:gender].to_i == 1 ? 'active' : ''}"}
+      = link_to "Male", url_for(:datetime => params[:datetime], :specialty => params[:specialty], :gender => 1)
+    %li{ :class => "#{params[:gender].to_i == 2 ? 'active' : ''}"}
+      = link_to "Female", url_for(:datetime => params[:datetime], :specialty => params[:specialty], :gender => 2)
   %hr
   
-  - @counselors.each do |counselor|
-    = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
+  - if @counselors.count > 0
+    - @counselors.each do |counselor|
+      = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
+  - else
+    .text-center
+      There are now counselors matching these parameters.
+      %br
+      Please adjust your search and try again.
 
   = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
 

@@ -20,7 +20,15 @@
           .form-inputs
             = f.hidden_field :counselor_id, :value => counselor.id
             = f.hidden_field :day, :value => dts
-            = f.input :time, collection: counselor.availability_by_dts(dts).map { |interval| time_as_local(interval)}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
+            = f.input :time, collection: counselor.availability_by_dts(dts).map { |interval| [time_as_local(interval), time_as_local(interval), :data => {:available => "#{counselor.availability_by_dts(@dts).include?(interval + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}]}, input_html: { :class => "selected_time form-control" }, :include_blank => false, :label => "Session Time", :hint => "#{Time.zone.name}"
+            
+            = f.label :estimate_duration_in_minutes, :label => "Duration"
+            .input-group
+              = f.input :estimate_duration_in_minutes, :collection => [30, 60], input_html: { :class => "form-control" }, :include_blank => false, :label => false
+              %span#basic-addon2.input-group-addon Minutes
+
+
+          %hr
 
           .counseling_session_price_wrapper
             %table
@@ -29,9 +37,10 @@
                   %strong
                     Session Cost
                 %td.text-right
-                  = number_to_currency(counselor.session_rate_in_dollars)
+                  %span#session_cost_wrapper
+                    = number_to_currency(counselor.session_rate_in_dollars)
               %tr
-                %td.text-center.text-muted.small{ :colspan => 2 }
+                %td.text-left.text-muted.small{ :colspan => 2 }
                   To be billed at Time of Session
 
         .modal-footer
