@@ -95,7 +95,7 @@ jQuery ->
     $("#counseling_session_estimate_duration_in_minutes").change()
 
   $("#counseling_session_estimate_duration_in_minutes").change ->
-    session_rate        = parseFloat($(this).attr("data-session-rate"))
+    session_rate        = parseFloat($(this).find("option:selected").attr("data-session-rate"))
 
     console.log(session_rate)
     update_session_cost(session_rate)
