@@ -130,7 +130,7 @@ class Counselor < ActiveRecord::Base
         daily_times.each do |time|
           if parse_dts(time).between?(parse_dts(interval.start_time), (parse_dts(interval.end_time) - 30.minutes))
 						# Create actual datetime to measure against
-						t = parse_dts(time)
+						t  = parse_dts(time)
     				dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
 
           	if dt > 30.minutes.from_now

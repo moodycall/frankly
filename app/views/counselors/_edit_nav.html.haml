@@ -16,7 +16,8 @@
     = link_to "Certifications", certifications_counselor_path(@counselor)
 
   %li.pull-right.small
-    Status:
+    = link_to "View Profile", counselor_url(current_user.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => ""
+  %li.pull-right.small
     - if @counselor.is_active
       %span.text-uppercase.text-success
         Active
@@ -27,4 +28,5 @@
         Inactive
         %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Your profile is only visible to you and will not appear in search results until activated by an admin." }
           .fa.fa-lg.fa-question-circle
+
 %br

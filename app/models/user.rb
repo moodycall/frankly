@@ -28,6 +28,14 @@ class User < ActiveRecord::Base
     counseling_sessions.where(:counselor_id => counselor_id).count
   end
 
+  def gender_as_string
+    if gender == 1
+      "Male"
+    else
+      "Female"
+    end
+  end
+
   def self.gender_options
     {
       GENDER_MALE     => "Male",

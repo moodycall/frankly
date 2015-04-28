@@ -13,8 +13,7 @@ class CounselorsController < ApplicationController
     end
 
     @available_counselors = @specialty.counselors.active_counselors.sort_by(&:popularity).select do |c|
-      c.availability_by_dts(@dts).count > 0 and
-      params[:gender] ? c.user.gender == params[:gender].to_i : c.user.gender > 0
+      c.availability_by_dts(@dts).count > 0
     end
     
     @counselors = @available_counselors.reverse.paginate(:page => params[:page], :per_page => 15)
@@ -124,7 +123,7 @@ class CounselorsController < ApplicationController
 
     respond_to do |format|
       if @counselor.save
-        format.html { redirect_to @counselor, notice: 'Your profile has been created. It will be publically visible once activated by an admin.' }
+        format.html { redirect_to edit_counselor_url(current_user.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), notice: 'Your profile has been created. It will be publically visible once activated by an admin. Please complete additional professional information.' }
         format.json { render :show, status: :created, location: @counselor }
       else
         format.html { render :new }
@@ -138,11 +137,8 @@ class CounselorsController < ApplicationController
   def update
 
     remove_degrees
-
     remove_licenses
-
     remove_certifications
-    
     handle_availability_intervals
 
     respond_to do |format|
