@@ -14,13 +14,6 @@
         on
         = @dts.strftime("%B %e, %Y")
 
-  %ul#counselor_filter.list-inline.small
-    %li.text-muted
-      .fa.fa-filter
-    %li{ :class => "#{params[:gender].to_i == 1 ? 'active' : ''}"}
-      = link_to "Male", url_for(:datetime => params[:datetime], :specialty => params[:specialty], :gender => 1)
-    %li{ :class => "#{params[:gender].to_i == 2 ? 'active' : ''}"}
-      = link_to "Female", url_for(:datetime => params[:datetime], :specialty => params[:specialty], :gender => 2)
   %hr
   
   - if @counselors.count > 0
