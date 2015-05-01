@@ -294,3 +294,9 @@ footer h3 {
 	}
 }
 
+@media (max-width: 600px) {
+  table#addable_items_wrapper {
+    min-width: 600px;
+  }
+}
+
