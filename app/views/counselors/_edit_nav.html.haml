@@ -16,7 +16,7 @@
     = link_to "Certifications", certifications_counselor_path(@counselor)
 
   %li.pull-right.small
-    = link_to "View Profile", counselor_url(current_user.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => ""
+    = link_to "View Profile", counselor_url(@counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => ""
   %li.pull-right.small
     - if @counselor.is_active
       %span.text-uppercase.text-success
