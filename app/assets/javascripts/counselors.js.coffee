@@ -71,6 +71,10 @@ jQuery ->
     session_rate        = parseFloat($(this).attr("data-session-rate"))
     time                = $(this).attr("data-time")
 
+    $("#counseling_session_estimate_duration_in_minutes").find("option").each( ->
+      $(this).attr("data-session-rate", session_rate)
+    )
+
     $(".selected_time").val(time)
     
     $("#counseling_session_time").change()
