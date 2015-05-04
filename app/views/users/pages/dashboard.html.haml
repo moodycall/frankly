@@ -3,9 +3,13 @@
 		.col-sm-6
 			%h1 Dashboard
 
+
 	= link_to favorite_counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavFavorites", :class => "pull-right btn btn-default" do
 		.fa.fa-heart
 		View Favorite Counselors
+
+	%br
+	%br
 
 	- if current_user.counselor.present?
 		.btn-group.counselor-toggle
