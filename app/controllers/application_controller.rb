@@ -29,6 +29,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def after_confirmation_path_for(resource_name, resource)
+    "/dashboard"
+  end
+
   def set_timezone
   	Time.zone = cookies[:moodcall_timezone] || "Eastern Time (US & Canada)"
   end
