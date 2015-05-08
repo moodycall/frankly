@@ -21,12 +21,12 @@
     - if @counselor.is_active
       %span.text-uppercase.text-success
         Active
-        %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Your profile is now live and being included in search results. If you'd like to deactivate your account, please contact info@moodycall.org" }
+        %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Your profile is now live and being included in search results. If you'd like to deactivate your account, please contact info@moodycall.org", "data-trigger" => "hover" }
           .fa.fa-lg.fa-question-circle
     - else
       %span.text-uppercase.text-warning
         Inactive
-        %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Your profile is only visible to you and will not appear in search results until activated by an admin." }
+        %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Your profile is only visible to you and will not appear in search results until activated by an admin.", "data-trigger" => "hover" }
           .fa.fa-lg.fa-question-circle
 
 %br
