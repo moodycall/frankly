@@ -8,8 +8,13 @@
           = f.error_notification
           .payment-errors
           .form-inputs
-            .form-group
-              = f.input :name, input_html: { :class => "form-control floatlabel" }, :label => false, :placeholder => "Name"
+            .row
+              .col-sm-6
+                .form-group
+                  = f.input :first_name, input_html: { :class => "form-control floatlabel" }, :label => false, :placeholder => "First Name"
+              .col-sm-6
+                .form-group
+                  = f.input :last_name, input_html: { :class => "form-control floatlabel" }, :label => false, :placeholder => "Last Name"
             .form-group
               = f.input :email, input_html: { :class => "form-control floatlabel" }, required: true, :label => false, :placeholder => "Email"
 

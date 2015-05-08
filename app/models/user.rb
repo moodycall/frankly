@@ -11,6 +11,11 @@ class User < ActiveRecord::Base
   has_many :session_prompts
   has_many :prompts, through: :session_prompts
 
+  validates_presence_of :first_name,
+                        :last_name,
+                        :email
+
+
   mount_uploader :photo, ProfilePhotoUploader
   
   # Include default devise modules. Others available are:
@@ -59,9 +64,12 @@ class User < ActiveRecord::Base
     end
   end
   
-  def first_name
-    name.scan(/\w+/).first
+  def name
+    self.first_name + " " + self.last_name
   end
+  # def first_name
+  #   name.scan(/\w+/).first
+  # end
 
   def paid_counseling_sessions
     counseling_sessions.where.not(:stripe_charge_id => nil).all

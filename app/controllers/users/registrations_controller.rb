@@ -150,13 +150,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_sanitized_params
-    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:name,
+    devise_parameter_sanitizer.for(:sign_up) {|u| u.permit(:first_name,
+                                                           :last_name,
                                                            :email,
                                                            :password,
                                                            :password_confirmation,
                                                            :unconfirmed_email)}
     
-    devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:name,
+    devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:first_name,
+                                                                  :last_name,
                                                                   :email,
                                                                   :password,
                                                                   :password_confirmation,
