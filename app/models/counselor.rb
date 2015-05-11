@@ -154,7 +154,7 @@ class Counselor < ActiveRecord::Base
 				available_times = all_times.reject{ |e| time_to_remove.include? e }
 	    end
 
-			available_times
+			available_times.sort_by{|e| e}
 	  else
 	  	[]
 	  end
