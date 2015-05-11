@@ -122,37 +122,42 @@ class Counselor < ActiveRecord::Base
   end
 
 	def availability_by_dts(date)
-		available_times = []
-    daily_times = ["12:00am","12:30am","01:00am","01:30am","02:00am","02:30am","03:00am","03:30am","04:00am","04:30am","05:00am","05:30am","06:00am","06:30am","07:00am","07:30am","08:00am","08:30am","09:00am","09:30am","10:00am","10:30am","11:00am","11:30am","12:00pm","12:30pm","01:00pm","01:30pm","02:00pm","02:30pm","03:00pm","03:30pm","04:00pm","04:30pm","05:00pm","05:30pm","06:00pm","06:30pm","07:00pm","07:30pm","08:00pm","08:30pm","09:00pm","09:30pm","10:00pm","10:30pm","11:00pm","11:30pm"]
+		if available_on_day(date.wday)
+			available_times = []
+	    daily_times 	= ["12:00am","12:30am","01:00am","01:30am","02:00am","02:30am","03:00am","03:30am","04:00am","04:30am","05:00am","05:30am","06:00am","06:30am","07:00am","07:30am","08:00am","08:30am","09:00am","09:30am","10:00am","10:30am","11:00am","11:30am","12:00pm","12:30pm","01:00pm","01:30pm","02:00pm","02:30pm","03:00pm","03:30pm","04:00pm","04:30pm","05:00pm","05:30pm","06:00pm","06:30pm","07:00pm","07:30pm","08:00pm","08:30pm","09:00pm","09:30pm","10:00pm","10:30pm","11:00pm","11:30pm"]
+	    intervals   	= availability_intervals.where(:day_of_week => date.wday).all
 
-    if available_on_day(date.wday)
-      availability_intervals.where(:day_of_week => date.wday).each do |interval|
-        daily_times.each do |time|
-          if parse_dts(time).between?(parse_dts(interval.start_time), (parse_dts(interval.end_time) - 30.minutes))
-						# Create actual datetime to measure against
-						t  = parse_dts(time)
-    				dt = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone)
+	    intervals.each do |interval|
+	    	interval_start		 = parse_dts(interval.start_time).in_time_zone(Time.zone.name)
+	    	interval_end  		 = parse_dts(interval.end_time).in_time_zone(Time.zone.name)
+	    	interval_start_dts = DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone)
+	    	interval_end_dts   = DateTime.new(date.year, date.month, date.day, interval_end.hour, interval_end.min, interval_end.sec, interval_end.zone)
 
-          	if dt > 30.minutes.from_now
-            	available_times.push(dt)
-            end
-          end
-        end
-      end
-    end
+	    	daily_times.each do |time|
+	    		t  						= parse_dts(time).in_time_zone(Time.zone.name)
+    			checkable_dts = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone).in_time_zone(Time.zone.name)
 
-		booked_session_by_date(date).each do |booked_session|
-			all_times = available_times
-			if booked_session.estimate_duration_in_minutes == 60
-				time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc, Time.zone.parse("#{booked_session.start_datetime + 30.minutes}").utc]
-			else
-				time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc]
-			end
+    			if (checkable_dts).between?(interval_start_dts, (interval_end_dts - 30.minutes)) and checkable_dts > Time.now
+    				available_times.push(checkable_dts)
+    			end
+    		end
+    	end
 
-			available_times = all_times.reject{ |e| time_to_remove.include? e }
-    end
+    	booked_session_by_date(date).each do |booked_session|
+				all_times = available_times
+				if booked_session.estimate_duration_in_minutes == 60
+					time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc, Time.zone.parse("#{booked_session.start_datetime + 30.minutes}").utc]
+				else
+					time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc]
+				end
 
-		available_times
+				available_times = all_times.reject{ |e| time_to_remove.include? e }
+	    end
+
+			available_times
+	  else
+	  	[]
+	  end
 	end
 
 	def next_available
