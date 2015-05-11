@@ -136,7 +136,7 @@ class CounselorsController < ApplicationController
 
     respond_to do |format|
       if @counselor.save
-        format.html { redirect_to edit_counselor_url(current_user.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), notice: 'Your profile has been created. It will be publically visible once activated by an admin. Please complete additional professional information.' }
+        format.html { redirect_to education_counselor_url(current_user.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]), notice: 'Your profile has been created. It will be publically visible once activated by an admin. Please complete additional professional information.' }
         format.json { render :show, status: :created, location: @counselor }
       else
         format.html { render :new }
