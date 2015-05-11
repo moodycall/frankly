@@ -75,9 +75,16 @@ class User < ActiveRecord::Base
     counseling_sessions.where.not(:stripe_charge_id => nil).all
   end
 
-  def session_starting_soon
-    if counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).present?
-      counseling_sessions.where(start_datetime: (Time.zone.now - 5.minutes)..(Time.zone.now + 20.minutes)).first
+  def session_starting_soon(zone_name)
+    soon_sessions = counseling_sessions.select do |session|
+      start_time = session.start_datetime.in_time_zone(zone_name) - 5
+      end_time   = session.estimated_endtime.in_time_zone(zone_name)
+
+      (Time.now.in_time_zone(zone_name)).between?((start_time), end_time)
+    end
+
+    if soon_sessions.present?
+      soon_sessions.first
     else
       return false
     end
