@@ -16,9 +16,7 @@
         - if interval > 30.minutes.from_now
           .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => "#{time_as_local(interval)}", :available => "#{@counselor.availability_by_dts(@dts).include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
             = time_as_local(interval)
-        - else
-          .btn.btn-primary.btn-block{:disabled => "disabled"}
-            = time_as_local(interval)
+            
   - else # Otherwise, there aren't any openings
     %p.text-center
       Sorry, there are no openings for

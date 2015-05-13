@@ -137,7 +137,7 @@ class Counselor < ActiveRecord::Base
 	    		t  						= parse_dts(time).in_time_zone(Time.zone.name)
     			checkable_dts = DateTime.new(date.year, date.month, date.day, t.hour, t.min, t.sec, t.zone).in_time_zone(Time.zone.name)
 
-    			if (checkable_dts).between?(interval_start_dts, (interval_end_dts - 30.minutes)) and checkable_dts > Time.now
+    			if (checkable_dts).between?(interval_start_dts, (interval_end_dts - 30.minutes)) and checkable_dts > (Time.now + 30.minutes)
     				available_times.push(checkable_dts)
     			end
     		end
