@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards
   has_many :favorite_counselors
-  has_many :ratings, as: :rater
+  has_many :ratings, :foreign_key => 'rater_id'
   has_many :payouts
 
   has_many :session_prompts
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
 
   def session_starting_soon(zone_name)
     soon_sessions = counseling_sessions.select do |session|
-      start_time = session.start_datetime.in_time_zone(zone_name) - 5
+      start_time = session.start_datetime.in_time_zone(zone_name) - 5.minutes
       end_time   = session.estimated_endtime.in_time_zone(zone_name)
 
       (Time.now.in_time_zone(zone_name)).between?((start_time), end_time)

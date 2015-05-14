@@ -18,7 +18,8 @@ class CounselingSessionsController < ApplicationController
       opentok    = OpenTok::OpenTok.new api_key, api_secret
 
       unless @counseling_session.rating.present?
-        @rating = @counseling_session.build_rating
+        @rating                    = current_user.ratings.build
+        @rating.counseling_session = @counseling_session
       end
 
       if @counseling_session.opentok_session_id.present?
