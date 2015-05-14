@@ -48,12 +48,20 @@ class User < ActiveRecord::Base
     }
   end
 
+  def is_booked_at_datetime(datetime)
+    upcoming_sessions.each do |session|
+      if (datetime).between?((session.start_datetime), session.estimated_endtime)
+        return true
+      end
+    end
+  end
+
   def upcoming_sessions
     counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime >= ?", Time.zone.now)
   end
 
   def previous_sessions
-    counseling_sessions.where("start_datetime <= ?", Time.zone.now)
+    counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime <= ?", Time.zone.now)
   end
 
   def current_card
@@ -76,7 +84,7 @@ class User < ActiveRecord::Base
   end
 
   def session_starting_soon(zone_name)
-    soon_sessions = counseling_sessions.select do |session|
+    soon_sessions = upcoming_sessions.select do |session|
       start_time = session.start_datetime.in_time_zone(zone_name) - 5.minutes
       end_time   = session.estimated_endtime.in_time_zone(zone_name)
 

@@ -92,7 +92,7 @@ jQuery ->
       $("#counseling_session_estimate_duration_in_minutes").val("30")
       $("#counseling_session_estimate_duration_in_minutes option[value='60']").hide()
     else
-      $("#counseling_session_estimate_duration_in_minutes").val("60")
+      $("#counseling_session_estimate_duration_in_minutes").val("30")
       $("#counseling_session_estimate_duration_in_minutes option[value='60']").show()
     
     update_session_cost(session_rate)

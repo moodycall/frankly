@@ -61,16 +61,20 @@ class CounselingSessionsController < ApplicationController
       @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
       @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
 
-      if @counseling_session.save
-        session.delete(:pending_session_counselor_id)
-        # @counseling_session.create_opentok_session # Create  opentok session for later use
-        if current_user.current_card
-          redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
-        else
-          redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
-        end
+      if current_user.is_booked_at_datetime(@counseling_session.start_datetime) == true
+        redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
       else
-        render :new
+        if @counseling_session.save
+          session.delete(:pending_session_counselor_id)
+          # @counseling_session.create_opentok_session # Create  opentok session for later use
+          if current_user.current_card
+            redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
+          else
+            redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
+          end
+        else
+          render :new
+        end
       end
     else
       # If the is no current_user we want to save their search data and create the user
