@@ -11,11 +11,7 @@ jQuery ->
       $(".remove_item_wrapper").find(".fa").fadeOut()
 
   update_session_cost = (rate) ->
-    if $("#counseling_session_estimate_duration_in_minutes").val() == "60"
-      $("#session_cost_wrapper").html("$" + (rate * 2).toFixed(2))
-    else
-      $("#session_cost_wrapper").html("$" + rate.toFixed(2))
-
+    $(".session_cost_wrapper").html("$" + rate.toFixed(2))
 
   $(document.body).on('click', '.remove_item_wrapper', ->
     if $(".remove_item_wrapper").length > 1
@@ -67,39 +63,37 @@ jQuery ->
     $('.counselor_availability_wrapper').css("min-height", new_height)
   ).resize()
 
-  $(".counselor-time-button").click ->
-    session_rate        = parseFloat($(this).attr("data-session-rate"))
-    time                = $(this).attr("data-time")
+  $(".counselor-time-button").click( ->
+      session_rate        = parseFloat($(this).attr("data-session-rate"))
+      time                = $(this).attr("data-time")
+  
+      $(".duration_select").find("option").each( ->
+        $(this).attr("data-session-rate", session_rate)
+      )
 
-    $("#counseling_session_estimate_duration_in_minutes").find("option").each( ->
-      $(this).attr("data-session-rate", session_rate)
+      $(".duration_select").val("30")
+      $(".duration_select").attr("data-session-rate", session_rate)
+
+      $(".selected_time").val(time)
     )
 
-    $(".selected_time").val(time)
-    
-    $("#counseling_session_time").change()
-    $("#counseling_session_estimate_duration_in_minutes").change()
-    $("#counseling_session_estimate_duration_in_minutes").attr("data-session-rate", session_rate)
-
-    update_session_cost(session_rate)
-
-  $("#counseling_session_time").change ->
-    selected_time       = $(this).find("option:selected")
+  $(".selected_time").change ->
+    parent              = $(this).parent(".new_counseling_session")
+    selected_time       = $("option:selected", this)
     is_hourly_available = selected_time.attr("data-available")
     session_rate        = parseFloat($(this).attr("data-session-rate"))
 
     if (is_hourly_available == "false")
-      $("#counseling_session_estimate_duration_in_minutes").val("30")
-      $("#counseling_session_estimate_duration_in_minutes option[value='60']").hide()
+      $(".duration_select").val("30")
+      $(".duration_select option[value='60']").hide()
     else
-      $("#counseling_session_estimate_duration_in_minutes").val("30")
-      $("#counseling_session_estimate_duration_in_minutes option[value='60']").show()
+      $(".duration_select").val("30")
+      $(".duration_select option[value='60']").show()
     
-    update_session_cost(session_rate)
-    $("#counseling_session_estimate_duration_in_minutes").change()
+    parent.find(".duration_select").change()
 
-  $("#counseling_session_estimate_duration_in_minutes").change ->
-    session_rate        = parseFloat($(this).find("option:selected").attr("data-session-rate"))
+  $(".duration_select").change ->
+    session_rate        = parseFloat($(this).find("option:selected").val())
 
     console.log(session_rate)
     update_session_cost(session_rate)

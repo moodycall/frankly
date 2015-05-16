@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
 
   def is_booked_at_datetime(datetime)
     upcoming_sessions.each do |session|
-      if (datetime).between?((session.start_datetime), session.estimated_endtime)
+      if (datetime + 1.minute).between?((session.start_datetime), session.estimated_endtime)
         return true
       end
     end
