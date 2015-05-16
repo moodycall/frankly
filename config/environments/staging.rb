@@ -94,8 +94,8 @@ Rails.application.configure do
   config.aws_secret_access_key   = ENV["AWS_SECRET_KEY"]
   config.bucket_name             = ENV["AWS_BUCKET_NAME"]
 
-  config.opentok_api_key         = "45162982"
-  config.opentok_api_secret      = "3f87f912c00f0d01581509783c21c80ba57e91d0"
+  config.opentok_api_key         = ENV["OPENTOK_PUBLIC"]
+  config.opentok_api_secret      = ENV["OPENTOK_SECRET"]
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
