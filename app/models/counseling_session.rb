@@ -84,7 +84,7 @@ class CounselingSession < ActiveRecord::Base
 	end
 
 	def self.upcoming_sessions
-		self.where("start_datetime > ?", Time.now).order(:start_datetime => :asc).all
+		self.where(:cancelled_on_dts => nil).where("start_datetime > ?", Time.now).order(:start_datetime => :asc).all
 	end
 
 	private

@@ -215,7 +215,7 @@ class Counselor < ActiveRecord::Base
   end
 
   def previous_sessions
-    counseling_sessions.where("start_datetime <= ?", Time.zone.now)
+    counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime <= ?", Time.zone.now)
   end
 
 	private
