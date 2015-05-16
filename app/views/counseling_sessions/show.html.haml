@@ -35,9 +35,13 @@
 
   #connectedToDiv
 
+  %br
+  .text-muted.text-center
+    Make sure to allow Camera and Microphone in your browser.
+
   -# #clock
 
-  - if @counseling_session.rating.id == nil
+  - unless @counseling_session.rating.present?
     %hr
       %br
     .text-center

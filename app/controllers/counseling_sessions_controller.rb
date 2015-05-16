@@ -73,7 +73,6 @@ class CounselingSessionsController < ApplicationController
             redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
           end
         else
-          render :new
         end
       end
     else

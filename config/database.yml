@@ -6,7 +6,7 @@
 #
 development:
   adapter: postgresql
-  database: moodcall_dev
+  database: moodycall_dev
   pool: 5
   timeout: 5000
 

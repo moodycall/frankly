@@ -5,7 +5,7 @@ class CounselingSession < ActiveRecord::Base
 	extend FriendlyId
   friendly_id :secure_id, use: [:slugged, :history, :finders]
 
-  has_one :rating
+  belongs_to :rating
 
   has_many :session_prompts
   has_many :prompts, through: :session_prompts
@@ -53,7 +53,7 @@ class CounselingSession < ActiveRecord::Base
     session_id = session.session_id
 
     self.opentok_session_id = session_id
-    self.save
+    self.save!
 	end
 
 	def is_cancellable
