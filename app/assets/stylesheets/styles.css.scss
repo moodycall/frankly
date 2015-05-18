@@ -254,6 +254,10 @@ footer h3 {
 
 .session_preview {
 	border: 3px solid $grey_light;
+
+	.counselor_pubic_rating_wrapper {
+	  margin-bottom: 5px;
+	}
 	
 	.helper{
 		display: inline-block;
@@ -283,7 +287,7 @@ footer h3 {
 	}
 
 	.session_preview_counselor_title {
-		font-size: 24px;
+		font-size: 18px;
 		margin-top: 5px;
 		text-transform: capitalize;
 		color: #333;
@@ -292,11 +296,39 @@ footer h3 {
 	&:hover .cancel_counseling_session_wrapper {
 		display: inline-block;
 	}
+	.enter_counseling_session_wrapper {
+		margin-top: 5px;
+	}
 }
 
 @media (max-width: 600px) {
   table#addable_items_wrapper {
     min-width: 600px;
   }
+  #home_intro {
+  	min-height: 700px;
+  	h1 {
+		  margin-top: 130px;
+		  font-weight: 800;
+		  font-size: 25px;
+		  line-height: 25px;
+		  margin-bottom: 30px;
+		}
+	}
+	.home_search_wrapper {
+	  padding: 20px 20px;
+	}
+	.form-control {
+	 margin-bottom: 10px;
+	}
+	.session_preview .session_preview_img {
+		display: none;
+	}
+	.session_preview .session_preview_icon {
+		display: none;
+	}
+	.counselor_availability_preview_wrapper [class^="col-"] .btn {
+	  padding: 11px;
+	  font-size: 14px;
+	}
 }
-

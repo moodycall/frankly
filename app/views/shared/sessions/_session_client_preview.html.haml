@@ -23,7 +23,7 @@
 			- if session.is_enterable
 				%li
 					.enter_counseling_session_wrapper
-						= link_to "Enter Session", counseling_session_path(session)
+						= link_to "Enter Session", counseling_session_path(session), :class => "btn btn-primary btn-sm"
 
 			- if session.is_cancellable
 				%li

@@ -118,7 +118,7 @@ class Counselor < ActiveRecord::Base
 	end
 
 	def booked_session_by_date(date)
-    booked_sessions = counseling_sessions.where(start_datetime: Date.parse(date.to_s).beginning_of_day..Date.parse(date.to_s).end_of_day).all
+    booked_sessions = counseling_sessions.where(:cancelled_on_dts => nil, start_datetime: Date.parse(date.to_s).beginning_of_day..Date.parse(date.to_s).end_of_day).all
   end
 
 	def availability_by_dts(date)

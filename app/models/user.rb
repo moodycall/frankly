@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :counseling_sessions, :foreign_key => 'client_id'
   has_many :credit_cards
   has_many :favorite_counselors
-  has_many :ratings, :foreign_key => 'rater_id'
+  has_many :ratings, as: :rater
   has_many :payouts
 
   has_many :session_prompts

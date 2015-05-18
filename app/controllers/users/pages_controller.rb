@@ -7,7 +7,7 @@ class Users::PagesController < ApplicationController
       @previous_sessions = current_user.counselor.previous_sessions.order("start_datetime desc").last(5)
     else
       @upcoming_sessions = current_user.upcoming_sessions.order("start_datetime asc")
-      @previous_sessions = current_user.previous_sessions.order("start_datetime desc").last(5)
+      @previous_sessions = current_user.previous_sessions.order("start_datetime desc").first(5)
     end
   end
 

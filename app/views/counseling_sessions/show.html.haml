@@ -35,17 +35,25 @@
 
   #connectedToDiv
 
+  #awaiting_connection
+    %p
+      Your video call will begin once you allow use of camera, microphone, and the other party joins.
+
   %br
   .text-muted.text-center
     Make sure to allow Camera and Microphone in your browser.
 
   -# #clock
 
-  - unless @counseling_session.rating.present?
-    %hr
-      %br
+  %hr
+  - if @rating.present?
+    %br
     .text-center
       = render "ratings/modal"
+  - else
+    .text-center
+      %em
+        You have already submitted a rating for this session.
 
 %script{:src => "//static.opentok.com/webrtc/v2.2/js/opentok.min.js"}
 
@@ -90,6 +98,7 @@
 
   session.on({ 
       streamCreated: function(event) { 
+        $("#awaiting_connection").hide();
         session.subscribe(event.stream, 'connectedToDiv', {insertMode: 'append', width:'100%', height:600}); 
         $("#connectedToDiv .OT_subscriber").css({"margin-left": "auto", "margin-right": "auto"});
       }

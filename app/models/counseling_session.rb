@@ -5,7 +5,7 @@ class CounselingSession < ActiveRecord::Base
 	extend FriendlyId
   friendly_id :secure_id, use: [:slugged, :history, :finders]
 
-  belongs_to :rating
+  has_one :rating
 
   has_many :session_prompts
   has_many :prompts, through: :session_prompts
