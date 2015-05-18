@@ -17,11 +17,6 @@ class CounselingSessionsController < ApplicationController
       api_secret = Rails.configuration.opentok_api_secret
       opentok    = OpenTok::OpenTok.new api_key, api_secret
 
-      unless @counseling_session.rating.present?
-        @rating                    = current_user.ratings.new
-        @rating.counseling_session = @counseling_session
-      end
-
       if @counseling_session.opentok_session_id.present?
         @token = opentok.generate_token @counseling_session.opentok_session_id,
             :role        => :moderator,
@@ -29,6 +24,12 @@ class CounselingSessionsController < ApplicationController
             :data        => "name=#{current_user.name}"
       else
         @counseling_session.create_opentok_session
+      end
+      
+      unless @counseling_session.rating.present?
+        @rating                    = current_user.ratings.build
+        @rating.counseling_session = @counseling_session
+        @rating.rateable           = @counseling_session.counselor
       end
     else
       redirect_to user_dashboard_path, :notice => "You may enter your session 5 minutes before it's scheduled to begin."
