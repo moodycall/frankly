@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   	end
   end
 
-  devise_for :users, :controllers => {:registrations => "users/registrations"}
+  devise_for :users, :controllers => {:registrations => "users/registrations", confirmations: 'users/confirmations'}
 
   get 'dashboard' => 'users/pages#dashboard', as: :user_dashboard
   get 'session-history' => 'users/pages#session_history', as: :user_session_history
