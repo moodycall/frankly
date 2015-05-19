@@ -58,22 +58,28 @@ class CounselingSessionsController < ApplicationController
   # POST /counseling_sessions.json
   def create
     if current_user.present?
-      # If they're already a user, we'll want to let them create a session
-      @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
-      @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
-
-      if current_user.is_booked_at_datetime(@counseling_session.start_datetime) == true
-        redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
+      # Don't allow user to schedule a session with themself.
+      if current_user.counselor.present? and current_user.counselor.id.to_s == "#{params[:counseling_session][:counselor_id]}"
+        redirect_to :back, :notice => "Sorry, you can not schedule a session with yourself."
       else
-        if @counseling_session.save
-          session.delete(:pending_session_counselor_id)
-          # @counseling_session.create_opentok_session # Create  opentok session for later use
-          if current_user.current_card
-            redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
-          else
-            redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
-          end
+
+        # If they're already a user, we'll want to let them create a session
+        @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
+        @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
+
+        if current_user.is_booked_at_datetime(@counseling_session.start_datetime) == true
+          redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
         else
+          if @counseling_session.save
+            session.delete(:pending_session_counselor_id)
+            # @counseling_session.create_opentok_session # Create  opentok session for later use
+            if current_user.current_card
+              redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
+            else
+              redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
+            end
+          else
+          end
         end
       end
     else
