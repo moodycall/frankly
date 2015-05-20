@@ -28,6 +28,10 @@ class Counselor < ActiveRecord::Base
 
 	mount_uploader :photo, ProfilePhotoUploader
 
+	def session_count_with_client(client_id)
+    counseling_sessions.where(:client_id => client_id).count
+  end
+
 	def created_slug
 		self.user.name
 	end

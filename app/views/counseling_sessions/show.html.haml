@@ -22,11 +22,18 @@
               = @counseling_session.estimated_endtime.in_time_zone.strftime("%l:%M%P")
 
     .col-sm-4
-      %p.text-right.text-muted
-        %em
-          = current_user.session_count_with_counselor(@counseling_session.counselor.id).ordinalize
-          session with
-          = @counseling_session.counselor.user.name
+      - if @counseling_session.counselor_id == current_user.id
+        %p.text-right.text-muted
+          %em
+            = current_user.counselor.session_count_with_client(@counseling_session.client_id).ordinalize
+            session with
+            = @counseling_session.client.name
+      - else
+        %p.text-right.text-muted
+          %em
+            = current_user.session_count_with_counselor(@counseling_session.counselor.id).ordinalize
+            session with
+            = @counseling_session.counselor.user.name
       %p.text-right
         #countdown_clock.text-right
 
@@ -45,15 +52,17 @@
 
   -# #clock
 
-  %hr
-  - if @rating.present?
-    %br
-    .text-center
-      = render "ratings/modal"
-  - else
-    .text-center
-      %em
-        You have already submitted a rating for this session.
+  - unless @counseling_session.counselor_id == current_user.id
+
+    %hr
+    - if @rating.present?
+      %br
+      .text-center
+        = render "ratings/modal"
+    - else
+      .text-center
+        %em
+          You have already submitted a rating for this session.
 
 %script{:src => "//static.opentok.com/webrtc/v2.2/js/opentok.min.js"}
 
