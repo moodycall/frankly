@@ -64,10 +64,7 @@
 						- unless params[:q].present?
 							= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-primary btn-lg"
 
-
-
-
-
-
-		
-			
+:javascript
+	setInterval(function() {
+		window.location.reload();
+	}, 10000);
