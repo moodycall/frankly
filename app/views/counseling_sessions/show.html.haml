@@ -3,7 +3,7 @@
   %br
   .row
     .col-sm-8
-      - unless @counseling_session.counselor_id == current_user.counselor.id if current_user.counselor.present?
+      - unless current_user.is_counselor_of_session(@counseling_session.counselor_id)
         .counselor_preview_wrapper
           .row
             .col-xs-4.col-md-3
@@ -23,7 +23,7 @@
                 = @counseling_session.estimated_endtime.in_time_zone.strftime("%l:%M%P")
 
     .col-sm-4
-      - if @counseling_session.counselor_id == current_user.counselor.id if current_user.counselor.present?
+      - if current_user.is_counselor_of_session(@counseling_session.counselor_id)
         %p.text-right.text-muted
           %em
             = current_user.counselor.session_count_with_client(@counseling_session.client_id).ordinalize
@@ -56,7 +56,7 @@
 
   -# #clock
 
-  - unless @counseling_session.counselor_id == current_user.counselor.id if current_user.counselor.present?
+  - unless current_user.is_counselor_of_session(@counseling_session.counselor_id)
 
     %hr
     - if @rating.present?

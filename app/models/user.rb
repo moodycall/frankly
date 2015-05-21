@@ -41,6 +41,14 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_counselor_of_session(session_counselor_id)
+    if self.counselor.present? and self.counselor.id == session_counselor_id
+      true
+    else
+      false
+    end
+  end
+
   def self.gender_options
     {
       GENDER_MALE     => "Male",
