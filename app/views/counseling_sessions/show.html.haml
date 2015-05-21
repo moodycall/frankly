@@ -68,6 +68,9 @@
         %em
           You have already submitted a rating for this session.
 
+  .text-center
+    = link_to "Exit Session", user_dashboard_path, :class => "btn text-danger"
+
 %script{:src => "//static.opentok.com/webrtc/v2.2/js/opentok.min.js"}
 
 :javascript
@@ -121,6 +124,7 @@
   session.connect(token, function(error) {
     if (error) {
       console.log(error.message);
+      $("#awaiting_connection").show();
     } else {
       session.publish(publisher, {width:50, height:25});
     }
