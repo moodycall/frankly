@@ -9,3 +9,12 @@
 .navbar-default .navbar-nav > .open > a.admin-dropdown:focus {
   border-color: #eee;
 }
+
+@media (max-width: 768px) {
+  .navbar-default .navbar-collapse.in {
+    border-color: #e7e7e7;
+    background-color: rgb(190, 190, 190);
+    z-index: 9;
+    position: relative;
+  }
+}
