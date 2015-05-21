@@ -4,7 +4,7 @@ class Users::PagesController < ApplicationController
   def dashboard
     if params[:q] == "counselor"
       @upcoming_sessions = current_user.counselor.upcoming_sessions.order("start_datetime asc")
-      @previous_sessions = current_user.counselor.previous_sessions.order("start_datetime desc").last(5)
+      @previous_sessions = current_user.counselor.previous_sessions.order("start_datetime desc").first(5)
     else
       @upcoming_sessions = current_user.upcoming_sessions.order("start_datetime asc")
       @previous_sessions = current_user.previous_sessions.order("start_datetime desc").first(5)
