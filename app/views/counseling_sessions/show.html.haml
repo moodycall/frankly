@@ -3,23 +3,24 @@
   %br
   .row
     .col-sm-8
-      .counselor_preview_wrapper
-        .row
-          .col-xs-4.col-md-3
-            .counselor_image_wrapper
-              -if @counseling_session.counselor.photo.present?
-                = image_tag @counseling_session.counselor.photo_url(:medium), :class => "counselor_image"
-              -else
-                = image_tag "default-avatar.png", :class => "counselor_image"
-          .col-xs-6.col-md-7
+      - unless @counseling_session.counselor_id == current_user.id
+        .counselor_preview_wrapper
+          .row
+            .col-xs-4.col-md-3
+              .counselor_image_wrapper
+                -if @counseling_session.counselor.photo.present?
+                  = image_tag @counseling_session.counselor.photo_url(:medium), :class => "counselor_image"
+                -else
+                  = image_tag "default-avatar.png", :class => "counselor_image"
+            .col-xs-6.col-md-7
 
-            .counselor_name_wrapper
-              %h1.counselor_name
-                = @counseling_session.counselor.user.name
+              .counselor_name_wrapper
+                %h1.counselor_name
+                  = @counseling_session.counselor.user.name
 
-            %p.session_timeline
-              = @counseling_session.start_datetime.in_time_zone.strftime("%B %e, %Y at %l:%M%P -")
-              = @counseling_session.estimated_endtime.in_time_zone.strftime("%l:%M%P")
+              %p.session_timeline
+                = @counseling_session.start_datetime.in_time_zone.strftime("%B %e, %Y at %l:%M%P -")
+                = @counseling_session.estimated_endtime.in_time_zone.strftime("%l:%M%P")
 
     .col-sm-4
       - if @counseling_session.counselor_id == current_user.id
@@ -34,8 +35,11 @@
             = current_user.session_count_with_counselor(@counseling_session.counselor.id).ordinalize
             session with
             = @counseling_session.counselor.user.name
+      
       %p.text-right
         #countdown_clock.text-right
+
+      %br
 
   #video_wrapper
     #userDiv.hidden-xs
@@ -121,3 +125,4 @@
       session.publish(publisher, {width:50, height:25});
     }
   });
+}
