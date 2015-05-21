@@ -64,18 +64,22 @@ jQuery ->
   ).resize()
 
   $(".counselor-time-button").click( ->
-      session_rate        = parseFloat($(this).attr("data-session-rate"))
-      time                = $(this).attr("data-time")
-  
-      $(".duration_select").find("option").each( ->
-        $(this).attr("data-session-rate", session_rate)
-      )
+    session_rate        = parseFloat($(this).attr("data-session-rate"))
+    is_hourly_available = $(this).attr("data-available")
+    time                = $(this).attr("data-time")
 
-      $(".duration_select").val("30")
-      $(".duration_select").attr("data-session-rate", session_rate)
-
-      $(".selected_time").val(time)
+    $(".duration_select").find("option").each( ->
+      $(this).attr("data-session-rate", session_rate)
     )
+
+    $(".duration_select").val("30")
+    $(".duration_select").attr("data-session-rate", session_rate)
+
+    $(".selected_time").val(time).change()
+
+    if (is_hourly_available == "false")
+      $('.duration_select option[value="60"]').hide()
+  )
 
   $(".selected_time").change ->
     parent              = $(this).parent(".new_counseling_session")
