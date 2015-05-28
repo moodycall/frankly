@@ -79,7 +79,7 @@ class CounselingSession < ActiveRecord::Base
 
 	def self.chargeable_sessions
 		self.where(:stripe_charge_id => nil, :cancelled_on_dts => nil).select do |session|
-			session.start_datetime - 2.days > Time.now
+			Time.now > (session.start_datetime - 2.days)
 		end
 	end
 
