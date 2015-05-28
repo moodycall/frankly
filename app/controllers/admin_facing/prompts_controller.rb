@@ -34,7 +34,7 @@ class AdminFacing::PromptsController < AdminFacingController
 
     respond_to do |format|
       if @prompt.save
-        format.html { redirect_to @prompt, notice: 'Prompt was successfully created.' }
+        format.html { redirect_to prompts_path, notice: 'Prompt was successfully created.' }
         format.json { render :show, status: :created, location: @prompt }
       else
         format.html { render :new }
@@ -48,7 +48,7 @@ class AdminFacing::PromptsController < AdminFacingController
   def update
     respond_to do |format|
       if @prompt.update(prompt_params)
-        format.html { redirect_to @prompt, notice: 'Prompt was successfully updated.' }
+        format.html { redirect_to prompts_path, notice: 'Prompt was successfully updated.' }
         format.json { render :show, status: :ok, location: @prompt }
       else
         format.html { render :edit }
