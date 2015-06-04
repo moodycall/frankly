@@ -25,8 +25,8 @@
 				%hr
 				.text-center
 					%ul.list-inline
-						%li
-							= link_to "View Full Session History", user_session_history_path, :class => "btn btn-link"
+						-# %li
+							-# = link_to "View Full Session History", user_session_history_path, :class => "btn btn-link"
 						%li
 							- unless params[:q].present?
 								= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-link"

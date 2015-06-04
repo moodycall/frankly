@@ -65,11 +65,15 @@ class User < ActiveRecord::Base
   end
 
   def upcoming_sessions
-    counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime >= ?", Time.zone.now)
+    counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime asc").select do |session|
+      session.estimated_endtime > Time.zone.now
+    end
   end
 
   def previous_sessions
-    counseling_sessions.where(:cancelled_on_dts => nil).where("start_datetime <= ?", Time.zone.now)
+    counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime desc").select do |session|
+      session.estimated_endtime < Time.now
+    end
   end
 
   def current_card
