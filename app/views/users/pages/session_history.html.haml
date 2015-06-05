@@ -18,11 +18,11 @@
 		- if @counseling_sessions.present?
 			- @counseling_sessions.each do |session|
 				.col-md-6
-					- if params[:q].present?
+					- if params[:q].present? and current_user.counselor.present?
 						= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
 					- else
 						= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
 					%br
 		- else
-			%p
-				You have no Counseling Sessions.
+			%p.text-center
+				You have no Counseling Sessions #{params[:q] ? "with Clients." : "with Counselors."}
