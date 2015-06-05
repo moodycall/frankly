@@ -7,19 +7,22 @@
 	- if current_user.counselor.present?
 		.btn-group.counselor-toggle
 			= link_to url_for(), :class => "btn btn-primary #{'active' unless params[:q]}" do
-				Client Sessions
+				With Counselors
 			= link_to url_for(:q => :counselor), :class => "btn btn-primary #{'active' if params[:q]}" do
-				Counselor Sessions
+				With Clients
 
 	%br
 	%br
 
 	.row
-		- current_user.previous_sessions.order("start_datetime desc").each do |session|
-			.col-md-6
-				- if params[:q].present?
-					= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
-				- else
-					= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
-				%br
-		
+		- if @counseling_sessions.present?
+			- @counseling_sessions.each do |session|
+				.col-md-6
+					- if params[:q].present?
+						= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
+					- else
+						= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
+					%br
+		- else
+			%p
+				You have no Counseling Sessions.
