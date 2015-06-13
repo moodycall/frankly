@@ -73,7 +73,50 @@
 
 %script{:src => "//www-tbrel.tokbox.com/v2.6/js/opentok.js"}
 
+/ Modal
+#compatabilityModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4#myModalLabel.modal-title Get Ready!
+      .modal-body
+        %p
+          For a seamless experience, please download one of the two MoodyCall supported browsers below before continuing.
+        %p
+          %em
+            (Note: Windows, Mac OSX, or Android required)
+
+        %hr
+
+        .row
+          .col-sm-6.text-center
+            .form-group
+              = link_to "https://www.google.com/chrome/browser/", :target => "_blank" do
+                = image_tag "icons/icon-chrome.png", :class => "browser-icon"
+                Download Chrome
+
+          .col-sm-6.text-center
+            .form-group
+              = link_to "http://firefox.com", :target => "_blank" do
+                = image_tag "icons/icon-firefox.png", :class => "browser-icon"
+                Download Firefox
+
+      .modal-footer
+        = link_to "Why use another browser?", "http://moodycall.org/system-requirements", :target => "_blank", :class => "btn btn-link"
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
 :javascript
+
+  if (#{browser.chrome?} == true || #{browser.firefox?} == true) {
+  }
+  else if (#{browser.mobile?} == true) {
+   $('#compatabilityModal').modal('show');
+  }
+  else {
+    $('#compatabilityModal').modal('show');
+  }
 
   var Time = Date.now();
 
