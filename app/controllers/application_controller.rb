@@ -23,14 +23,24 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     unless session[:pending_session_counselor_id].present?
-      session[:previous_url] || "/dashboard"
+      if session[:previous_url]
+        session[:previous_url]
+      elsif current_user.counselor.present?
+        user_dashboard_path(:q => :counselor)
+      else
+        user_dashboard_path
+      end
     else
       new_counseling_session_path
     end
   end
 
   def after_confirmation_path_for(resource_name, resource)
-    "/dashboard"
+    if current_user.counselor.present?
+      user_dashboard_path(:q => :counselor)
+    else
+      user_dashboard_path
+    end
   end
 
   def set_timezone
