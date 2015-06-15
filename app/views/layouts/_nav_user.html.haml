@@ -8,7 +8,7 @@
       = link_to favorite_counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavFavorites" do
         Favorites
     %li
-      = link_to "http://moodycall.org/support", :id => "primaryNavHelp" do
+      = link_to "http://moodycall.org/support", :id => "primaryNavHelp", :target => "_blank" do
         Help
     %li.dropdown
       %a.dropdown-toggle{"aria-expanded" => "false", "data-toggle" => "dropdown", :href => "#", :role => "button"}
