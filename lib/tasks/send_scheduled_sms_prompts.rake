@@ -10,8 +10,8 @@ task :send_scheduled_sms_prompts => :environment do
   @smsable_prompts.each do |pre|
     puts "Texting Prompt"
     if @client.messages.create(
-        from: '+12564176612',
-        to:   '+1#{pre.user.phone}',
+        from: "+#{ENV["TWILIO_PHONE_NUMBER"]}",
+        to:   "+1#{pre.user.phone}",
         body: "#{pre.prompt.sms_message}"
       )
       pre.sent_sms_dts = Time.now
