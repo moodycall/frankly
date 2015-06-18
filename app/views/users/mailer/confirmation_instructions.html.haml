@@ -1,4 +1,13 @@
 %p
-  Welcome #{@email}!
-%p You can confirm your account email through the link below:
-%p= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token)
+  Hello!
+%p Confirm your email address below to help secure your MoodyCall account. A followup email will be sent to you shortly.
+
+%br
+
+= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), :style => "padding: 16px 20px;border: 2px solid;"
+
+%br
+%br
+
+%p
+  MoodyCall
