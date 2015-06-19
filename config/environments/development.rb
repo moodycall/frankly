@@ -44,8 +44,8 @@ Rails.application.configure do
   config.aws_secret_access_key   = ENV["AWS_SECRET_KEY"]
   config.bucket_name             = ENV["AWS_BUCKET_NAME"]
 
-  config.opentok_api_key         = "45208992"
-  config.opentok_api_secret      = "f5ff986a1a00acc9642aea5bdddf5b27282c24a1"
+  config.opentok_api_key         = ENV["OPENTOK_KEY"]
+  config.opentok_api_secret      = ENV["OPENTOK_SECRET"]
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

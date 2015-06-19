@@ -7,17 +7,16 @@
         = f.error_notification
 
         .form-inputs
-          .form-group
-            = f.input :advanced_scheduling_in_weeks, as: :string, :label => false, input_html: { :class => "form-control floatlabel"}, :placeholder => "How many weeks in advance can a client schedule a session?"
-            
           #counselor_availability_container
+            .form-group
+              = f.input :advanced_scheduling_in_weeks, as: :string, :label => false, input_html: { :class => "form-control floatlabel"}, :placeholder => "How many weeks in advance can a client schedule a session?"
             #monday_row.row.availability_day_wrapper{:class => (@counselor.available_monday ? nil : "unavailable")}
               .col-sm-6
                 .availability_day_title Monday
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_monday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_monday, :label => "Available"
                   %li
                     #monday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#monday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -53,7 +52,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_tuesday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_tuesday, :label => "Available"
                   %li
                     #tuesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#tuesday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -89,7 +88,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_wednesday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_wednesday, :label => "Available"
                   %li
                     #wednesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#wednesday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -125,7 +124,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_thursday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_thursday, :label => "Available"
                   %li
                     #thursday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#thursday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -161,7 +160,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_friday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_friday, :label => "Available"
                   %li
                     #friday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#friday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -197,7 +196,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_saturday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_saturday, :label => "Available"
                   %li
                     #saturday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#saturday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -233,7 +232,7 @@
               .col-sm-6
                 %ul.list-inline.pull-right
                   %li
-                    = f.input :available_sunday, :label => false, input_html: { :class => "boolean-switch", "data-on-text" =>"Yes", "data-off-text" => "No"}
+                    = f.input :available_sunday, :label => "Available"
                   %li
                     #sunday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#sunday_intervals_wrapper"}
                       .fa.fa-pencil
@@ -264,8 +263,8 @@
                   #add_sunday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#sunday_interval_table", "data-day-value" => "0"} Add Interval
 
 
-        .form-actions
-          = f.submit "Save Availability", :class => "btn btn-primary btn-block btn-lg"
+            .form-actions
+              = f.submit "Save Availability", :class => "btn btn-primary btn-block btn-lg"
 
 :javascript
 

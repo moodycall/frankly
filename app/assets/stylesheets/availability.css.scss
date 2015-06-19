@@ -2,6 +2,8 @@
 
 #counselor_availability_container {
 	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
 	.unavailable {
 		color: $text_muted;
 	}
@@ -15,11 +17,7 @@
 .availability_day_wrapper {
 	border: 1px solid #666;
 	margin: 10px 0px;
-	.bootstrap-switch .bootstrap-switch-handle-on,
-	.bootstrap-switch .bootstrap-switch-handle-off,
-	.bootstrap-switch .bootstrap-switch-label {
-		padding: 5px 12px;
-	}
+	padding: 10px 0px;
 	.radio, .checkbox {
 		position: inherit;
 		display: block;
@@ -30,6 +28,6 @@
 }
 
 .availability_day_title {
-	padding: 18px 0px;
-	font-size: 25px;
+	padding: 12px 0px;
+  font-size: 25px;
 }

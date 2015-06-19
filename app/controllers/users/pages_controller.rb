@@ -13,9 +13,9 @@ class Users::PagesController < ApplicationController
 
   def session_history
     if params[:q] == "counselor" and current_user.counselor
-      @counseling_sessions = current_user.counselor.counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime desc").all
+      @counseling_sessions = current_user.counselor.counseling_sessions.previous_sessions
     else
-      @counseling_sessions = current_user.counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime desc").all
+      @counseling_sessions = current_user.counseling_sessions.previous_sessions
     end
   end
 end

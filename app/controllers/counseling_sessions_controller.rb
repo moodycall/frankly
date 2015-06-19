@@ -20,7 +20,7 @@ class CounselingSessionsController < ApplicationController
       if @counseling_session.opentok_session_id.present?
         @token = opentok.generate_token @counseling_session.opentok_session_id,
             :role        => :moderator,
-            # :expire_time => @counseling_session.estimated_endtime,
+            :expire_time => @counseling_session.estimated_endtime,
             :data        => "name=#{current_user.name}"
       else
         @counseling_session.create_opentok_session
@@ -72,7 +72,8 @@ class CounselingSessionsController < ApplicationController
         else
           if @counseling_session.save
             session.delete(:pending_session_counselor_id)
-            # @counseling_session.create_opentok_session # Create  opentok session for later use
+            CounselorMailer.new_counseling_session(@counseling_session).deliver
+            @counseling_session.create_opentok_session # Create  opentok session for later use
             if current_user.current_card
               redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
             else

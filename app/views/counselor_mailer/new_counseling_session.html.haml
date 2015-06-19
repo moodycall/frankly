@@ -1,0 +1,27 @@
+%p
+  Greetings!
+
+%p
+  Based on your availability settings in MoodyCall, you have been scheduled as Counselor for the following new session.
+
+%p
+  %strong
+    Client Name
+  %br
+  = @client.name
+
+%p
+  %strong
+    Counseling Session Start
+  %br
+  = @counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
+
+%p
+  %em
+  Note: You and your client will be able to enter the session up to 5 minutes early. Please ensure that your computer meets all system requirements beforehand, by visiting #{link_to "http://moodycall.org/system-requirements", "http://moodycall.org/system-requirements"}. You may also wish to visit the "Best Practices" page at #{link_to "http://moodycall.org/counselors/best-practices", "http://moodycall.org/counselors/best-practices"} for some guided tips on making video sessions more effective. followingally, for information regarding the use of MoodyCall, please visit #{link_to "http://moodycall.org/support", "http://moodycall.org/support"}.
+
+%p
+  Thanks for all that you do. Have a fantastic session!
+
+%p
+  #{"- Your Friends at MoodyCall"}

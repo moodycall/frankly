@@ -71,8 +71,6 @@
   .text-center
     = link_to "Exit Session", user_dashboard_path, :class => "btn text-danger"
 
-%script{:src => "//www-tbrel.tokbox.com/v2.6/js/opentok.js"}
-
 / Modal
 #compatabilityModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
   .modal-dialog
@@ -107,6 +105,8 @@
         = link_to "Why use another browser?", "http://moodycall.org/system-requirements", :target => "_blank", :class => "btn btn-link"
         %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
 
+-# %script{:src => "//www-tbrel.tokbox.com/v2.6/js/opentok.js"}
+%script{:src => "//static.opentok.com/v2/js/opentok.min.js"}
 :javascript
 
   if (#{browser.chrome?} == true || #{browser.firefox?} == true) {
@@ -149,7 +149,7 @@
   //
   //  updateClock();
 
-  var apiKey = '45208992';
+  var apiKey = "#{ENV["OPENTOK_KEY"]}";
   var sessionId = "#{@counseling_session.opentok_session_id}"; 
   var token = "#{@token}";
   
@@ -172,4 +172,3 @@
       session.publish(publisher, {width:50, height:25});
     }
   });
-}
