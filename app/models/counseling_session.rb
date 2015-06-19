@@ -136,7 +136,7 @@ class CounselingSession < ActiveRecord::Base
 
 			preprompt        						 = self.session_prompts.new
     	preprompt.prompt             = prompt
-    	preprompt.user               = self.counselor
+    	preprompt.user               = self.counselor.user
 
 	    if prompt.interval    == 1 # Minutes
 	    	send_time = self.start_datetime - (prompt.quantity).minutes
@@ -188,7 +188,7 @@ class CounselingSession < ActiveRecord::Base
 
       preprompt                    = self.session_prompts.new
       preprompt.prompt             = prompt
-      preprompt.user               = self.counselor
+      preprompt.user               = self.counselor.user
 
       if prompt.interval    == 1 # Minutes
         send_time = self.end_datetime + (prompt.quantity).minutes
