@@ -134,8 +134,8 @@ class Counselor < ActiveRecord::Base
 	    intervals.each do |interval|
 	    	interval_start		 = parse_dts(interval.start_time).in_time_zone(Time.zone.name)
 	    	interval_end  		 = parse_dts(interval.end_time).in_time_zone(Time.zone.name)
-	    	interval_start_dts = DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone)
-	    	interval_end_dts   = DateTime.new(date.year, date.month, date.day, interval_end.hour, interval_end.min, interval_end.sec, interval_end.zone)
+	    	interval_start_dts = DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone).in_time_zone(Time.zone.name)
+	    	interval_end_dts   = DateTime.new(date.year, date.month, date.day, interval_end.hour, interval_end.min, interval_end.sec, interval_end.zone).in_time_zone(Time.zone.name)
 
 	    	daily_times.each do |time|
 	    		t  						= parse_dts(time).in_time_zone(Time.zone.name)

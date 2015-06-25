@@ -8,7 +8,7 @@ development:
   adapter: postgresql
   database: moodycall_dev
   pool: 5
-  timeout: 5000
+  timeout: 15000
 
 staging:
   adapter: postgresql

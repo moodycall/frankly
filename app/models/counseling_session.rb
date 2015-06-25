@@ -69,7 +69,11 @@ class CounselingSession < ActiveRecord::Base
   end
 
 	def is_refundable
-		self.stripe_charge_id ? true : false
+		if stripe_charge_id and (start_datetime > 24.hours.from_now)
+      true 
+    else
+      false
+    end
 		
 	end
 

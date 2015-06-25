@@ -111,14 +111,25 @@ class CounselingSessionsController < ApplicationController
     @counseling_session.cancelled_on_dts = Time.now
     @counseling_session.save
 
-    if @counseling_session.is_refundable
-      redirect_to user_dashboard_path, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and refunded."
+    if current_user.counselor.present? and current_user.counselor == @counseling_session.counselor 
+      @counseling_session.issue_refund
+      redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and client has been refunded."
       CounselorMailer.client_cancellation(@counseling_session.id).deliver
       UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
     else
-      redirect_to user_dashboard_path, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled."
-      CounselorMailer.client_cancellation(@counseling_session.id).deliver
-      UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+      if @counseling_session.is_refundable
+        if @counseling_session.issue_refund
+          redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and refunded."
+          CounselorMailer.client_cancellation(@counseling_session.id).deliver
+          UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+        else
+          redirect_to :back, :notice => "Your Counseling Session ##{@counseling_session.secure_id} has been cancelled but it appears there was an issue refunding your session. This could be for a number of reasons, so please consult a system administrator for help."
+        end
+      else
+        redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled."
+        CounselorMailer.client_cancellation(@counseling_session.id).deliver
+        UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+      end
     end
   end
 

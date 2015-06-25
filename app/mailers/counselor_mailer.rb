@@ -8,7 +8,7 @@ class CounselorMailer < ActionMailer::Base
     @greeting           = "Hello"
 
     mail to: "#{@counselor.email}",
-    subject: "Client Cancellation via MoodyCall"
+    subject: "Counseling Session Cancellation"
   end
 
   def new_counseling_session(counseling_session_id)
