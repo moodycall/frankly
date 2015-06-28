@@ -11,18 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150508165033) do
+ActiveRecord::Schema.define(version: 20150626175945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "availability_intervals", force: true do |t|
-    t.integer  "day_of_week",  default: 1, null: false
+    t.integer  "day_of_week",   default: 1, null: false
     t.integer  "counselor_id"
     t.string   "start_time"
     t.string   "end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "timezone_name"
   end
 
   create_table "counseling_certifications", force: true do |t|

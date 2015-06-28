@@ -1,5 +1,5 @@
 - @modal_target_id = "#{counselor.slug}ScheduleModal"
--# = raise "#{@dts}"
+- availabilities   = counselor.availability_by_dts(@dts)
 
 .counselor_preview_wrapper.preview_with_schedule{ :data => {:gender => counselor.user.gender}}
   .row
@@ -31,11 +31,11 @@
       = render "shared/counselors/public_rating", :counselor => counselor
 
       .counselor_availability_preview_wrapper
-        - if counselor.availability_by_dts(@dts).count > 0
-          - counselor.availability_by_dts(@dts).take(5).each do |interval|
+        - if availabilities.length > 0
+          - availabilities.first(5).each do |interval|
             .col-xs-4.col-sm-2
-              .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => "#{time_as_local(interval)}", :available => "#{counselor.availability_by_dts(@dts).include?(interval + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
-                = time_as_local(interval)
+              .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.strftime("%I:%M%P"), :available => "#{availabilities.include?(interval + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
+                = interval.strftime("%I:%M%P")
         - else
           .col-xs-5.col-sm-3
             .btn.btn-primary.btn-block{ :disabled => :disabled } 
@@ -49,4 +49,4 @@
 
 %hr
 
-= render partial: "shared/counselors/modal_scheduler", locals: {counselor: counselor, target_id: @modal_target_id, dts: @dts}
+= render partial: "shared/counselors/modal_scheduler", locals: {counselor: counselor, target_id: @modal_target_id, dts: @dts, :availabilities => availabilities}

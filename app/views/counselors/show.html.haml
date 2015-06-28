@@ -1,8 +1,11 @@
 = render "layouts/alerts"
+- availabilities   = @counselor.availability_by_dts(@dts)
 
 .container
   .row
     .col-md-6
+
+      -# = raise "#{@counselor.availability_intervals.all_availabilities(Time.now)}"
 
       .counselor_professional_overview_wrapper
         - unless @counselor.is_active
@@ -14,13 +17,13 @@
         - if @counselor.next_available.present?
           %hr
           .text-center
-            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => "#{time_as_local(@counselor.next_available)}", :available => "#{@counselor.availability_by_dts(@dts).include?(@counselor.next_available + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => @counselor.next_available.strftime("%I:%M%P"), :available => availabilities.include?(@counselor.next_available + 30.minutes), :session_rate => "#{@counselor.session_rate_in_dollars}"}}
               Book Next Available
 
             Begins in
             = distance_of_time_in_words(Time.now, @counselor.next_available)
 
-            = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: @counselor.next_available}
+            = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: @counselor.next_available, :availabilities => availabilities}
 
         %hr
 
@@ -79,6 +82,6 @@
 
         %hr
 
-        = render "availability_day", :dts => @dts
-        = render "availability_day", :dts => @dts + 1.day
-        = render "availability_day", :dts => @dts + 2.day
+        = render "availability_day", :dts => (@dts).in_time_zone
+        = render "availability_day", :dts => (@dts + 1.day).in_time_zone
+        = render "availability_day", :dts => (@dts + 2.day).in_time_zone

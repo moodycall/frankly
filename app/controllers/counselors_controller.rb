@@ -21,7 +21,7 @@ class CounselorsController < ApplicationController
     end
 
     @available_counselors = @specialty.counselors.active_counselors.sort_by(&:popularity).select do |c|
-      c.availability_by_dts(@dts).count > 0 and
+      c.availability_by_dts(@dts).present? and
       if gender.present?
         c.user.gender == gender
       else
@@ -148,7 +148,6 @@ class CounselorsController < ApplicationController
   # PATCH/PUT /counselors/1
   # PATCH/PUT /counselors/1.json
   def update
-
     remove_degrees
     remove_licenses
     remove_certifications
@@ -202,7 +201,7 @@ class CounselorsController < ApplicationController
                                         :available_sunday,
                                         :is_active,
                                         { :specialty_ids => [] },
-                                        availability_intervals_attributes: [:day_of_week, :start_time, :end_time],
+                                        availability_intervals_attributes: [:day_of_week, :start_time, :end_time, :timezone_name],
                                         counseling_licenses_attributes: [:id, :license_number, :license_type, :state, :established_on_date],
                                         counseling_certifications_attributes: [:id, :name],
                                         counseling_degrees_attributes: [:id, :degree_type, :name, :institution, :year_of_completion])

@@ -2,7 +2,7 @@
 
   %h4.search_results_overview
     %em
-      #{pluralize(@counselors.count, "Professional")}
+      #{pluralize(@counselors.length, "Professional")}
       - if @specialty.present?
         specializing in
         %em
@@ -16,7 +16,7 @@
 
   %hr
   
-  - if @counselors.count > 0
+  - if @counselors.length > 0
     - @counselors.each do |counselor|
       = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
   - else

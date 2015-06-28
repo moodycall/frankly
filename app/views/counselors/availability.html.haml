@@ -35,6 +35,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 1
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -71,6 +72,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 2
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -107,6 +109,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 3
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -143,6 +146,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 4
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -179,6 +183,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 5
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -215,6 +220,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 6
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td
@@ -251,6 +257,7 @@
                         %tr.time_pair
                           %td.hidden
                             = a.input :day_of_week, :value => 0
+                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
                           %td
                             = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
                           %td

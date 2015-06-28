@@ -1,5 +1,5 @@
 - @modal_target_id = "#{@counselor.slug}-#{dts.to_s.parameterize}"
--# = raise "#{@dts}"
+- availabilities   = @counselor.availability_by_dts(dts)
 
 %h3
   = (dts).strftime("%B %e, %Y")
@@ -11,18 +11,18 @@
       %br
       %em
         #{(dts).strftime("%B %e, %Y")}
-  - elsif @counselor.availability_by_dts(dts).count > 0 # Then make sure the counselor has availabilities on dts
-    - @counselor.availability_by_dts(dts).each do |interval|
+  - elsif availabilities.count > 0 # Then make sure the counselor has availabilities on dts
+    - availabilities.each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
-        - if interval > 30.minutes.from_now
-          .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => "#{time_as_local(interval)}", :available => "#{@counselor.availability_by_dts(dts).include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
-            = time_as_local(interval)
+        -# - if interval > 30.minutes.from_now
+        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.strftime("%I:%M%P"), :available => "#{availabilities.include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+          = interval.strftime("%I:%M%P")
             
   - else # Otherwise, there aren't any openings
     %p.text-center
       Sorry, there are no openings for
       %br
       %em
-        #{(dts).strftime("%B %e, %Y")}
+        = dts.strftime("%B %e, %Y")
 
-= render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: @modal_target_id, dts: dts}
+= render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: @modal_target_id, dts: dts, :availabilities => availabilities}

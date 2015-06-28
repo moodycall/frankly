@@ -66,13 +66,13 @@ class User < ActiveRecord::Base
 
   def upcoming_sessions
     counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime asc").select do |session|
-      session.estimated_endtime > Time.zone.now
+      session.estimated_endtime > Time.now.in_time_zone
     end
   end
 
   def previous_sessions
     counseling_sessions.where(:cancelled_on_dts => nil).order("start_datetime desc").select do |session|
-      session.estimated_endtime < Time.now
+      session.estimated_endtime < Time.now.in_time_zone
     end
   end
 
