@@ -67,7 +67,7 @@ class CounselingSessionsController < ApplicationController
         @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
         @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
 
-        if current_user.is_booked_at_datetime(@counseling_session.start_datetime) == true
+        if current_user.is_booked_at_datetime(@counseling_session.start_datetime, @counseling_session.estimate_duration_in_minutes) == true
           redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
         else
           if @counseling_session.save
