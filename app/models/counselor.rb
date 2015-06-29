@@ -129,7 +129,7 @@ class Counselor < ActiveRecord::Base
 		# DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone)
 		weeks_until_date =  (date.end_of_day - Time.now).to_i / 604800
 
-		if weeks_until_date > 0 and weeks_until_date <= advanced_scheduling_in_weeks 
+		if weeks_until_date >= 0 and weeks_until_date <= advanced_scheduling_in_weeks 
 			all_times = availability_intervals.all_availabilities(date)
 
 	  	booked_session_by_date(date).each do |booked_session|
