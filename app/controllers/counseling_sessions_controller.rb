@@ -112,13 +112,18 @@ class CounselingSessionsController < ApplicationController
     @counseling_session.save
 
     if current_user.counselor.present? and current_user.counselor == @counseling_session.counselor 
-      @counseling_session.issue_refund
-      redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and client has been refunded."
-      CounselorMailer.client_cancellation(@counseling_session.id).deliver
-      UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+      if @counseling_session.stripe_charge_id.present? and @counseling_session.issue_refund
+        redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and client has been refunded."
+        CounselorMailer.client_cancellation(@counseling_session.id).deliver
+        UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+      else
+        redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled."
+        CounselorMailer.client_cancellation(@counseling_session.id).deliver
+        UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
+      end
     else
       if @counseling_session.is_refundable
-        if @counseling_session.issue_refund
+        if @counseling_session.stripe_charge_id.present? and @counseling_session.issue_refund
           redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and refunded."
           CounselorMailer.client_cancellation(@counseling_session.id).deliver
           UserMailer.counseling_session_cancellation(@counseling_session.id).deliver
