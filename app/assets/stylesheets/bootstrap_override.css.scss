@@ -306,6 +306,8 @@ textarea.form-control {
 
 .alert {
 	margin-bottom: 0px;
+	z-index: 9999999;
+  position: relative;
 }
 
 .modal-header {
