@@ -48,6 +48,12 @@ class CounselingSession < ActiveRecord::Base
     end
   end
 
+  def should_be_cancelled
+    if start_datetime < 20.minutes.from_now.utc
+      true
+    end
+  end
+
 	def create_opentok_session
 		api_key    = Rails.configuration.opentok_api_key
     api_secret = Rails.configuration.opentok_api_secret
@@ -61,11 +67,11 @@ class CounselingSession < ActiveRecord::Base
 	end
 
 	def is_cancellable
-		self.start_datetime > Time.now and self.cancelled_on_dts == nil ? true : false
+		self.start_datetime > Time.now.utc and self.cancelled_on_dts == nil ? true : false
 	end
 
   def is_enterable
-    self.start_datetime < 5.minutes.from_now and self.estimated_endtime > Time.now
+    self.start_datetime < 5.minutes.from_now.utc and self.estimated_endtime > Time.now.utc
   end
 
 	def is_refundable
@@ -87,12 +93,12 @@ class CounselingSession < ActiveRecord::Base
 
 	def self.chargeable_sessions
 		self.where(:stripe_charge_id => nil, :cancelled_on_dts => nil).select do |session|
-			Time.now > (session.start_datetime - 2.days)
+			Time.now.utc > (session.start_datetime - 2.days)
 		end
 	end
 
 	def self.upcoming_sessions
-		self.where(:cancelled_on_dts => nil).where("start_datetime > ?", Time.now).order(:start_datetime => :asc).all
+		self.where(:cancelled_on_dts => nil).where("start_datetime > ?", Time.now.utc).order(:start_datetime => :asc).all
 	end
 
 	private
@@ -126,7 +132,7 @@ class CounselingSession < ActiveRecord::Base
 	    	send_time = self.start_datetime - (prompt.quantity).months
 	    end
 
-	    if send_time > Time.now
+	    if send_time > Time.now.utc
 	    	preprompt.scheduled_send_dts = send_time
 				preprompt.save
 			end
@@ -152,7 +158,7 @@ class CounselingSession < ActiveRecord::Base
 	    	send_time = self.start_datetime - (prompt.quantity).months
 	    end
 
-	    if send_time > Time.now
+	    if send_time > Time.now.utc
 	    	preprompt.scheduled_send_dts = send_time
 				preprompt.save
 			end
@@ -178,7 +184,7 @@ class CounselingSession < ActiveRecord::Base
         send_time = self.end_datetime + (prompt.quantity).months
       end
 
-      if send_time > Time.now
+      if send_time > Time.now.utc
         preprompt.scheduled_send_dts = send_time
         preprompt.save
       end
@@ -204,7 +210,7 @@ class CounselingSession < ActiveRecord::Base
         send_time = self.end_datetime + (prompt.quantity).months
       end
 
-      if send_time > Time.now
+      if send_time > Time.now.utc
         preprompt.scheduled_send_dts = send_time
         preprompt.save
       end
