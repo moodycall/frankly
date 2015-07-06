@@ -27,7 +27,11 @@ class CreditCardsController < ApplicationController
     @credit_card.last_four      = card.last4
 
     if @credit_card.save
-      redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
+      unless session[:pending_session_counselor_id].present?
+        redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
+      else
+        redirect_to new_counseling_session_path, notice: 'You are almost done. Now you can finalize your session.'
+      end
     else
       render :new
     end
@@ -51,12 +55,20 @@ class CreditCardsController < ApplicationController
   # DELETE /credit_cards/1.json
   def deactivate
     @credit_card.is_active = false
+
     if @credit_card.save
+      current_user.upcoming_sessions.each do |counseling_session|
+        counseling_session.cancelled_on_dts = Time.now
+        if counseling_session.save
+          CounselorMailer.client_cancellation(counseling_session.id).deliver
+          UserMailer.counseling_session_cancellation(counseling_session.id).deliver
+        end
+      end
       # If the account has been deactivated from MoodyCall,
       # uncomment below if we decide we need to remove from Stripe
       # customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
       # card                        = customer.cards.retrieve(@credit_card.stripe_card_id).delete()
-      redirect_to credit_cards_url, notice: 'Credit card was successfully destroyed.'
+      redirect_to credit_cards_url, notice: 'Credit card was successfully destroyed and all upcoming session were cancelled.'
     else
       redirect_to credit_cards_url, notice: 'Credit card was not successfully.'
     end

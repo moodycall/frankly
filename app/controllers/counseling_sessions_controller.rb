@@ -42,11 +42,15 @@ class CounselingSessionsController < ApplicationController
     unless session[:pending_session_counselor_id].present?
       redirect_to counselors_path, notice: "Search for a Counselor you would like to schedule a session with."
     else
-      @counselor               = Counselor.find(session[:pending_session_counselor_id])
-      @counseling_session      = CounselingSession.new
-      @counseling_session.time = session[:pending_session_time]
-      @dts                     = Time.parse(session[:pending_session_date]).in_time_zone - Time.parse(session[:pending_session_date]).utc_offset
-      session[:pending_session_date]
+      if current_user.current_card
+        @counselor               = Counselor.find(session[:pending_session_counselor_id])
+        @counseling_session      = CounselingSession.new
+        @counseling_session.time = session[:pending_session_time]
+        @dts                     = Time.parse(session[:pending_session_date]).in_time_zone - Time.parse(session[:pending_session_date]).utc_offset
+        session[:pending_session_date]
+      else
+        redirect_to new_credit_card_path, notice: "Please nter the card you'd like to use to pay for your session."
+      end
     end
   end
 
@@ -58,36 +62,36 @@ class CounselingSessionsController < ApplicationController
   # POST /counseling_sessions.json
   def create
     if current_user.present?
-      # Don't allow user to schedule a session with themself.
-      if current_user.counselor.present? and current_user.counselor.id.to_s == "#{params[:counseling_session][:counselor_id]}"
-        redirect_to :back, :notice => "Sorry, you can not schedule a session with yourself."
-      else
-
-        # If they're already a user, we'll want to let them create a session
-        @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
-        @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
-
-        if current_user.is_booked_at_datetime(@counseling_session.start_datetime, @counseling_session.estimate_duration_in_minutes) == true
-          redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
+      if current_user.current_card
+        # Don't allow user to schedule a session with themself.
+        if current_user.counselor.present? and current_user.counselor.id.to_s == "#{params[:counseling_session][:counselor_id]}"
+          redirect_to :back, :notice => "Sorry, you can not schedule a session with yourself."
         else
-          if @counseling_session.save
-            session.delete(:pending_session_counselor_id)
-            CounselorMailer.new_counseling_session(@counseling_session).deliver
-            @counseling_session.create_opentok_session # Create  opentok session for later use
-            if current_user.current_card
+
+          # If they're already a user, we'll want to let them create a session
+          @counseling_session                = current_user.counseling_sessions.new(counseling_session_params)
+          @counseling_session.start_datetime = Time.zone.parse("#{params[:counseling_session][:day]} #{params[:counseling_session][:time]}").utc
+
+          if current_user.is_booked_at_datetime(@counseling_session.start_datetime, @counseling_session.estimate_duration_in_minutes) == true
+            redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
+          else
+            if @counseling_session.save
+              session.delete(:pending_session_counselor_id)
+              CounselorMailer.new_counseling_session(@counseling_session).deliver
+              @counseling_session.create_opentok_session # Create  opentok session for later use
+              
               redirect_to user_dashboard_path, notice: 'Your Counseling Session was successfully created.'
             else
-              redirect_to new_credit_card_path, notice: "Your Counseling Session has been scheduled. Now, enter the card you'd like to use to pay for your session."
             end
-          else
           end
         end
+      else
+        store_temp_session
+
+        redirect_to new_credit_card_path, notice: "Please enter the card you'd like to use to pay for your session."
       end
     else
-      # If the is no current_user we want to save their search data and create the user
-      session[:pending_session_counselor_id] = params[:counseling_session][:counselor_id]
-      session[:pending_session_time]         = params[:counseling_session][:time]
-      session[:pending_session_date]         = params[:counseling_session][:day]
+      store_temp_session
 
       redirect_to new_user_registration_path, notice: "Your Session info has been saved. Please signup or signin to continue."
     end
@@ -146,6 +150,13 @@ class CounselingSessionsController < ApplicationController
       format.html { redirect_to counseling_sessions_url, notice: 'Counseling session was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def store_temp_session
+    # If the is no current_user we want to save their search data and create the user
+    session[:pending_session_counselor_id] = params[:counseling_session][:counselor_id]
+    session[:pending_session_time]         = params[:counseling_session][:time]
+    session[:pending_session_date]         = params[:counseling_session][:day]
   end
 
   private

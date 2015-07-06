@@ -11,6 +11,8 @@
   %body
     = render "layouts/nav_primary"
     = render "layouts/nav_search" unless @hide_search == true
+
+    = render "layouts/alerts"
     
     #main
       = yield

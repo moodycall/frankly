@@ -33,7 +33,7 @@
                     xxxx-xxxx-xxxx-
                   = credit_card.last_four
                 %td.text-right
-                  = link_to deactivate_credit_card_path(credit_card), :data => { :confirm => 'Are you sure?' } do
+                  = link_to deactivate_credit_card_path(credit_card), :data => { :confirm => 'Are you sure? This will cancel all upcoming sessions.' } do
                     .fa.fa-trash
 
       - if @credit_cards.count > 0
