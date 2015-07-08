@@ -11,7 +11,8 @@ class UserMailer < ActionMailer::Base
     @pre      = pre
     @prompt   = pre.prompt
 
-    mail to: "#{@pre.user.email}"
+    mail to: "#{@pre.user.email}",
+    subject: "#{@prompt.name}"
   end
 
   def provide_cc_info(user_id)
