@@ -11,7 +11,7 @@
     = form_tag counselors_path, method: :get do |g|
       .row
         .col-sm-5
-          = select_tag :specialty, options_from_collection_for_select(Specialty.order(:name => :asc).staffed_specialties, :name, :name), :class => "form-control", :label => false, :include_blank => false
+          = select_tag :specialty, options_from_collection_for_select(Specialty.order(:name => :asc).staffed_specialties, :name, :name, Specialty.find(1).name), :class => "form-control", :label => false, :include_blank => false
         .col-sm-4
           = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control"
         .col-sm-3

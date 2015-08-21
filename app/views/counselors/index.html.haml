@@ -1,3 +1,18 @@
+/ edited by: Vivek
+- counselorArr = []
+- if @counselors.length > 0
+  - x = 0
+  - y = 10
+  - @counselors.each do |counselor|
+    - availabilities   = counselor.availability_by_dts(@dts)
+    - first = availabilities.first(1)[0].strftime("%I:%M%P")
+    - counselorArr[x] = {}
+    - counselorArr[x]['counselor'] = counselor
+    - counselorArr[x]['first'] = first
+    - y -= 1
+    - x += 1
+  - counselorArr.sort!{|a,b| a['first'] <=> b['first']}
+/ end
 .container
 
   %h4.search_results_overview
@@ -15,10 +30,9 @@
         = @dts.strftime("%B %e, %Y")
 
   %hr
-  
   - if @counselors.length > 0
-    - @counselors.each do |counselor|
-      = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor}
+    - counselorArr.each do |counselor|
+      = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: counselor['counselor']}
   - else
     .text-center
       There are no counselors matching these parameters.
