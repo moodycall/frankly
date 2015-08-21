@@ -1,3 +1,17 @@
+// edited by vivek
+#textchat
+  #chat-heading
+    - if current_user.is_counselor_of_session(@counseling_session.counselor_id)
+      %p
+        = @counseling_session.client.name
+    - else
+      %p
+        = @counseling_session.counselor.user.name
+  #historyDiv
+    #history
+    %form#form
+      %input#msgTxt
+// end
 .container
   %br
   %br
@@ -171,4 +185,40 @@
     } else {
       session.publish(publisher, {width:50, height:25});
     }
+  });
+  var form = document.querySelector('#form');
+  // Receive a message and append it to the history
+  var msgHistory = document.querySelector('#history');
+  session.on('signal:chat', function(event) {
+      var msg = document.createElement('p');
+      msg.innerHTML = event.data;
+      msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+      msgHistory.appendChild(msg);
+      //msgHistory.insertBefore(msg,form);
+      //msg.scrollIntoView();
+      msg.parentNode.scrollTop = msg.offsetTop;
+  });
+
+  // Send a signal once the user enters data in the form.This will send the data entered to all participants
+
+  var msgTxt = document.querySelector('#msgTxt');
+  $('form').submit(function(){
+    event.preventDefault();
+
+      session.signal({
+          type: 'chat',
+          data: msgTxt.value
+      }, function(error) {
+          if (!error) {
+              msgTxt.value = '';
+          }
+      });
+  });
+
+  // Clicking on the chat section, open the chat window
+  var historyDiv = document.querySelector('#historyDiv');
+  var chatSec = document.querySelector('#chat-heading');
+  $(chatSec).click(function(){
+    $(historyDiv).toggle();
+    $(msgTxt).focus();
   });

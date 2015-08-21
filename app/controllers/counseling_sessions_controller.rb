@@ -46,7 +46,8 @@ class CounselingSessionsController < ApplicationController
         @counselor               = Counselor.find(session[:pending_session_counselor_id])
         @counseling_session      = CounselingSession.new
         @counseling_session.time = session[:pending_session_time]
-        @dts                     = Time.parse(session[:pending_session_date]).in_time_zone - Time.parse(session[:pending_session_date]).utc_offset
+        # @dts                     = Time.parse(session[:pending_session_date]).in_time_zone - Time.parse(session[:pending_session_date]).utc_offset
+        @dts                     = session[:pending_session_date].in_time_zone + Time.parse(session[:pending_session_date]).utc_offset  
         session[:pending_session_date]
       else
         redirect_to new_credit_card_path, notice: "Please nter the card you'd like to use to pay for your session."

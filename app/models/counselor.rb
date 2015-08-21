@@ -106,15 +106,15 @@ class Counselor < ActiveRecord::Base
 	end
 
 	def session_rate_in_dollars
-		hourly_rate_in_dollars / 2
+		hourly_rate_in_dollars / 2.0
 	end
 
 	def session_fee_in_dollars
-		hourly_fee_in_dollars / 2
+		hourly_fee_in_dollars / 2.0
 	end
 
 	def minutely_rate_in_cents
-		hourly_rate_in_cents / 60
+		hourly_rate_in_cents / 60.0
 	end
 
 	def years_in_business
