@@ -6,7 +6,8 @@ class CounselorsController < ApplicationController
   # GET /counselors
   # GET /counselors.json
   def index
-    @specialty = Specialty.find(1)
+    # @specialty = Specialty.find(1)
+    @specialty = Specialty.where(is_active=true).first
 
     if params[:specialty]
       @specialty = Specialty.find_by_name "#{params[:specialty]}"
