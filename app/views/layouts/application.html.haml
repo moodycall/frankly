@@ -7,12 +7,12 @@
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
-    %script{:src => "//js.stripe.com/v2/", :type => "text/javascript"}
+    %script{:src => "https://js.stripe.com/v2/", :type => "text/javascript"}
   %body
+    = render "layouts/alerts"
     = render "layouts/nav_primary"
     = render "layouts/nav_search" unless @hide_search == true
 
-    = render "layouts/alerts"
     
     #main
       = yield
