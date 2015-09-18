@@ -16,7 +16,9 @@
           %label
             Session Day
           %h4.text-center
-            = dts.strftime("%B %d, %Y")
+            = dts.in_time_zone.strftime("%B %d, %Y")
+            - ndts = dts.in_time_zone
+            - availabilities = counselor.availability_by_dts(ndts)
 
           .form-inputs
             = f.hidden_field :counselor_id, :value => counselor.id

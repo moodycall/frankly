@@ -24,15 +24,15 @@ class AvailabilityInterval < ActiveRecord::Base
 	end
 
 	def start_time_in_counselors_zone(date)
-		time = DateTime.parse(start_time)
+		time = DateTime.parse(start_time).in_time_zone(timezone_name)
 
-		DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone).in_time_zone(timezone_name)
+		DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone)
 	end
 
 	def end_time_in_counselors_zone(date)
-		time = DateTime.parse(end_time) - 30.minutes
-
-		DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone).in_time_zone(timezone_name) + 1.day
+		time = DateTime.parse(end_time).in_time_zone(timezone_name) - 30.minutes
+		
+		DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone)
 	end
 
 	def start_time_in_zone(timezone)
@@ -50,8 +50,7 @@ class AvailabilityInterval < ActiveRecord::Base
 
 		origin = requested_date.beginning_of_day
 
-		(0..46).each do |step|
-			origin += 30.minutes
+		(0..47).each do |step|
 
 			convertion_dts = origin.in_time_zone(timezone_name)
 
@@ -61,6 +60,7 @@ class AvailabilityInterval < ActiveRecord::Base
 
 				array.push(origin)
 			end
+			origin += 30.minutes
 		end
 
 		array

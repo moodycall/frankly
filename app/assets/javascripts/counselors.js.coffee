@@ -52,6 +52,8 @@ jQuery ->
   	maxTime: '11:30pm'
   $('.time_pair').datepair()
 
+  # $('#datetime').datepicker({minDate: new Date()})
+  
   $( "#datetime" ).datepicker ->
     dateFormat: "mm/dd/yyyy"
 

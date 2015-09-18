@@ -202,7 +202,7 @@
   // Send a signal once the user enters data in the form.This will send the data entered to all participants
 
   var msgTxt = document.querySelector('#msgTxt');
-  $('form').submit(function(){
+  $('#form').submit(function(){
     event.preventDefault();
 
       session.signal({
