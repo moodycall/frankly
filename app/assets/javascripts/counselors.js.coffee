@@ -77,6 +77,8 @@ jQuery ->
     $(".duration_select").val("30")
     $(".duration_select").attr("data-session-rate", session_rate)
 
+    $(".duration_select").change()
+    
     $(".selected_time").val(time).change()
 
     if (is_hourly_available == "false")
