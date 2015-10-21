@@ -99,7 +99,8 @@ jQuery ->
     parent.find(".duration_select").change()
 
   $(".duration_select").change ->
-    session_rate        = parseFloat($(this).find("option:selected").val())
+    devider = $(this).find("option:selected").val()/30
+    session_rate        = parseFloat($(this).attr('data-session-rate')*devider)
 
     console.log(session_rate)
     update_session_cost(session_rate)
