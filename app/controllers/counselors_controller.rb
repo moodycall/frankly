@@ -134,7 +134,7 @@ class CounselorsController < ApplicationController
   end
 
   def upcoming
-    unless @counselor.is_active or user_can_access_counselor
+    unless @counselor.is_active and user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not access the counselor."
     else
       @tab_name = 'upcoming'
@@ -164,7 +164,7 @@ class CounselorsController < ApplicationController
   # GET /counselors/1/edit
   def edit
     
-    unless @counselor.is_active and user_can_access_counselor
+    unless @counselor.is_active or user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_licenses.present?
