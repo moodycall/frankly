@@ -26,3 +26,13 @@
         %h3
           New Specialty
         = render 'form'
+    .col-md-3
+      .well
+        %h3
+          Default Specialty
+        - spcl =  Specialty.where(:is_active => true, :set_default => 1).first.id
+        = form_tag([:setDefault, @specialty]) do
+          = select_tag :id, options_from_collection_for_select(Specialty.where(:is_active => true).order(:name => :asc), :id, :name, spcl), :class => "form-control", :label => false, :include_blank => false
+          = hidden_field_tag :set_default, 1
+          .form-actions
+            = submit_tag "Save", :class => "btn btn-primary btn-block btn-lg"

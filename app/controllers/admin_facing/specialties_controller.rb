@@ -6,7 +6,7 @@ class AdminFacing::SpecialtiesController < AdminFacingController
   # GET /specialties.json
   def index
     @specialty = Specialty.new
-    @specialties = Specialty.order(:is_active => :desc, :name => :asc).all
+    @specialties = Specialty.order(:name => :asc).all
 
     @page_title    = "Specialties"
   end
@@ -53,6 +53,19 @@ class AdminFacing::SpecialtiesController < AdminFacingController
     end
   end
 
+  def setDefault
+    @def = Specialty.find_by(:id => params[:id])
+    respond_to do |format|
+      if Specialty.update_all(:set_default=>0) and @def.update(:set_default=>1)
+        format.html { redirect_to specialties_url, notice: 'Specialty was successfully updated.' }
+        format.json { render :show, status: :ok, location: @specialty }
+      else
+        format.html { render :edit }
+        format.json { render json: @specialty.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   # DELETE /specialties/1
   # DELETE /specialties/1.json
   def destroy
