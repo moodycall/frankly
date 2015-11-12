@@ -1,13 +1,12 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
-  before_action :set_counselor, only: [:update_bank, :show, :edit, :update, :destroy, :payouts, :availability, :licenses, :certifications, :education]
+  before_action :set_counselor, only: [:update_bank, :show, :edit, :update, :destroy, :payouts, :upcoming, :availability, :licenses, :certifications, :education]
   respond_to :html, :json
 
   # GET /counselors
   # GET /counselors.json
   def index
-    # @specialty = Specialty.find(1)
-    @specialty = Specialty.where(:is_active => true).first
+    @specialty = Specialty.where(:is_active => true, :set_default => 1).first
 
     if params[:specialty]
       @specialty = Specialty.find_by_name "#{params[:specialty]}"
@@ -21,17 +20,75 @@ class CounselorsController < ApplicationController
       gender = nil
     end
 
-    @available_counselors = @specialty.counselors.active_counselors.sort_by(&:popularity).select do |c|
-      c.availability_by_dts(@dts).present? and
-      if gender.present?
-        c.user.gender == gender
-      else
-        c.user.gender.present?
+    if params[:sortby] and params[:sortby] != ""
+      sortby = params[:sortby]
+    else
+      sortby = "availability"
+    end
+
+    if params[:counselor_name] and params[:counselor_name] != ""
+      name = params[:counselor_name]
+      query = "specializations.specialty_id= #{@specialty.id} or first_name ilike? or last_name ilike?"
+    else
+      name = ""
+      query = "specializations.specialty_id= #{@specialty.id}"
+    end
+
+    if sortby == "popularity"
+      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity)
+    elsif sortby == "low-fee"
+      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents).reverse
+    elsif sortby == "high-fee"
+      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents)
+    else
+      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at)
+    end
+    
+    @available_counselors = Array.new
+    @thisDts = @nextAvailed = @dts
+    @lpnum = 0
+
+    if @sortApplied.length > 0
+      while @available_counselors.length <= 0 and @nextAvailed != ""
+        @available_counselors = @sortApplied.select do |c|
+
+          if c.next_available.present? and 
+            if gender.present?
+              c.user.gender == gender
+            else
+              c.user.gender.present?
+            end
+            ctime = c.next_available.strftime("%m/%d/%Y")
+            ctime = Date.strptime("#{ctime}", "%m/%d/%Y")
+            if @lpnum == 0 and ctime >= @dts
+              @nextAvailed = ctime
+              @lpnum = 1
+            elsif ctime < @nextAvailed and ctime >= @dts
+              @nextAvailed = ctime
+            end
+          end
+
+          c.availability_by_dts(@thisDts).present? and
+          if gender.present?
+            c.user.gender == gender
+          else
+            c.user.gender.present?
+          end
+        end
+
+        if @nextAvailed != @dts
+          @thisDts = @nextAvailed
+        else
+          @nextAvailed = ""
+        end
       end
+
+      @dts = @thisDts
     end
     
     @counselors = @available_counselors.reverse.paginate(:page => params[:page], :per_page => 15)
 
+    @sortby = sortby
     @page_title = "Search Counselors"
     @page_subtitle = "Find the right counselor for you."
   end
@@ -42,6 +99,18 @@ class CounselorsController < ApplicationController
     unless @counselor.is_active or user_can_access_counselor
       redirect_to counselors_path, :notice => "The counselor you're looking for is not currently available. Please search and select an active counselor."
     else
+
+      if current_user and current_user.id != @counselor.user.id and !session[:profileViews].include?(@counselor.id)
+        @counselor.update_columns(:profile_view => @counselor.profile_view+1)
+        session[:profileViews].push(@counselor.id)
+      elsif !current_user
+        @ip = request.ip
+        if !ProfileView.where(:ip => @ip, :counselor_id => @counselor.id).present?
+          @profileView = ProfileView.new(:ip => @ip, :counselor_id => @counselor.id)
+          @profileView.save
+          @counselor.update_columns(:profile_view => @counselor.profile_view+1)
+        end
+      end
       @hide_search = true
       @page_title    = "#{@counselor.user.name}"
       @page_subtitle = "A counselor, specializing in #{@counselor.specialties.map {|specialty| specialty.name}.join(",")}"
@@ -49,10 +118,35 @@ class CounselorsController < ApplicationController
   end
 
   def payouts
-    @hide_search = true
-    @payouts = @counselor.user.payouts.all
-    @page_title    = "#{@counselor.user.name} Payouts"
-    @page_subtitle = ""
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      @tab_name = 'payouts'
+      @hide_search = true
+      @payouts = @counselor.user.payouts.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
+      @page_title    = "#{@counselor.user.name} Payouts"
+      @page_subtitle = ""
+    end
+    respond_to do |format|
+      format.html
+      format.csv { send_data @payouts.to_csv }
+    end
+  end
+
+  def upcoming
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not access the counselor."
+    else
+      @tab_name = 'upcoming'
+      @hide_search = true
+      @payouts = @counselor.user.payouts.where(:stripe_transfer_id => nil).all
+      @page_title    = "#{@counselor.user.name} Upcoming Payouts"
+      @page_subtitle = ""
+    end
+    respond_to do |format|
+      format.html
+      format.csv { send_data @payouts.to_csv }
+    end
   end
 
   # GET /counselors/new
@@ -69,46 +163,67 @@ class CounselorsController < ApplicationController
 
   # GET /counselors/1/edit
   def edit
-    unless @counselor.counseling_licenses.present?
-      @counselor.counseling_licenses.build
+    
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      unless @counselor.counseling_licenses.present?
+        @counselor.counseling_licenses.build
+      end
+      unless @counselor.counseling_certifications.present?
+        @counselor.counseling_certifications.build
+      end
+      @page_title    = "Edit Your Profile"
+      @page_subtitle = ""
     end
-    unless @counselor.counseling_certifications.present?
-      @counselor.counseling_certifications.build
-    end
-    @page_title    = "Edit Your Profile"
-    @page_subtitle = ""
   end
 
   def licenses
-    unless @counselor.counseling_licenses.present?
-      @counselor.counseling_licenses.build
-    end
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      unless @counselor.counseling_licenses.present?
+        @counselor.counseling_licenses.build
+      end
 
-    @page_title    = "Edit Your Profile"
-    @page_subtitle = ""
+      @page_title    = "Edit Your Profile"
+      @page_subtitle = ""
+    end
   end
 
   def certifications
-    unless @counselor.counseling_certifications.present?
-      @counselor.counseling_certifications.build
-    end
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      unless @counselor.counseling_certifications.present?
+        @counselor.counseling_certifications.build
+      end
 
-    @page_title    = "Edit Your Profile"
-    @page_subtitle = ""
+      @page_title    = "Edit Your Profile"
+      @page_subtitle = ""
+    end
   end
 
   def education
-    unless @counselor.counseling_degrees.present?
-      @counselor.counseling_degrees.build
-    end
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      unless @counselor.counseling_degrees.present?
+        @counselor.counseling_degrees.build
+      end
 
-    @page_title    = "Edit Your Profile"
-    @page_subtitle = ""
+      @page_title    = "Edit Your Profile"
+      @page_subtitle = ""
+    end
   end
 
   def availability
-    @page_title    = "Availability for #{@counselor.user.name}"
-    @page_subtitle = ""
+    unless @counselor.is_active and user_can_access_counselor
+      redirect_to counselor_url, :notice => "You can not edit the counselor."
+    else
+      @page_title    = "Availability for #{@counselor.user.name}"
+      @page_subtitle = ""
+    end
   end
 
   def update_bank

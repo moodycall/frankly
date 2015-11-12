@@ -1,5 +1,5 @@
 - @modal_target_id = "#{counselor.slug}ScheduleModal"
-- availabilities   = counselor.availability_by_dts(@dts)
+- availabilities   = counselor.availability_by_dts(dates)
 
 .counselor_preview_wrapper.preview_with_schedule{ :data => {:gender => counselor.user.gender}}
   .row

@@ -1,6 +1,3 @@
-.modal.fade.in{"aria-hidden" => "true", :id => "loader", :role => "dialog", :tabindex => "-1"}
-  .modal-backdrop.fade.in.loader
-    =image_tag "loading.GIF"
 .container#counselor-container
 
   %h1
@@ -11,7 +8,7 @@
       %thead
         %tr
           %th
-          %th.sortby.defaultSort{ :name => "last_name"} Name
+          %th{ :name => "last_name"} Name
           %th{ :name => "is_active"} Active
           %th{ :name => "created_at"} Date Created
           %th{ :name => "popularity"} Public Rating
@@ -60,33 +57,36 @@
   = hidden_field_tag "url", getCounselors_admin_counselor_overviews_path
 
 :javascript
-  $('#counselor_search').show();
+  
+  $('.toggle_trigger').click(function(){
+    toggleable_class = $(this).attr('data-toggleable');
+    $(toggleable_class).fadeToggle();
+  });
 
-  $('.pagination a').click(function(e){
+  $('#main').find('.pagination a').click(function(e){
     e.preventDefault();
     $('#loader').show();
-
     var page = $(this).attr('href');
     page = page.split("=");
     page = page[1];
-
+    
     var atribute = $('#main').find('.defaultSort').attr('name');
 
     if ($('#main').find('.defaultSort').hasClass('sortby') == true){
-      var order = "ASC"
+      var order = "ASC";
     }
     else{
-      var order = "DESC"
+      var order = "DESC";
     }
 
-    paginateAjax(page,atribute,order)
+    paginateAjax(page,atribute,order);
 
     setTimeout(function(){
       $('#loader').hide();
     },1000);
   });
 
-  $("th").click(function(){
+  $("#main").find('.container th').click(function(){
     $('#loader').show();
     var page = $('#main').find('.pagination .current').text();
 
@@ -106,23 +106,3 @@
       $('#loader').hide();
     },1000);
   });
-
-  function paginateAjax(page,atribute,order){
-    if(page == ""){
-      page = 1;
-    }
-    $.ajax({
-      type: 'post',
-      url: $('#url').val(),
-      async: false,
-      data: {'page':page, 'sortby':atribute, 'order': order},
-      success: function(response){
-        $('#counselor-container').remove();
-        $('#main').append(response);
-        if(order == "ASC"){
-          $("#main").find('.container [name='+atribute+']').addClass('sortby');
-        }
-        $("#main").find('.container [name='+atribute+']').addClass('defaultSort');
-      }
-    });
-  }

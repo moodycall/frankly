@@ -1,20 +1,61 @@
-- if @specialty
-  - spcl = @specialty.name;
+/ edited by: Vivek
 - if params[:specialty]
   - spcl = params[:specialty];
+- else
+  - spcl = Specialty.where(:is_active => true, :set_default => 1).first.name
+
+- if params[:datetime].present?
+  - newDate = Date.strptime("#{params[:datetime]}", "%m/%d/%Y")
+  = hidden_field_tag "advanceSearchExist"
+- else
+  - newDate = @dts;
+/ end
 #counselor_search
   .container
     = form_tag counselors_path, method: :get do |f|
       .row
-        .col-sm-3
-          =  select_tag :specialty, options_from_collection_for_select(Specialty.order(:name => :asc).staffed_specialties, :name, :name, spcl), :class => "form-control", :label => false, :include_blank => false
-        .col-sm-3
-          = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control"
-        .col-sm-3
-          = select_tag :gender, options_for_select([ "No Preference", "Male", "Female" ], params[:gender]), :class => "form-control"
-        .col-sm-3
+        .col-sm-3.col-sm-22.col-search
+          =  select_tag :specialty, options_from_collection_for_select(Specialty.where(:is_active => true).order(:name => :asc), :name, :name, spcl), :class => "form-control", :label => false, :include_blank => false
+        .col-sm-1.ortext.hiddenSearch
+          .s
+            = '-OR-'
+        .col-sm-3.col-sm-22.col-search
+          = text_field_tag "counselor_name", params[:counselor_name], :id => "hdnname", :placeholder => "Search by name", :class => "form-control"
+        .col-sm-3.col-search.hiddenSearch.hiddenDiv
+          = select_tag :"", options_for_select([ "No Preference", "Male", "Female" ], params[:gender]), :class => "form-control", :id => "gender"
+        .col-sm-3.col-search.hiddenSearch.hiddenDiv
+          = text_field_tag "", newDate.strftime("%m/%d/%Y"), :id => "datetime", :class => "form-control"
+        .col-sm-3.col-btn.hiddenSearch.hiddenDiv
+          = button_tag "Hide", :id => "hide_search", :type => "button", :class => "btn btn-primary btn-dark btn-lg btn-block"
+        .col-sm-3.hiddenSearch
+          = button_tag "Advanced Search", :id => "advance_search", :type => "button", :class => "btn btn-primary btn-dark btn-lg btn-block"
+        .col-sm-3.col-btn
+          = hidden_field_tag :sortby,""
           = submit_tag "Search", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
 #counselor_search_toggle_wrapper.container
   #counselor_search_toggle
     .fa.fa-search
+
+:javascript
+
+  $('#advance_search, #hide_search').click(function(){
+    $('.col-search').toggleClass('col-sm-20')
+    $('.col-btn').toggleClass('col-btn-10')
+    toggleAttr($('#datetime'),'name','datetime')
+    toggleAttr($('#gender'),'name','gender')
+    $('.hiddenSearch').toggleClass('hiddenDiv');
+  })
+
+  function toggleAttr(ele,attr,val){
+
+    if($(ele).attr(attr) == val){
+      $(ele).removeAttr(attr)
+    }else{
+      $(ele).attr(attr,val)
+    }
+  }
+
+  if($('#advanceSearchExist').length > 0){
+    $('#advance_search').click();
+  }

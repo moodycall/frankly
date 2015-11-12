@@ -22,6 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+    session[:profileViews] = Array.new
     unless session[:pending_session_counselor_id].present?
       if session[:previous_url]
         session[:previous_url]

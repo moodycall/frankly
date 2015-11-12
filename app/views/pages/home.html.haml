@@ -10,11 +10,11 @@
         To get started, pick your counseling or coaching topic here.
     = form_tag counselors_path, method: :get do |g|
       .row
-        .col-sm-5
-          = select_tag :specialty, options_from_collection_for_select(Specialty.order(:name => :asc).staffed_specialties, :name, :name, Specialty.find(1).name), :class => "form-control", :label => false, :include_blank => false
-        .col-sm-4
-          = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control"
-        .col-sm-3
+        .col-sm-6
+          = select_tag :specialty, options_from_collection_for_select(Specialty.where(:is_active => true).order(:name => :asc).staffed_specialties, :name, :name, Specialty.where(:is_active => true, :set_default => 1).first.name), :class => "form-control", :label => false, :include_blank => false
+        / .col-sm-4
+        /   = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control"
+        .col-sm-6
           = submit_tag "View Now!", :class => "btn btn-primary btn-dark btn-lg btn-block"
 
 :javascript

@@ -101,3 +101,22 @@ input#msgTxt:focus {
     color: #398568;
     margin: 10px;
 }
+
+#chat-heading img {
+    height: 30px;
+    display: none;
+}
+
+.chat-name:after {
+  content: "-";
+  position: absolute;
+  right: 10px;
+  font-size: 30px;
+  color: #267e5a;
+}
+.chat-name.closed:after {
+  content: "+";
+}
+.chat-name {
+  position: relative;
+}

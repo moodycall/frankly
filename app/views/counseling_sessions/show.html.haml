@@ -2,16 +2,18 @@
 #textchat
   #chat-heading
     - if current_user.is_counselor_of_session(@counseling_session.counselor_id)
-      %p
+      %p.chat-name.closed
         = @counseling_session.client.name
+        = image_tag "icons/chat.png"
     - else
-      %p
+      %p.chat-name.closed
         = @counseling_session.counselor.user.name
+        = image_tag "icons/chat.png"
   #historyDiv
     #history
     %form#form
       %input#msgTxt
-// end
+      // end
 .container
   %br
   %br
@@ -163,6 +165,7 @@
   //
   //  updateClock();
 
+  var disconn = 0;
   var apiKey = "#{ENV["OPENTOK_KEY"]}";
   var sessionId = "#{@counseling_session.opentok_session_id}"; 
   var token = "#{@token}";
@@ -180,9 +183,11 @@
 
   session.connect(token, function(error) {
     if (error) {
+      disconn = 1;
       console.log(error.message);
       $("#awaiting_connection").show();
     } else {
+      disconn = 0;
       session.publish(publisher, {width:50, height:25});
     }
   });
@@ -197,6 +202,9 @@
       //msgHistory.insertBefore(msg,form);
       //msg.scrollIntoView();
       msg.parentNode.scrollTop = msg.offsetTop;
+      if (msg.className == 'theirs'){
+        $('.chat-name img').show();
+      }
   });
 
   // Send a signal once the user enters data in the form.This will send the data entered to all participants
@@ -210,7 +218,9 @@
           data: msgTxt.value
       }, function(error) {
           if (!error) {
-              msgTxt.value = '';
+            msgTxt.value = '';
+          }else{
+            alert("Sorry, Your are not connected to the session");
           }
       });
   });
@@ -220,5 +230,31 @@
   var chatSec = document.querySelector('#chat-heading');
   $(chatSec).click(function(){
     $(historyDiv).toggle();
+    $('.chat-name').toggleClass('closed');
     $(msgTxt).focus();
+  });
+
+  $(msgTxt).focus(function(){
+    $('.chat-name img').hide();
+  });
+
+  // End session when click on rating button
+  session.on("sessionDisconnected", function(error) {
+    disconn = 1;
+  });
+
+  $('#endSession').click(function(){
+
+    var conf = true;
+    if(disconn == 0){
+      conf = confirm('Are you sure to end the session?');
+    }
+    if(conf == true){
+      disconn == 0
+      session.disconnect();
+      $(historyDiv).hide();
+      $('.chat-name').addClass('closed');
+      $('#hideButton').click();
+    }
+    
   });

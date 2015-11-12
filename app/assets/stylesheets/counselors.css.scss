@@ -48,8 +48,8 @@
 
 .search_results_overview {
 	color: $primary_color;
-	padding: 20px 0px 5px;
 	font-size: 12px;
+	line-height:2;
 }
 
 .counselor_pubic_rating_wrapper {
@@ -167,4 +167,64 @@
 
 .counselor-toggle {
 	 margin: 15px 0px 10px 0px;
+}
+
+.col-filter{
+	float: right;
+	width: 100%;
+}
+
+.m-20 {
+	margin-top: 20px;
+}
+
+.hiddenDiv {
+	display: none;
+}
+
+@media (min-width: 768px){
+.col-sm-20 {
+	width: 20% !important;
+}
+.col-sm-22 {
+	width: 22%;
+}
+.col-btn-10 {
+	width: 10%;
+}
+.ortext {
+	width: 6%;
+}
+}
+
+@media (max-width: 768px){
+.btn {
+	margin-bottom: 10px;
+}
+}
+
+.search_row {
+	padding: 35px 0px 5px;
+}
+
+#counselor-table th {
+	cursor: pointer;
+}
+
+.loader{
+	height: 100%;
+}
+
+.loader img{
+	margin-left: 50%;
+	top: 50%;
+	position: absolute;
+}
+
+.ortext {
+	font-size: 17px;
+	margin-top:10px;
+	color: white;
+	padding-left: 0;
+	padding-right: 0;
 }

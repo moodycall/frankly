@@ -14,7 +14,12 @@ Rails.application.routes.draw do
     end
 
     resources :specialties,
-              :controller => "admin_facing/specialties"
+              :controller => "admin_facing/specialties" do
+                
+      collection do
+        post :setDefault
+      end
+    end
 
     resources :prompts,
               :controller => "admin_facing/prompts"
@@ -32,8 +37,12 @@ Rails.application.routes.draw do
     resources :counselors,
               :as         => :admin_counselor_overviews,
               :controller => "admin_facing/counselors",
-              :only       => [:index]
-
+              :only       => [:index, :getCounselors] do
+      
+      collection do
+        post :getCounselors
+      end
+    end
   end
 
   # PUBLIC/USER PAGES
@@ -58,6 +67,10 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :payouts do
+  
+  end
+
   resources :counselors do
   	member do
   		get :availability
@@ -65,6 +78,7 @@ Rails.application.routes.draw do
       get :licenses
       get :education
       get :payouts
+      get :upcoming
       put :update_bank
       put :remove_degree
       put :remove_certification

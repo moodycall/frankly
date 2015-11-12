@@ -93,6 +93,14 @@ class Counselor < ActiveRecord::Base
 		end
 	end
 
+	def counseling_sessions_count
+		counseling_sessions.count
+	end
+
+	def payable_sessions_count
+		payable_sessions.count
+	end
+
 	def popularity
 		public_rating * ratings.count
 	end
@@ -106,11 +114,11 @@ class Counselor < ActiveRecord::Base
 	end
 
 	def session_rate_in_dollars
-		hourly_rate_in_dollars / 2.0
+		hourly_rate_in_dollars / 2
 	end
 
 	def session_fee_in_dollars
-		hourly_fee_in_dollars / 2.0
+		hourly_fee_in_dollars / 2
 	end
 
 	def minutely_rate_in_cents
@@ -129,7 +137,8 @@ class Counselor < ActiveRecord::Base
 		# DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone)
 		weeks_until_date =  (date.end_of_day - Time.now).to_i / 604800
 
-		if weeks_until_date <= advanced_scheduling_in_weeks 
+		# if weeks_until_date >= 0 and weeks_until_date <= advanced_scheduling_in_weeks 
+		if weeks_until_date <= advanced_scheduling_in_weeks
 			all_times = availability_intervals.all_availabilities(date)
 
 	  	booked_session_by_date(date).each do |booked_session|

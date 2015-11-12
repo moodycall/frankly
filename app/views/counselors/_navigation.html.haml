@@ -1,0 +1,11 @@
+.list-group.col-md-9
+  = link_to upcoming_counselor_url, :class => "list-group-item #{"active" if @tab_name == "upcoming"}" do
+    .fa.fa-clock-o
+    Upcoming Payouts
+  = link_to payouts_counselor_url, :class => "list-group-item #{"active" if @tab_name == "payouts"}" do
+    .fa.fa-book
+    All Payouts
+.text-center.col-md-9
+  = link_to url_for(:format => "csv"), :class => "btn btn-link" do
+    .fa.fa-download
+    Download CSV
