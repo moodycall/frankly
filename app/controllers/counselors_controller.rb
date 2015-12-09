@@ -34,14 +34,14 @@ class CounselorsController < ApplicationController
       query = "specializations.specialty_id= #{@specialty.id}"
     end
 
-    if sortby == "newest"
-      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at).reverse
+    if sortby == "popularity"
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity).reverse
     elsif sortby == "low-fee"
       @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents)
     elsif sortby == "high-fee"
       @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents).reverse
     else
-      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity).reverse
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at).reverse
     end
     
     @available_counselors = Array.new
