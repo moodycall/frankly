@@ -3,7 +3,7 @@
 
 	-if @favorite_counselors.present?
 		- @favorite_counselors.each do |favorite|
-			= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor}
+			= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor, iterator: 1, dates: @dts}
 	-else
 		%p.text-center
 			You currently have no favorites.

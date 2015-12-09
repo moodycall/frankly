@@ -5,18 +5,13 @@
   = (dts).strftime("%B %e, %Y")
 
 .row.counselor_availability_day_wrapper
-  - if (dts > (Time.zone.now + @counselor.advanced_scheduling_in_weeks.weeks)) # First make sure the dts is within range of when scheduling can take place with a counselor
-    %p.text-center
-      Sorry, this is too far in advance to schedule a session.
-      %br
-      %em
-        #{(dts).strftime("%B %e, %Y")}
-  - elsif availabilities.count > 0 # Then make sure the counselor has availabilities on dts
+
+  - if availabilities.count > 0 # Then make sure the counselor has availabilities on dts
     - availabilities.each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
         -# - if interval > 30.minutes.from_now
-        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.strftime("%I:%M%P"), :available => "#{availabilities.include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
-          = interval.strftime("%I:%M%P")
+        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.in_time_zone.strftime("%I:%M%P"), :available => "#{availabilities.include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+          = interval.in_time_zone.strftime("%I:%M%P")
             
   - else # Otherwise, there aren't any openings
     %p.text-center

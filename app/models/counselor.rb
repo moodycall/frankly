@@ -7,6 +7,7 @@ class Counselor < ActiveRecord::Base
 	belongs_to :user
 
 	has_many :availability_intervals
+	has_many :availability_dates
 	has_many :counseling_sessions
 	has_many :ratings, as: :rateable
 	has_many :specializations
@@ -133,53 +134,119 @@ class Counselor < ActiveRecord::Base
     booked_sessions = counseling_sessions.where(:cancelled_on_dts => nil, start_datetime: Date.parse(date.to_s).beginning_of_day..Date.parse(date.to_s).end_of_day).all
   end
 
-	def availability_by_dts(date)
-		# DateTime.new(date.year, date.month, date.day, interval_start.hour, interval_start.min, interval_start.sec, interval_start.zone)
-		weeks_until_date =  (date.end_of_day - Time.now).to_i / 604800
+	def all_available(date,type)
+		daysArr 	= []
+		daysArr[0] 	= 'Sunday'
+		daysArr[1] 	= 'Monday'
+		daysArr[2] 	= 'Tuesday'
+		daysArr[3] 	= 'Wednesday'
+		daysArr[4] 	= 'Thursday'
+		daysArr[5] 	= 'Friday'
+		daysArr[6] 	= 'Saturday'
 
-		# if weeks_until_date >= 0 and weeks_until_date <= advanced_scheduling_in_weeks 
-		if weeks_until_date <= advanced_scheduling_in_weeks
-			all_times = availability_intervals.all_availabilities(date)
+		resultArr 	= []
+		
+		if availability_dates.present?
+			timezone_name 	= availability_dates.joins(:availability_intervals).first.availability_intervals.first.timezone_name
+			searchDate		= Time.now.in_time_zone(timezone_name)
+			currentTime 	= Time.now.in_time_zone(timezone_name)
+			pre_timezone 	= Time.zone
+			searchQuery 	= "availability_dates.end_date >= '#{searchDate}'"
 
-	  	booked_session_by_date(date).each do |booked_session|
-				if booked_session.estimate_duration_in_minutes == 60
-					time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc, Time.zone.parse("#{booked_session.start_datetime + 30.minutes}").utc]
-				else
-					time_to_remove = [Time.zone.parse("#{booked_session.start_datetime}").utc]
+			allDates 		= availability_dates.joins(:availability_intervals).where(searchQuery).distinct("availability_dates.id")
+			
+			allDates.each do |d|
+				
+				preDate 	= 0
+				availableExist 	= false
+				
+				d.availability_intervals.each do |t|
+
+					Time.zone 	= timezone_name
+					start_time 	= DateTime.parse(t.start_time)
+					end_time	= DateTime.parse(t.end_time) - 30.minutes
+
+					weekDay		= daysArr[t.day_of_week]
+					nextDate 	= date_of_next "#{weekDay}",t.timezone_name
+
+					while d.end_date >= nextDate and
+						 (preDate == 0 or nextDate <= preDate or type == 'specific') and
+						 (type != 'specific' or
+						 (nextDate.in_time_zone(pre_timezone) <= date.end_of_day))
+
+						availableTime 	= (Time.zone.local(nextDate.year, nextDate.month, nextDate.day, start_time.hour, start_time.min, start_time.sec))
+						availableEnds 	= (Time.zone.local(nextDate.year, nextDate.month, nextDate.day, end_time.hour, end_time.min, end_time.sec))
+						availableExist	= false
+
+						if d.start_date <= nextDate and nextDate.end_of_day.in_time_zone(pre_timezone) >= date.beginning_of_day
+							
+							(0..47).each do |step|
+
+								timeInUserZone 	= availableTime.in_time_zone(pre_timezone)
+								
+								if (availableTime <= availableEnds and
+									 availableTime > currentTime + 30.minutes) and
+									 ((type == 'next') or (type == 'all' and timeInUserZone>=date.beginning_of_day) or (type == 'specific' and timeInUserZone.between?(date.beginning_of_day,date.end_of_day)))
+									
+									if !booked_on(availableTime).present?
+										availableExist = true
+										resultArr.push(availableTime)
+									end
+								end
+								availableTime += 30.minutes
+							end
+						end
+						
+						if availableExist and type != 'specific'
+							preDate	= nextDate
+							break
+						end
+						nextDate += 7.days
+					end
 				end
-
-				all_times = all_times.reject{ |e| time_to_remove.include? e }
-	    end
-
-			all_times.sort_by{|e| e}
+				Time.zone = pre_timezone
+			end
 		end
+		resultArr.sort_by!{|e| e}
+	end
+	
+	def availability_by_dts(date)
+		
+		timeArr 	= []
+		resultArr 	= []
+		resultArr 	= all_available(date,'specific')
 	end
 
 	def next_available
-		if availability_by_dts(Time.now).count > 0
-			availability_by_dts(Time.now).first
-
-		elsif availability_by_dts(Time.now + 1.day).count > 0
-			availability_by_dts(Time.now + 1.day).first
-
-		elsif availability_by_dts(Time.now + 2.day).count > 0
-			availability_by_dts(Time.now + 2.day).first
-
-		elsif availability_by_dts(Time.now + 3.day).count > 0
-			availability_by_dts(Time.now + 3.day).first
-
-		elsif availability_by_dts(Time.now + 4.day).count > 0
-			availability_by_dts(Time.now + 4.day).first
-
-		elsif availability_by_dts(Time.now + 5.day).count > 0
-			availability_by_dts(Time.now + 5.day).first
-
-		elsif availability_by_dts(Time.now + 6.day).count > 0
-			availability_by_dts(Time.now + 6.day).first
-
-		elsif availability_by_dts(Time.now + 7.day).count > 0
-			availability_by_dts(Time.now + 7.day).first
+		
+		resultArr = all_available(Time.now.in_time_zone,'next')
+		
+		if resultArr.count
+			resultArr.first
 		end
+	end
+
+	def available_after(date)
+		resultArr = all_available(date,'all')
+		
+		if resultArr.count
+			resultArr.first
+		end
+	end
+
+	def booked_on(time)
+
+		time 	= time.utc
+		ntime 	= time-30.minutes
+		
+		query = "((start_datetime = '#{time}') or (start_datetime = '#{ntime}' and estimate_duration_in_minutes = 60))"
+		counseling_sessions.where("#{query}",:cancelled_on_dts => nil).all
+	end
+
+	def date_of_next(day,timezone_name)
+  		date  = Date.parse(day).in_time_zone(timezone_name)
+		delta = date >= Time.zone.today ? 0 : 7
+		(Date.parse(day) + delta).in_time_zone(timezone_name)
 	end
 
 	def available_on_day(wday)

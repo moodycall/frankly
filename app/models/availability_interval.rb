@@ -2,6 +2,7 @@ class AvailabilityInterval < ActiveRecord::Base
 	include ActionView::Helpers
 	
 	belongs_to :counselor
+	belongs_to :availability_dates
 
 	DAY_SUNDAY    = 0
 	DAY_MONDAY    = 1
@@ -31,8 +32,11 @@ class AvailabilityInterval < ActiveRecord::Base
 
 	def end_time_in_counselors_zone(date)
 		time = DateTime.parse(end_time).in_time_zone(timezone_name) - 30.minutes
-		
-		DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone)
+		# if DateTime.parse(start_time) > time
+		# 	DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone) + 1.day
+		# else
+			DateTime.new(date.year, date.month, date.day, time.hour, time.min, time.sec, time.zone)
+		# end
 	end
 
 	def start_time_in_zone(timezone)

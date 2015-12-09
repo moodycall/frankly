@@ -1,0 +1,122 @@
+- @daysArr = []
+- @daysArr[0] = 'Sunday'
+- @daysArr[1] = 'Monday'
+- @daysArr[2] = 'Tuesday'
+- @daysArr[3] = 'Wednesday'
+- @daysArr[4] = 'Thursday'
+- @daysArr[5] = 'Friday'
+- @daysArr[6] = 'Saturday'
+- z = 0;
+= simple_form_for(@counselor, url: availability_counselor_path(@counselor), html: { method: :put, :id => "reccurringForm", "data-id" => "reccurring", :class => "form-inline" }) do |f|
+  - if @counselor.availability_dates.present? and !@counselor.availability_dates.first.is_specific?
+    - @counselor.availability_dates.each do |dates|
+      - z += 1
+      .row.reccurring-padding{:class => "reccurringtime#{z}"}
+        .col-sm-5
+          .form-group.form-group-reccurring
+            %label.label-width From
+            %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][start_date]", :placeholder => "From date", :value => "#{dates.start_date.in_time_zone(timeZone).strftime('%d/%m/%Y')}", :onkeypress => "return restrictedField();"}
+        .col-sm-5
+          .form-group.form-group-reccurring
+            %label.label-width To
+            %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][end_date]", :placeholder => "To date", :value => "#{dates.end_date.in_time_zone(timeZone).strftime('%d/%m/%Y')}", :onkeypress => "return restrictedField();"}
+        .col-sm-2.text-right
+          - if z == 1
+            %button.btn-primary.add-button{:type => "button", :onclick => "addNewDate('reccurring');"} +
+          - else
+            %button.btn-primary.add-button{:type => "button", "data-cls" => "reccurringtime#{z}", :onclick => "removeDate(this);"} x
+      .row.reccurring-days.reccurring-padding.reccurring-sub-row{:class=> "reccurringtime#{z}"}
+        .col-sm-10
+          - @weekDays = Array.new
+          - dates.availability_intervals.select(:day_of_week).order(:day_of_week).distinct.each do |i|
+            - @weekDays.push(i.day_of_week)
+
+          - [0,1,2,3,4,5,6].each do |wd|
+            .form-group.form-group-reccurring
+              %label #{@daysArr[wd][0..2]}
+              - if @weekDays.include?(wd)
+                = check_box_tag "", "", true, {"data-name" => "#{@daysArr[wd]}", "data-item" => "reccurringtime#{z}", :name => "counselor[reccurring][#{z}][week_days][]", :value => wd}
+              - else
+                = check_box_tag "", "", false, {"data-name" => "#{@daysArr[wd]}", "data-item" => "reccurringtime#{z}", :name => "counselor[reccurring][#{z}][week_days][]", :value => wd}
+      
+      .row.reccurring-padding.reccurring-sub-row.time_pair#sametime{:class => " reccurringtime#{z}"}
+        .reccurring-day-text
+          - same_time = dates.is_same_time?
+          Same schedule everyday
+          = check_box_tag "", "", same_time, {"data-name" => "sametime", "data-item" => "reccurringtime#{z}", :class => "sametimecheck", :name => "counselor[reccurring][#{z}][availability_dates_attributes][is_same_time]", :value => 1}
+      - @weekDays.each do |wd|
+        - cls = "sametime"
+        - if !dates.is_same_time?
+          - cls = @daysArr[wd]
+          .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
+            .reccurring-day-text
+              = "schedule for #{cls}"
+        - n = 0
+        - dates.availability_intervals.where(:day_of_week => wd).each do |time|
+          - n += 1
+          - if dates.is_same_time?
+            - wd = 0
+          .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
+            .col-sm-5{:class => "#{cls}"}
+              .form-group.form-group-reccurring
+                %label.label-width Start
+                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => DateTime.parse("#{time.start_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
+            .col-sm-5{:class => "#{cls}"}
+              .form-group.form-group-reccurring
+                %label.label-width End
+                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => DateTime.parse("#{time.end_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
+            .col-sm-2.text-right{:class => "#{cls}"}
+              - if n == 1
+                %button.btn-primary.add-button{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}+
+              - else
+                %button.btn-primary.add-button{:type => "button", :class => "#{cls}", :onclick => "removeTime(this);"}x
+        - if dates.is_same_time?
+          - break
+  - else
+    - z = 1
+    .row{:class => "reccurringtime#{z}"}
+      .col-sm-5
+        .form-group.form-group-reccurring
+          %label.label-width From
+          %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][start_date]", :placeholder => "From date", :value => "#{Date.today.strftime('%d/%m/%Y')}", :onkeypress => "return restrictedField();"}
+      .col-sm-5
+        .form-group.form-group-reccurring
+          %label.label-width To
+          %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][end_date]", :placeholder => "To date", :value => "#{Date.today.strftime('%d/%m/%Y')}", :onkeypress => "return restrictedField();"}
+      .col-sm-2.text-right        
+        %button.btn-primary.add-button{:type => "button", :onclick => "addNewDate('reccurring');"} +
+    .row.reccurring-days.reccurring-padding.reccurring-sub-row{:class=> "reccurringtime#{z}"}
+      .col-sm-10
+        - td = Date.today.strftime('%w')
+        - [0,1,2,3,4,5,6].each do |wd|
+          .form-group.form-group-reccurring
+            %label #{@daysArr[wd][0..2]}
+            - if wd.to_s == td
+              = check_box_tag "", "", true, {"data-name" => "#{@daysArr[wd]}", "data-item" => "reccurringtime#{z}", :name => "counselor[reccurring][#{z}][week_days][]", :value => wd}
+            - else
+              = check_box_tag "", "", false, {"data-name" => "#{@daysArr[wd]}", "data-item" => "reccurringtime#{z}", :name => "counselor[reccurring][#{z}][week_days][]", :value => wd}
+    .row.reccurring-padding.reccurring-sub-row.time_pair#sametime{:class => " reccurringtime#{z}"}
+      .reccurring-day-text
+        Same schedule everyday
+        = check_box_tag "", "", true, {"data-name" => "sametime", "data-item" => "reccurringtime#{z}", :class => "sametimecheck", :name => "counselor[reccurring][#{z}][availability_dates_attributes][is_same_time]", :value => 1}
+    - n = 1
+    - cls = "sametime"
+    - wd = 0
+    .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
+      .col-sm-5{:class => "#{cls}"}
+        .form-group.form-group-reccurring
+          %label.label-width Start
+          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => "", :onkeypress => "return restrictedField();"}
+      .col-sm-5{:class => "#{cls}"}
+        .form-group.form-group-reccurring
+          %label.label-width End
+          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => "", :onkeypress => "return restrictedField();"}
+      .col-sm-2.text-right{:class => "#{cls}"}
+        - if n == 1
+          %button.btn-primary.add-button{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}+
+  .row.form-submit
+    .col-sm-12.reccurring-padding.text-right
+      %input{:type => "hidden", :value => "reccurring", :name => "counselor[availability]"}
+      %button.btn-primary.btn{:type => "submit"}
+        Submit
+#reccurringCount{:value => z, :type => "hidden"}

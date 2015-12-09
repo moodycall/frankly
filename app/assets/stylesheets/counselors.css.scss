@@ -228,3 +228,110 @@
 	padding-left: 0;
 	padding-right: 0;
 }
+.nav-tabs > li > a:hover{
+	background-color: transparent;
+	color: #32a878;
+	opacity: 1;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+	background-color: #32a878;
+	color: #fff;
+	opacity: 1;
+	border-color: #32a878 !important;
+}
+.tab-content {
+	border: 1px solid #dddddd;
+	padding: 25px;
+	border-top: 0 none;
+}
+.form-group-reccurring label {
+	display: inline-block !important;
+}
+.add-button {
+	border: 0;
+	padding: 10px 10px;
+	font-size: 24px;
+	margin-top: 2px;
+	width: 50%;
+}
+.reccurring-padding {
+	padding-top: 15px;
+}
+.reccurring-days .form-group {
+	margin-right: 15px;
+}
+.reccurring-days input {
+	position:relative;
+	top:2px;
+}
+.label-width{
+	width: 60px;
+}
+.reccurring-sub-row {
+	padding-left: 65px;
+}
+.date-width {
+	width: 130px !important;
+}
+.reccurring-day-text {
+	
+  font-size: 14px;
+  font-weight: 700;
+  color: #959595;
+  text-transform: uppercase;
+  padding-left: 15px;
+  padding-bottom: 15px;
+}
+.reccurring-days .form-group-reccurring {
+	display: inline-block !important;
+}
+
+.repeatCounselors {
+	position: relative;
+	margin-bottom: 35px;
+}
+
+.dateSeparator {
+  	position: absolute;
+  	background: white;
+	color: #32a878;
+  	font-size: 18px;
+  	left: 50%;
+  	margin-left: -85px;
+  	top: -8px;
+  	padding: 0 10px;
+}
+
+.note_section {
+	color: #ed6c68;
+  	font-size: 85%;
+}
+
+.view_more {
+  	color: #32a878;
+  	font-size: 14px;
+  	text-align: center;
+}
+
+.view_more a {
+	cursor: pointer
+}
+
+.view_more a:hover {
+	color: #267e5a;
+  	opacity: .5;
+}
+
+.hideSec {
+	display: none;
+}
+
+.invalid{
+	color: #ed6c68;
+	font-size: 85%;
+	float: left;
+}
+
+.withpadding{
+	padding-left: 15px;
+}

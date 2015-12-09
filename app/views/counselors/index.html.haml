@@ -1,33 +1,16 @@
-/ edited by: Vivek
-- counselorArr = []
-- if @counselors.length > 0 && @sortby == "availability"
-  - x = 0
-  - y = 10
-  - @counselors.each do |counselor|
-    - if counselor.availability_by_dts(@dts).present?
-      - availabilities   = counselor.availability_by_dts(@dts)
-      - first = availabilities.first(1)[0].strftime("%H:%M")
-      - counselorArr[x] = {}
-      - counselorArr[x]['counselor'] = counselor
-      - counselorArr[x]['first'] = first
-      - y -= 1
-      - x += 1
-  - counselorArr.sort!{|a,b| a['first'] <=> b['first']}
-- else
-  - counselorArr = @counselors
 
-- if params[:datetime].present?
-  - newDate = Date.strptime("#{params[:datetime]}", "%m/%d/%Y")
+- if @counselorsArr[0]['date'].present?
+  - newDate = @counselorsArr[0]['date']
 - else
   - newDate = @dts;
-/ end
+
 .container
   .row.search_row
     .col-md-9
       %h4.search_results_overview
         %em
-          - if newDate == @dts
-            #{pluralize(@counselors.length, "Professional")}
+          - if newDate.strftime("%B %e, %Y") == @dts.strftime("%B %e, %Y") or !params[:datetime].present?
+            #{pluralize(@counselorsArr[0]['counselors'].length, "Professional")}
             - if @specialty.present? and !params[:counselor_name].present?
               specializing in
               %em
@@ -35,34 +18,71 @@
             - else
               Available
 
-            - if @dts.present?
+            - if newDate.present?
               on
-              = @dts.strftime("%B %e, %Y")
-          - else
+              = newDate.strftime("%B %e, %Y")
+          - elsif params[:datetime].present?
             = "We're sorry. There are currently no Professionals "
             - if !params[:counselor_name].present?
               ="for #{@specialty.name} "
-            = "available on #{newDate.strftime("%B %e, %Y")}. How about selecting from #{@dts.strftime("%B %e, %Y")} instead?"
+            = "available on #{@dts.strftime("%B %e, %Y")}. How about selecting from one of these upcoming dates instead?"
     .col-md-3
       .col-filter
         =  select_tag :specialty, options_for_select([ ["Upcoming Availability","availability"], ["Newest First","newest"], ["Rating (High-Low)","popularity"], ["Fee (Low-High)","low-fee"], ["Fee (High-Low)","high-fee"] ], @sortby), :class => "form-control", :label => false, :include_blank => false, :onchange => "sortCounselors(this);"
 
-  %hr
-  - if @counselors.length > 0
-    - counselorArr.each do |counselor|
-      - if @sortby == "availability"
-        - itemCounselor = counselor['counselor']
-      - else
-        - itemCounselor = counselor
-
-      = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: itemCounselor, dates: @dts}
+  - iterator = 0
+  - if @counselorsArr[0]['counselors'].length > 0
+    - @counselorsArr.each do |counselors|
+      - if counselors['counselors'].length > 0
+        - counselorArr = []
+        - cDate = counselors['date']
+        - if @sortby == "availability"
+          - x = 0
+          - y = 10
+          - counselors['counselors'].each do |counselor|
+            - if counselor.availability_by_dts(cDate).present?
+              - availabilities   = counselor.availability_by_dts(cDate)
+              - first = availabilities.first(1)[0].in_time_zone
+              - counselorArr[x] = {}
+              - counselorArr[x]['counselor'] = counselor
+              - counselorArr[x]['first'] = first
+              - y -= 1
+              - x += 1
+          - counselorArr.sort!{|a,b| a['first'] <=> b['first']}
+        - else
+          - counselorArr = counselors['counselors']
+        .repeatCounselors
+          .dateSeparator
+            = cDate.strftime("%B %e, %Y")
+          %hr
+          - if counselorArr.length > 0
+            - i = 0
+            - counselorArr.each do |counselor|
+              - if @sortby == "availability"
+                - itemCounselor = counselor['counselor']
+              - else
+                - itemCounselor = counselor
+              - if i > 2
+                - cls = 'hideSec'
+                - if i == counselorArr.length-1
+                  .view_more{:class => "viewMore viewMore#{iterator}"} 
+                    %a{:onclick=>"viewMoreResult('#{iterator}')"} View More
+                  
+              - else
+                - cls = ''
+              .insideSection{:class=>"#{cls} insideSec#{iterator}"}
+                = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: itemCounselor, dates: cDate, iterator: iterator}
+                - if i > 2 and i == counselorArr.length-1
+                  .view_more.hideSec{:class=> "insideSec#{iterator}"} 
+                    %a{:onclick=>"viewLessResult('#{iterator}')"} View Less
+              - i += 1
+        - iterator += 1
+    / = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
   - else
     .text-center
       There are no counselors matching these parameters.
       %br
       Please adjust your search and try again.
-
-  = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
 
 :javascript
   $('#counselor_search').show()
@@ -71,4 +91,18 @@
     $('#datetime').attr('name','datetime')
     $('#hdnname').attr('name','counselor_name')
     $("#sortby").parents('form').submit();
+  }
+
+  function viewMoreResult(cnt){
+    
+    $('.hideSec').hide();
+    $('.viewMore').show();
+    $('.viewMore'+cnt).hide();
+    $('.insideSec'+cnt).show('800');
+  }
+
+  function viewLessResult(cnt){
+    
+    $('.viewMore'+cnt).show();
+    $('.hideSec.insideSec'+cnt).hide('800');
   }

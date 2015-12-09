@@ -1,306 +1,456 @@
+- specific_active = ""
+- reccurring_active = "active in"
+- if @counselor.availability_dates.present? and @counselor.availability_dates.first.is_specific?
+  - specific_active = "active in"
+  - reccurring_active = ""
+
+- if @counselor.availability_dates.present? and @counselor.availability_dates.first.availability_intervals.first.timezone_name.present?
+  - timeZone = @counselor.availability_dates.first.availability_intervals.first.timezone_name
+- else
+  - timeZone = Time.zone.name
 .container
   .row
     .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
       %h1 Availability
-
-      = simple_form_for(@counselor) do |f|
-        = f.error_notification
-
-        .form-inputs
-          #counselor_availability_container
-            .form-group
-              = f.input :advanced_scheduling_in_weeks, as: :string, :label => false, input_html: { :class => "form-control floatlabel"}, :placeholder => "How many weeks in advance can a client schedule a session?"
-            #monday_row.row.availability_day_wrapper{:class => (@counselor.available_monday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Monday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_monday, :label => "Available"
-                  %li
-                    #monday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#monday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #monday_intervals_wrapper.intervals_wrapper.table-responsive
-                  %table#monday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 1).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 1
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_monday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#monday_interval_table", "data-day-value" => "1"} Add Interval
-
-            #tuesday_row.row.availability_day_wrapper{:class => (@counselor.available_tuesday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Tuesday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_tuesday, :label => "Available"
-                  %li
-                    #tuesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#tuesday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #tuesday_intervals_wrapper.intervals_wrapper
-                  %table#tuesday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 2).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 2
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_tuesday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#tuesday_interval_table", "data-day-value" => "2"} Add Interval
-
-            #wednesday_row.row.availability_day_wrapper{:class => (@counselor.available_wednesday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Wednesday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_wednesday, :label => "Available"
-                  %li
-                    #wednesday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#wednesday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #wednesday_intervals_wrapper.intervals_wrapper
-                  %table#wednesday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 3).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 3
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_wednesday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#wednesday_interval_table", "data-day-value" => "3"} Add Interval
-
-            #thursday_row.row.availability_day_wrapper{:class => (@counselor.available_thursday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Thursday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_thursday, :label => "Available"
-                  %li
-                    #thursday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#thursday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #thursday_intervals_wrapper.intervals_wrapper
-                  %table#thursday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 4).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 4
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_thursday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#thursday_interval_table", "data-day-value" => "4"} Add Interval
-
-            #friday_row.row.availability_day_wrapper{:class => (@counselor.available_friday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Friday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_friday, :label => "Available"
-                  %li
-                    #friday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#friday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #friday_intervals_wrapper.intervals_wrapper
-                  %table#friday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 5).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 5
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_friday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#friday_interval_table", "data-day-value" => "5"} Add Interval
-
-            #saturday_row.row.availability_day_wrapper{:class => (@counselor.available_saturday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Saturday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_saturday, :label => "Available"
-                  %li
-                    #saturday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#saturday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #saturday_intervals_wrapper.intervals_wrapper
-                  %table#saturday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 6).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 6
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_saturday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#saturday_interval_table", "data-day-value" => "6"} Add Interval
-
-            #sunday_row.row.availability_day_wrapper{:class => (@counselor.available_sunday ? nil : "unavailable")}
-              .col-sm-6
-                .availability_day_title Sunday
-              .col-sm-6
-                %ul.list-inline.pull-right
-                  %li
-                    = f.input :available_sunday, :label => "Available"
-                  %li
-                    #sunday_intervals_edit_btn.interval_trigger.btn.btn-default{"data-trigger" => "#sunday_intervals_wrapper"}
-                      .fa.fa-pencil
-              .col-xs-12
-                #sunday_intervals_wrapper.intervals_wrapper
-                  %table#sunday_interval_table.daily_availability_intervals_table.table
-                    %tr
-                      %th
-                        From
-                      %th
-                      %th
-                        To
-                      %th
-                    - @counselor.availability_intervals.where(:day_of_week => 0).each do |i|
-                      = f.fields_for :availability_intervals, i do |a|
-                        %tr.time_pair
-                          %td.hidden
-                            = a.input :day_of_week, :value => 0
-                            = a.input :timezone_name, :input_html => {:value => "#{Time.zone.name}"}
-                          %td
-                            = a.input :start_time, :as => :string, input_html: { :class => "form-control time start", value: DateTime.parse("#{a.object.start_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            –
-                          %td
-                            = a.input :end_time, :as => :string, input_html: { :class => "form-control time end", value: DateTime.parse("#{a.object.end_time}").in_time_zone.strftime("%I:%M%P") }, :label => false
-                          %td
-                            .remove_row
-                              x
-                  #add_sunday_interval_btn.add_interval_btn.btn.btn-primary.btn-block.btn-lg{"data-append" => "#sunday_interval_table", "data-day-value" => "0"} Add Interval
-
-
-            .form-actions
-              = f.submit "Save Availability", :class => "btn btn-primary btn-block btn-lg"
+      %div.tab-container
+        %ul.nav.nav-tabs
+          %li{:class => "#{reccurring_active}"}
+            %a{"data-toggle" => "tab", :href => "#reccurring" }
+              Recurring
+          %li{:class => "#{specific_active}"}
+            %a{"data-toggle" => "tab", :href => "#specific" }
+              Specific
+        .tab-content
+          .tab-pane.fade#reccurring{:class => "#{reccurring_active}"}
+            = render partial: "shared/counselors/reccurring_availability", locals: {timeZone: timeZone}
+          .tab-pane.fade#specific{:class => "#{specific_active}"}
+            = render partial: "shared/counselors/specific_availability", locals: {timeZone: timeZone}
+      .note_section
+        %em Note: Showing availability in #{timeZone} time. New changes will be saved in #{Time.zone.name} time
 
 :javascript
+  
+  var days_arr = [];
+  days_arr['Sunday'] = 0;
+  days_arr['Monday'] = 1;
+  days_arr['Tuesday'] = 2;
+  days_arr['Wednesday'] = 3;
+  days_arr['Thursday'] = 4;
+  days_arr['Friday'] = 5;
+  days_arr['Saturday'] = 6;
+  days_arr['sametime'] = 0;
 
-  i = #{@counselor.availability_intervals.count};
+  function addNewTime(obj,label) {
 
-  $('.add_interval_btn').click(function(){
-    target_wrapper = $(this).attr('data-append');
-    target_day = $(this).attr("data-day-value");
-
-    $(target_wrapper).append("<tr class='time_pair'><td class='hidden'><input id='counselor_availability_intervals_attributes_"+i+"_day_of_week' name='counselor[availability_intervals_attributes]["+i+"][day_of_week]' type='hidden' value=" + target_day + "></td><td><div class='input string optional counselor_availability_intervals_start_time'><input class='string optional form-control time start' id='counselor_availability_intervals_attributes_"+i+"_start_time' name='counselor[availability_intervals_attributes]["+i+"][start_time]' type='text' autocomplete='off'></div></td><td>–</td><td><div class='input string optional counselor_availability_intervals_end_time'><input class='string optional form-control time end' id='counselor_availability_intervals_attributes_"+i+"_end_time' name='counselor[availability_intervals_attributes]["+i+"][end_time]' type='text' autocomplete='off'></div></td><td><span class='remove_row'>x</span></td></tr>");
-
-    i = i + 1;
-
+    var item = $(obj).attr('data-name');
+    var itemnum = $(obj).attr('data-item');
+    //var cnt = parseInt($('#reccurringCount').attr('value'));
+    var num = $('.row.'+item+'.'+itemnum).length+1;
+    var wd = days_arr[item];
+    var sec = itemnum.split("time")[0];
+    var cnt = itemnum.split("time")[1];
+    var labeltext = "";
+    var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button' type='button' onclick='removeTime(this);'>x</button></div>";
+    if(label != "" && label != 0){
+      if(label != 'sametime'){
+        labeltext = "<div class='reccurring-day-text'>Schedule for "+label+"</div>";
+      }
+      var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button' type='button' data-name='"+item+"' data-item='"+itemnum+"' onclick='addNewTime(this,0);'>+</button></div>";
+    }
+    var starttime = "<div class='col-sm-5 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>Start</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][start_time]' class='date-width form-control time' placeholder='Start time' onkeypress = 'return restrictedField();'></div></div>";
+    var endtime = "<div class='col-sm-5 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>End</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][end_time]' class='date-width form-control time' placeholder='End time' onkeypress = 'return restrictedField();'></div></div>";
+    
+    var html = "<div class='row reccurring-padding reccurring-sub-row time_pair "+item+" "+itemnum+"'>"+labeltext+starttime+endtime+close+"</div>";
+    
+    if(label != "" && label != 0 && label != 'the day'){
+      $(".row."+itemnum).last().after(html);
+    }else{
+      $(".row."+item+"."+itemnum).last().after(html);
+    }
     $('.time_pair .time').timepicker({
       showDuration: true,
       maxTime: '11:59pm'
     });
 
     $('.time_pair').datepair();
-  });
+  }
 
-  $(document).ready(function() {
-    $(".daily_availability_intervals_table").on("click", ".remove_row", function() {
-      var tr = $(this).closest('tr');
-      tr.css("background-color","#F00");
+  function removeTime(obj) {
+    $(obj).parent('.text-right').parent('.row').remove();
+  }
 
-      tr.fadeOut(400, function(){
-        tr.remove();
-      });
+  function addNewDate(item) {
+    var i = parseInt($('#'+item+'Count').attr('value'));
+    i++;
+    var label = 'the day';
+    var id = item+"time"+i;
+
+    if(item == 'reccurring'){
+      var html = "<div class='row reccurring-padding "+id+" "+item+"timecheck"+i+"' data-name='"+id+"' data-item='"+id+"'><div class='col-sm-5'><div class='form-group form-group-reccurring'><label class='label-width'>From</label> <input type='text' name='counselor["+item+"]["+i+"][availability_dates_attributes][start_date]' class='form-control datepickerField' placeholder='From date' onkeypress = 'return restrictedField();'></div></div>";
+
+      html += "<div class='col-sm-5'><div class='form-group form-group-reccurring'><label class='label-width'>To</label> <input type='text' name='counselor["+item+"]["+i+"][availability_dates_attributes][end_date]' class='form-control datepickerField' placeholder='To date' onkeypress = 'return restrictedField();'></div></div>";
+    }else{
+      var html = "<div class='row reccurring-padding sametime "+id+" "+item+"timecheck"+i+"' data-name='sametime' data-item='"+id+"'><div class='col-sm-5'><div class='form-group form-group-reccurring'><label class='label-width'>Date</label> <input type='text' name='counselor["+item+"]["+i+"][availability_dates_attributes][start_date]' class='form-control datepickerField' placeholder='Date' onkeypress = 'return restrictedField();'></div></div>";
+    }
+
+    html += "<div class='col-sm-2 text-right'><button type='button' class='btn-primary add-button' data-cls='"+id+"' onclick='removeDate(this);'>x</button></div></div>";
+
+    if(item == 'reccurring'){
+
+      var days = "<div class='form-group form-group-reccurring'><label>Sun</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='0' type='checkbox' data-name='Sunday' data-item='"+id+"'></div>";
+
+      days += " <div class='form-group form-group-reccurring'><label>Mon</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='1' type='checkbox' data-name='Monday' data-item='"+id+"'></div>";
+
+      days += " <div class='form-group form-group-reccurring'><label>Tue</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='2' type='checkbox' data-name='Tuesday' data-item='"+id+"'></div>";
+      days += " <div class='form-group form-group-reccurring'><label>Wed</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='3' type='checkbox' data-name='Wednesday' data-item='"+id+"'></div>";
+      days += " <div class='form-group form-group-reccurring'><label>Thu</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='4' type='checkbox' data-name='Thursday' data-item='"+id+"'></div>";
+      days += " <div class='form-group form-group-reccurring'><label>Fri</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='5' type='checkbox' data-name='Friday' data-item='"+id+"'></div>";
+      days += " <div class='form-group form-group-reccurring'><label>Sat</label> <input name='counselor["+item+"]["+i+"][week_days][]' value='6' type='checkbox' data-name='Saturday' data-item='"+id+"'></div>";
+
+      html += "<div class='row reccurring-days reccurring-padding reccurring-sub-row "+id+"'><div class='col-sm-10'>"+days+"</div></div>";
+
+      html += "<div class='row reccurring-padding reccurring-sub-row time_pair "+id+"'><div class='reccurring-day-text'>Same schedule everyday<input type='checkbox' class='sametimecheck "+item+"timecheck"+i+"' checked data-name='sametime' data-item='"+id+"' name='counselor["+item+"]["+i+"][availability_dates_attributes][is_same_time]' value=1></div></div>"
+
+      var label = "sametime";
+    }
+
+    $('#'+item+'Count').attr('value',i);
+
+    $('#'+item+'Form .form-submit').before(html);
+    addNewTime($('.'+item+'timecheck'+i).last(), label);
+    $( ".datepickerField" ).datepicker({
+      dateFormat: "dd/mm/yy",
+      minDate: new Date()
+    });
+
+  }
+
+  function removeDate(obj) {
+    var cls = $(obj).attr('data-cls');
+    $('.'+cls).remove();
+  }
+
+  function hideItem(obj) {
+    $(obj).hide();
+    $(obj).find('input').each(function(){
+      $(this).attr('data-temp',$(this).attr('name'));
+      $(this).attr('name',"");
+    });
+  }
+
+  function showItem(obj) {
+    $(obj).find('input').each(function(){
+      $(this).attr('name',$(this).attr('data-temp'));
+    });
+    $(obj).show();
+  }
+
+  function restrictedField() {
+    return false;
+  }
+
+  dn = 0;
+  cn = 0;
+  dateSecArr = [];
+  timeSecArr = [];
+  function validateAvailability(type) {
+
+    dn = 0;
+    dateSecArr = [];
+    allValidated = true;
+    validatedWeekDays = true;
+    datesCount = $('#'+type+'Count').attr('value');
+
+    $('span.invalid').remove();
+
+    for(var i=1; i<=datesCount; i++){
+
+      if($('.'+type+'time'+i).length>0){
+
+        item  = type+'time'+i;
+        obj   = $('.'+item);
+
+        validatedDate = validateDate(obj, type, 'all');
+
+        if(type == 'reccurring'){
+          validatedWeekDays = validateWeekDays(item);
+        }
+
+        validatedTime = validateAllTime(item,type);
+        
+        if(!validatedDate || !validatedTime || !validatedWeekDays){
+          allValidated = false;
+        }
+      }
+    }
+    return(allValidated);
+  }
+
+  function checkNull(val,name,obj){
+    if(val == ""){
+      $(obj).after('<span class="invalid">Please enter '+name+'</span>');
       return false;
+    }else{
+      return true;
+    }
+  }
+
+  function validateDate(obj, type, mode){
+
+    validated = true;
+    if(type == 'reccurring'){
+      s_obj = obj.find('input[placeholder="From date"]');
+      e_obj = obj.find('input[placeholder="To date"]');
+      
+      $(s_obj).next('.invalid').remove();
+      $(e_obj).next('.invalid').remove();
+
+      start_date = s_obj.val();
+      end_date = e_obj.val();
+
+      sdate_valid = checkNull(start_date, 'Start Date', s_obj);
+      edate_valid = checkNull(end_date, 'End Date', e_obj);
+      
+    }else {
+      s_obj = obj.find('input[placeholder="Date"]');
+
+      $(s_obj).next('.invalid').remove();
+
+      start_date = end_date = s_obj.val();
+
+      sdate_valid = edate_valid = checkNull(start_date, 'Date', s_obj);
+    }
+    
+
+    
+    
+    if(sdate_valid && edate_valid){
+        
+      start_date = start_date.split("/");
+      start_date = new Date(start_date[2],start_date[1]-1,start_date[0]);
+
+      end_date = end_date.split("/");
+      end_date = new Date(end_date[2],end_date[1]-1,end_date[0]);
+
+      if(start_date > end_date){
+        validated = false;
+        e_obj.after('<span class="invalid">End date should be greater than Start date</span>');
+      }else if(mode == 'all'){
+        dateSecArr[dn] = {};
+        dateSecArr[dn]['s_date'] = start_date;
+        dateSecArr[dn]['e_date'] = end_date;
+        if(dn>0){
+          dateavailable = checkReservedDate(s_obj,start_date,end_date);
+          if(!dateavailable){
+            validated = false;
+          }
+        }
+        dn++;
+      }
+    }else{
+      validated = false;
+    }
+    return validated;
+  }
+
+  function validateWeekDays(item){
+
+    dayChecked = false;
+    $('.reccurring-days').find('[data-item='+item+'][type=checkbox]').each(function(){
+      if($(this).prop('checked')){
+        dayChecked = true;
+      }
+    });
+
+    if(!dayChecked){
+      $('.reccurring-days.'+item).find('div:first').after('<span class="invalid withpadding">Please select day of week</span>');
+    }else{
+      $('.reccurring-days.'+item).find('div:first').next('.invalid').remove();
+    }
+    return dayChecked;
+  }
+
+  function validateAllTime(item, type){
+
+    j = 0;
+    validated = true;
+    daySelectArr = [];
+    if($('.sametimecheck[data-item='+item+']').prop('checked') || type == 'specific'){
+      daySelectArr[j] = 'sametime';
+    }else{
+      $('.reccurring-days').find('[data-item='+item+'][type=checkbox]').each(function(){
+        if($(this).prop('checked')){
+          daySelectArr[j] = $(this).attr('data-name');
+          j++;
+        }
+      });
+    }
+
+    for(var k=0; k<daySelectArr.length; k++){
+      cn = 0;
+      timeSecArr = [];
+      timeItem = daySelectArr[k];
+      $('.row.'+item+'.'+timeItem).each(function(){
+        if(!validateTime(this,'all')){
+          validated = false;
+        }
+      });
+    }
+    return validated;
+  }
+
+  function validateTime(ele,mode){
+
+    validtime = true;
+    s_ele  = $(ele).find('[placeholder="Start time"]');
+    e_ele  = $(ele).find('[placeholder="End time"]');
+
+    if(s_ele.length > 0 && e_ele.length > 0){
+      $(e_ele).next('.invalid').remove();
+      $(s_ele).next('.invalid').remove();
+      s_time = s_ele.val();
+      e_time = e_ele.val();
+
+      stime_valid = checkNull(s_time,'Start Time',s_ele);
+      etime_valid = checkNull(e_time,'End Time',e_ele);
+      if(stime_valid && etime_valid){
+        stime = s_time.split(":");
+        etime = e_time.split(":");
+        
+        if(stime[1].substr(2,2) == "am"){
+          shour = (stime[0] == "12")?0:stime[0];
+        }else{
+          shour = (stime[0] == "12")?stime[0]: parseInt(stime[0])+12;
+        }
+        if(etime[1].substr(2,2) == "am"){
+          ehour = (etime[0] == "12")?0:etime[0];
+        }else{
+          ehour = (etime[0] == "12")?etime[0]: parseInt(etime[0])+12;
+        }
+        smin  = stime[1].substr(0,2);
+        emin  = etime[1].substr(0,2);
+
+        d = new Date();
+        start_time = d.setHours(shour, smin, 0);
+        end_time = d.setHours(ehour, emin, 0);
+        
+        if(start_time >= end_time){
+          validtime = false;
+          $(e_ele).after('<span class="invalid">It should be greater than '+s_time+'</span>');
+        }else if(mode == 'all'){
+          timeSecArr[cn] = {};
+          timeSecArr[cn]['s_time'] = start_time;
+          timeSecArr[cn]['e_time'] = end_time;
+          if(cn > 0){
+            available = checkReservedTime(timeSecArr,$(ele),start_time,end_time);
+            if(!available){
+              validtime = false;
+            }
+          }
+          cn++;
+        }
+      }else{
+        validtime = false;
+      }
+    }
+    return validtime;
+  }
+
+  function checkReservedDate(ele, sdate, edate){
+    valid = true;
+    for(i=0; i<dateSecArr.length-1; i++){
+      if(edate < dateSecArr[i]['s_date'] || sdate > dateSecArr[i]['e_date']){
+
+      }else{
+        valid = false;
+        $(ele).after('<span class="invalid">This date is already reserved</span>');
+        break;
+      }
+    }
+    return valid;
+  }
+
+  function checkReservedTime(timeSec, ele, stime, etime){
+
+    valid = true;
+    for(i=0; i<timeSec.length-1; i++){
+      if(etime <= timeSec[i]['s_time'] || stime >= timeSec[i]['e_time']){
+
+      }else{
+        valid = false;
+        obj = $(ele).find('[placeholder="Start time"]');
+        $(obj).after('<span class="invalid">This time is already reserved</span>');
+        break;
+      }
+    }
+    return valid;
+  }
+
+  $(document).ready(function(){
+
+    $('#reccurringForm').on('click', '.form-group-reccurring [type=checkbox]', function(){
+      
+      var data_item = $(this).attr('data-item');
+      var data_name = $(this).attr('data-name');
+      if($(this).prop('checked') && !$('.sametimecheck[data-item='+data_item+']').prop('checked')){
+        if($('.row.'+data_name+'.'+data_item).length >0){
+          showItem($('.row.'+data_name+'.'+data_item));
+        }else{
+          addNewTime(this,data_name);
+        }
+      }else{
+        hideItem($('.row.'+data_name+'.'+data_item));
+      }
+
+      validateWeekDays(data_item);
+    });
+
+    $('#reccurringForm').on('click', '.sametimecheck', function(){
+      data_item = $(this).attr('data-item');
+      if($(this).prop('checked')){
+        var obj = this;
+        $('.form-group-reccurring [type=checkbox][data-item='+data_item+']').each(function(){
+      
+          var data_name = $(this).attr('data-name');
+          if($(this).prop('checked')){
+            hideItem($('.row.'+data_name+'.'+data_item));
+          }
+        });
+        if($('.'+data_item+'.sametime').length >0){
+          showItem($('.'+data_item+'.sametime'));
+        }else{
+          addNewTime(obj,'sametime');
+        }
+      }else{
+        $('.form-group-reccurring [type=checkbox][data-item='+data_item+']').each(function(){
+      
+          var data_name = $(this).attr('data-name');
+          if($(this).prop('checked')){
+            if($('.row.'+data_name+'.'+data_item).length >0){
+              showItem($('.row.'+data_name+'.'+data_item));
+            }else{
+              addNewTime(this,data_name);
+            }
+          }
+        });
+        hideItem($('.'+data_item+'.sametime'));
+      }
+    });
+    $('#reccurringForm, #specificForm').submit(function(e){
+      e.preventDefault();
+      type = $(this).attr('data-id');
+      if(validateAvailability(type)){
+        this.submit();
+      }
+    });
+
+    $('#reccurringForm, #specificForm').on('change','input.time',function(){
+      validateTime($(this).parent('div').parent('div').parent('.row'),'spec');
+    });
+
+    $('#reccurringForm, #specificForm').on('change','input.datepickerField',function(){
+      ele = $(this).parent('div').parent('div').parent('.row');
+      type = $(this).parents('form').attr('data-id');
+      validateDate(ele,type,'spec');
     });
   });

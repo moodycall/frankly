@@ -34,59 +34,77 @@ class CounselorsController < ApplicationController
       query = "specializations.specialty_id= #{@specialty.id}"
     end
 
-    if sortby == "popularity"
-      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity)
+    if sortby == "newest"
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at).reverse
     elsif sortby == "low-fee"
-      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents).reverse
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents)
     elsif sortby == "high-fee"
-      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents)
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents).reverse
     else
-      @sortApplied = Counselor.joins(:user,:specializations).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at)
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity).reverse
     end
     
     @available_counselors = Array.new
-    @thisDts = @nextAvailed = @dts
-    @lpnum = 0
+    @sDate = @dts.in_time_zone
+    @iterator = 0
 
     if @sortApplied.length > 0
-      while @available_counselors.length <= 0 and @nextAvailed != ""
-        @available_counselors = @sortApplied.select do |c|
 
-          if c.next_available.present? and 
+      while @iterator <= 6
+
+        @lpnum = 0
+        @nextAvailed = @thisDts = @sDate
+        @available_counselors[@iterator] = {}
+        @available_counselors[@iterator]['counselors'] = Array.new
+
+        while @available_counselors[@iterator]['counselors'].length <= 0 and @nextAvailed != ""
+          @available_counselors[@iterator]['counselors'] = @sortApplied.select do |c|
+
+            if c.available_after(@thisDts).present? and 
+              if gender.present?
+                c.user.gender == gender
+              else
+                c.user.gender.present?
+              end
+              ctime = c.available_after(@thisDts).in_time_zone
+              # ctime = Date.strptime("#{ctime}", "%m/%d/%Y")
+              if @lpnum == 0 and ctime >= @sDate.beginning_of_day
+                @nextAvailed = ctime
+                @lpnum = 1
+              elsif ctime < @nextAvailed and ctime >= @sDate.beginning_of_day
+                @nextAvailed = ctime
+              end
+            end
+
+            c.availability_by_dts(@thisDts).present? and
             if gender.present?
               c.user.gender == gender
             else
               c.user.gender.present?
             end
-            ctime = c.next_available.strftime("%m/%d/%Y")
-            ctime = Date.strptime("#{ctime}", "%m/%d/%Y")
-            if @lpnum == 0 and ctime >= @dts
-              @nextAvailed = ctime
-              @lpnum = 1
-            elsif ctime < @nextAvailed and ctime >= @dts
-              @nextAvailed = ctime
-            end
           end
 
-          c.availability_by_dts(@thisDts).present? and
-          if gender.present?
-            c.user.gender == gender
+          if @nextAvailed.beginning_of_day != @sDate.beginning_of_day
+            @thisDts = @nextAvailed
           else
-            c.user.gender.present?
+            @nextAvailed = ""
           end
         end
-
-        if @nextAvailed != @dts
-          @thisDts = @nextAvailed
+        if @available_counselors[@iterator]['counselors'].length > 0
+          @available_counselors[@iterator]['date'] = @thisDts
+          @sDate = @thisDts+1.day
+          @iterator = @iterator+1
         else
-          @nextAvailed = ""
+          break
         end
       end
-
-      @dts = @thisDts
+    else
+      @available_counselors[@iterator] = {}
+      @available_counselors[@iterator]['counselors'] = Array.new
     end
     
-    @counselors = @available_counselors.reverse.paginate(:page => params[:page], :per_page => 15)
+    @counselorsArr = @available_counselors
+    # @counselorsArr = @available_counselors.reverse.paginate(:page => params[:page], :per_page => 15)
 
     @sortby = sortby
     @page_title = "Search Counselors"
@@ -164,7 +182,7 @@ class CounselorsController < ApplicationController
   # GET /counselors/1/edit
   def edit
     
-    unless @counselor.is_active or user_can_access_counselor
+    unless @counselor.is_active and user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_licenses.present?
@@ -223,6 +241,10 @@ class CounselorsController < ApplicationController
     else
       @page_title    = "Availability for #{@counselor.user.name}"
       @page_subtitle = ""
+      
+      if request.put?
+        handle_availability_intervals
+      end
     end
   end
 
@@ -267,7 +289,7 @@ class CounselorsController < ApplicationController
     remove_degrees
     remove_licenses
     remove_certifications
-    handle_availability_intervals
+    # handle_availability_intervals
 
     respond_to do |format|
       if @counselor.update(counselor_params)
@@ -323,6 +345,10 @@ class CounselorsController < ApplicationController
                                         counseling_degrees_attributes: [:id, :degree_type, :name, :institution, :year_of_completion])
     end
 
+    # def availability_params
+    #   params.require(:counselor).permit(:availability_intervals_attributes)
+    # end
+
   protected
 
   def remove_certifications
@@ -369,19 +395,50 @@ class CounselorsController < ApplicationController
 
   def handle_availability_intervals
     # We want to build from scratch when counselor updates their availability
-    if params[:counselor][:availability_intervals_attributes]
-      @counselor.availability_intervals.destroy_all
-      params[:counselor][:availability_intervals_attributes].to_a.each do |time|
-        if time[1][:start_time].present?
-          original_start_time = time[1][:start_time]
-          original_end_time   = time[1][:end_time]
-          start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
-          end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
-          # We want to store UTC time for consistancy
-          time[1][:start_time] = start_time_as_utc
-          time[1][:end_time]   = end_time_as_utc
+    availability_params = Array.new
+    if params[:counselor][:availability]
+      type = params[:counselor][:availability]
+      @counselor.availability_dates.destroy_all
+      params[:counselor][type].to_a.each do |row|
+        if row[1][:availability_dates_attributes].present?
+
+          availability_params = row[1][:availability_dates_attributes]
+          if !availability_params[:end_date].present?
+            availability_params[:end_date] = availability_params[:start_date]
+            availability_params[:is_same_time] = 1
+            availability_params[:is_specific] = 1
+            wd = DateTime.parse(availability_params[:start_date]).strftime('%w')
+            row[1][:week_days] = [wd]
+          end
+          
+          @availabilityDate = @counselor.availability_dates.new(availability_params)
+          @availabilityDate.save
+          row[1][:week_days].to_a.each do |day|
+
+            dayIndex = day
+            if availability_params[:is_same_time].present?
+              dayIndex = "0"
+            end
+            row[1][:availability_intervals_attributes][dayIndex].each do |t|
+              original_start_time = t[1][:start_time]
+              original_end_time   = t[1][:end_time]
+              start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
+              end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
+              # We want to store UTC time for consistancy
+              availabilityTime = {}
+              # availabilityTime[:start_time] = start_time_as_utc
+              # availabilityTime[:end_time]   = end_time_as_utc
+              availabilityTime[:start_time] = original_start_time
+              availabilityTime[:end_time]   = original_end_time
+              availabilityTime[:day_of_week] = day
+              availabilityTime[:timezone_name] = Time.zone.name
+              @availabilityDate.availability_intervals.new(availabilityTime).save
+            end
+            
+          end
+
         else
-          params[:counselor][:availability_intervals_attributes].delete(time[0])
+          # params[:counselor][:availability_intervals_attributes].delete(time[0])
         end
       end
     end

@@ -43,6 +43,7 @@ Rails.application.routes.draw do
         post :getCounselors
       end
     end
+
   end
 
   # PUBLIC/USER PAGES
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
   resources :counselors do
   	member do
   		get :availability
+      put :availability
       get :certifications
       get :licenses
       get :education

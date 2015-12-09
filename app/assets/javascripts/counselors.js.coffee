@@ -53,7 +53,7 @@ jQuery ->
   $('.time_pair').datepair()
 
   # $('#datetime').datepicker({minDate: new Date()})
-  
+
   $( "#datetime" ).datepicker ->
     dateFormat: "mm/dd/yyyy"
 
@@ -122,3 +122,8 @@ jQuery ->
     parent = $(this).closest(".row")
     parent.children(".extra-times-for-day").show()
     $(this).hide()
+
+  $( ".datepickerField" ).datepicker({
+    dateFormat: "dd/mm/yy",
+    minDate: new Date()
+  });
