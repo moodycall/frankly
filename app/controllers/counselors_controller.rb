@@ -144,11 +144,13 @@ class CounselorsController < ApplicationController
       @payouts = @counselor.user.payouts.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
       @page_title    = "#{@counselor.user.name} Payouts"
       @page_subtitle = ""
+
+      respond_to do |format|
+        format.html
+        format.csv { send_data @payouts.to_csv }
+      end
     end
-    respond_to do |format|
-      format.html
-      format.csv { send_data @payouts.to_csv }
-    end
+    
   end
 
   def upcoming
