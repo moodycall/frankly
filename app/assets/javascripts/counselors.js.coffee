@@ -124,6 +124,6 @@ jQuery ->
     $(this).hide()
 
   $( ".datepickerField" ).datepicker({
-    dateFormat: "dd/mm/yy",
+    dateFormat: "mm/dd/yy",
     minDate: new Date()
   });

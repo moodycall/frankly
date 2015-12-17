@@ -405,12 +405,19 @@ class CounselorsController < ApplicationController
         if row[1][:availability_dates_attributes].present?
 
           availability_params = row[1][:availability_dates_attributes]
+
+          temp_start_date = availability_params[:start_date].split('/')
+          availability_params[:start_date] = "#{temp_start_date[1]}/#{temp_start_date[0]}/#{temp_start_date[2]}"
+          
           if !availability_params[:end_date].present?
             availability_params[:end_date] = availability_params[:start_date]
             availability_params[:is_same_time] = 1
             availability_params[:is_specific] = 1
             wd = DateTime.parse(availability_params[:start_date]).strftime('%w')
             row[1][:week_days] = [wd]
+          else
+            temp_end_date = availability_params[:end_date].split('/')
+            availability_params[:end_date] = "#{temp_end_date[1]}/#{temp_end_date[0]}/#{temp_end_date[2]}"
           end
           
           @availabilityDate = @counselor.availability_dates.new(availability_params)
