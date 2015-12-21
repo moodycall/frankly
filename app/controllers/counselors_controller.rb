@@ -184,7 +184,7 @@ class CounselorsController < ApplicationController
   # GET /counselors/1/edit
   def edit
     
-    unless @counselor.is_active and user_can_access_counselor
+    unless (@counselor.is_active and user_can_access_counselor) or current_user.is_admin
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_licenses.present?
