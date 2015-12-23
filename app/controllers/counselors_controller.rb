@@ -34,14 +34,14 @@ class CounselorsController < ApplicationController
       query = "specializations.specialty_id= #{@specialty.id}"
     end
 
-    if sortby == "popularity"
-      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity).reverse
+    if sortby == "newest"
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at).reverse
     elsif sortby == "low-fee"
       @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents)
     elsif sortby == "high-fee"
       @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:hourly_rate_in_cents).reverse
     else
-      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:created_at).reverse
+      @sortApplied = Counselor.joins(:user,:specializations,:availability_dates).where("#{query}", "%#{name}%","%#{name}%").distinct("counselor.id").active_counselors.sort_by(&:popularity).reverse
     end
     
     @available_counselors = Array.new
@@ -144,13 +144,12 @@ class CounselorsController < ApplicationController
       @payouts = @counselor.user.payouts.where.not(:stripe_transfer_id => nil).order(:funds_sent_dts => :desc).all
       @page_title    = "#{@counselor.user.name} Payouts"
       @page_subtitle = ""
-
+      
       respond_to do |format|
         format.html
         format.csv { send_data @payouts.to_csv }
       end
     end
-    
   end
 
   def upcoming
@@ -172,7 +171,7 @@ class CounselorsController < ApplicationController
   # GET /counselors/new
   def new
     if current_user.counselor.present?
-      redirect_to counselor_url(current_user.counselor), notice: 'You already have a Counselor with MoodyCall. Take a look at your profile listed below.'
+      redirect_to counselor_url(current_user.counselor), notice: 'Good news! You are already a Counselor with MoodyCall. See your profile below.'
     else
       @counselor = Counselor.new
       @counselor.bio = "I'm passionate about helping people reach their full potential. I look forward to leveraging my professional experience to help you reach yours. Schedule a session with me today!"
@@ -340,6 +339,7 @@ class CounselorsController < ApplicationController
                                         :available_saturday,
                                         :available_sunday,
                                         :is_active,
+                                        :phone,
                                         { :specialty_ids => [] },
                                         availability_intervals_attributes: [:day_of_week, :start_time, :end_time, :timezone_name],
                                         counseling_licenses_attributes: [:id, :license_number, :license_type, :state, :established_on_date],
@@ -405,7 +405,7 @@ class CounselorsController < ApplicationController
         if row[1][:availability_dates_attributes].present?
 
           availability_params = row[1][:availability_dates_attributes]
-
+          
           temp_start_date = availability_params[:start_date].split('/')
           availability_params[:start_date] = "#{temp_start_date[1]}/#{temp_start_date[0]}/#{temp_start_date[2]}"
           
@@ -419,7 +419,7 @@ class CounselorsController < ApplicationController
             temp_end_date = availability_params[:end_date].split('/')
             availability_params[:end_date] = "#{temp_end_date[1]}/#{temp_end_date[0]}/#{temp_end_date[2]}"
           end
-          
+
           @availabilityDate = @counselor.availability_dates.new(availability_params)
           @availabilityDate.save
           row[1][:week_days].to_a.each do |day|

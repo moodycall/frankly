@@ -1,8 +1,8 @@
 - specific_active = ""
 - reccurring_active = "active in"
-- if @counselor.availability_dates.present? and @counselor.availability_dates.first.is_specific?
-  - specific_active = "active in"
-  - reccurring_active = ""
+/ - if @counselor.availability_dates.present? and @counselor.availability_dates.first.is_specific?
+/   - specific_active = "active in"
+/   - reccurring_active = ""
 
 - if @counselor.availability_dates.present? and @counselor.availability_dates.first.availability_intervals.first.timezone_name.present?
   - timeZone = @counselor.availability_dates.first.availability_intervals.first.timezone_name
@@ -11,15 +11,15 @@
 .container
   .row
     .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
-      %h1 Availability
+      %h1 My Availability
       %div.tab-container
         %ul.nav.nav-tabs
-          %li{:class => "#{reccurring_active}"}
-            %a{"data-toggle" => "tab", :href => "#reccurring" }
-              Recurring
-          %li{:class => "#{specific_active}"}
-            %a{"data-toggle" => "tab", :href => "#specific" }
-              Specific
+          / %li{:class => "#{reccurring_active}"}
+          /   %a{"data-toggle" => "tab", :href => "#reccurring" }
+          /     Recurring
+          / %li{:class => "#{specific_active}"}
+          /   %a{"data-toggle" => "tab", :href => "#specific" }
+          /     Specific
         .tab-content
           .tab-pane.fade#reccurring{:class => "#{reccurring_active}"}
             = render partial: "shared/counselors/reccurring_availability", locals: {timeZone: timeZone}
@@ -50,15 +50,15 @@
     var sec = itemnum.split("time")[0];
     var cnt = itemnum.split("time")[1];
     var labeltext = "";
-    var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button' type='button' onclick='removeTime(this);'>x</button></div>";
+    var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button close-btn' type='button' onclick='removeTime(this);'></button></div>";
     if(label != "" && label != 0){
       if(label != 'sametime'){
-        labeltext = "<div class='reccurring-day-text'>Schedule for "+label+"</div>";
+        labeltext = "<div class='reccurring-day-text'>"+label+" Availability</div>";
       }
-      var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button' type='button' data-name='"+item+"' data-item='"+itemnum+"' onclick='addNewTime(this,0);'>+</button></div>";
+      var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button plus-btn' type='button' data-name='"+item+"' data-item='"+itemnum+"' onclick='addNewTime(this,0);'></button></div>";
     }
-    var starttime = "<div class='col-sm-5 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>Start</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][start_time]' class='date-width form-control time' placeholder='Start time' onkeypress = 'return restrictedField();'></div></div>";
-    var endtime = "<div class='col-sm-5 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>End</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][end_time]' class='date-width form-control time' placeholder='End time' onkeypress = 'return restrictedField();'></div></div>";
+    var starttime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>Start</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][start_time]' class='date-width form-control time' placeholder='Start time' onkeypress = 'return restrictedField();'></div></div>";
+    var endtime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>End</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][end_time]' class='date-width form-control time' placeholder='End time' onkeypress = 'return restrictedField();'></div></div>";
     
     var html = "<div class='row reccurring-padding reccurring-sub-row time_pair "+item+" "+itemnum+"'>"+labeltext+starttime+endtime+close+"</div>";
     
@@ -93,7 +93,7 @@
       var html = "<div class='row reccurring-padding sametime "+id+" "+item+"timecheck"+i+"' data-name='sametime' data-item='"+id+"'><div class='col-sm-5'><div class='form-group form-group-reccurring'><label class='label-width'>Date</label> <input type='text' name='counselor["+item+"]["+i+"][availability_dates_attributes][start_date]' class='form-control datepickerField' placeholder='Date' onkeypress = 'return restrictedField();'></div></div>";
     }
 
-    html += "<div class='col-sm-2 text-right'><button type='button' class='btn-primary add-button' data-cls='"+id+"' onclick='removeDate(this);'>x</button></div></div>";
+    html += "<div class='col-sm-2 text-right'><button type='button' class='btn-primary add-button close-btn' data-cls='"+id+"' onclick='removeDate(this);'></button></div></div>";
 
     if(item == 'reccurring'){
 
@@ -109,7 +109,7 @@
 
       html += "<div class='row reccurring-days reccurring-padding reccurring-sub-row "+id+"'><div class='col-sm-10'>"+days+"</div></div>";
 
-      html += "<div class='row reccurring-padding reccurring-sub-row time_pair "+id+"'><div class='reccurring-day-text'>Same schedule everyday<input type='checkbox' class='sametimecheck "+item+"timecheck"+i+"' checked data-name='sametime' data-item='"+id+"' name='counselor["+item+"]["+i+"][availability_dates_attributes][is_same_time]' value=1></div></div>"
+      html += "<div class='row reccurring-padding reccurring-sub-row time_pair "+id+"'><div class='reccurring-day-text'>Same availability everyday<input type='checkbox' class='sametimecheck "+item+"timecheck"+i+"' checked data-name='sametime' data-item='"+id+"' name='counselor["+item+"]["+i+"][availability_dates_attributes][is_same_time]' value=1></div></div>"
 
       var label = "sametime";
     }

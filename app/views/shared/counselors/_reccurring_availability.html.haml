@@ -22,9 +22,9 @@
             %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][end_date]", :placeholder => "To date", :value => "#{dates.end_date.in_time_zone(timeZone).strftime('%m/%d/%Y')}", :onkeypress => "return restrictedField();"}
         .col-sm-2.text-right
           - if z == 1
-            %button.btn-primary.add-button{:type => "button", :onclick => "addNewDate('reccurring');"} +
+            %button.btn-primary.add-button.plus-btn{:type => "button", :onclick => "addNewDate('reccurring');"}
           - else
-            %button.btn-primary.add-button{:type => "button", "data-cls" => "reccurringtime#{z}", :onclick => "removeDate(this);"} x
+            %button.btn-primary.add-button.close-btn{:type => "button", "data-cls" => "reccurringtime#{z}", :onclick => "removeDate(this);"}
       .row.reccurring-days.reccurring-padding.reccurring-sub-row{:class=> "reccurringtime#{z}"}
         .col-sm-10
           - @weekDays = Array.new
@@ -42,7 +42,7 @@
       .row.reccurring-padding.reccurring-sub-row.time_pair#sametime{:class => " reccurringtime#{z}"}
         .reccurring-day-text
           - same_time = dates.is_same_time?
-          Same schedule everyday
+          Same availability everyday
           = check_box_tag "", "", same_time, {"data-name" => "sametime", "data-item" => "reccurringtime#{z}", :class => "sametimecheck", :name => "counselor[reccurring][#{z}][availability_dates_attributes][is_same_time]", :value => 1}
       - @weekDays.each do |wd|
         - cls = "sametime"
@@ -50,26 +50,26 @@
           - cls = @daysArr[wd]
           .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
             .reccurring-day-text
-              = "schedule for #{cls}"
+              = "#{cls} availability"
         - n = 0
         - dates.availability_intervals.where(:day_of_week => wd).each do |time|
           - n += 1
           - if dates.is_same_time?
             - wd = 0
           .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
-            .col-sm-5{:class => "#{cls}"}
+            .col-sm-4{:class => "#{cls}"}
               .form-group.form-group-reccurring
                 %label.label-width Start
                 %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => DateTime.parse("#{time.start_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
-            .col-sm-5{:class => "#{cls}"}
+            .col-sm-4{:class => "#{cls}"}
               .form-group.form-group-reccurring
                 %label.label-width End
                 %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => DateTime.parse("#{time.end_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
             .col-sm-2.text-right{:class => "#{cls}"}
               - if n == 1
-                %button.btn-primary.add-button{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}+
+                %button.btn-primary.add-button.plus-btn{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}
               - else
-                %button.btn-primary.add-button{:type => "button", :class => "#{cls}", :onclick => "removeTime(this);"}x
+                %button.btn-primary.add-button.close-btn{:type => "button", :class => "#{cls}", :onclick => "removeTime(this);"}
         - if dates.is_same_time?
           - break
   - else
@@ -84,7 +84,7 @@
           %label.label-width To
           %input.form-control.datepickerField{:name => "counselor[reccurring][#{z}][availability_dates_attributes][end_date]", :placeholder => "To date", :value => "#{Date.today.strftime('%m/%d/%Y')}", :onkeypress => "return restrictedField();"}
       .col-sm-2.text-right        
-        %button.btn-primary.add-button{:type => "button", :onclick => "addNewDate('reccurring');"} +
+        %button.btn-primary.add-button.plus-btn{:type => "button", :onclick => "addNewDate('reccurring');"}
     .row.reccurring-days.reccurring-padding.reccurring-sub-row{:class=> "reccurringtime#{z}"}
       .col-sm-10
         - td = Date.today.strftime('%w')
@@ -97,23 +97,23 @@
               = check_box_tag "", "", false, {"data-name" => "#{@daysArr[wd]}", "data-item" => "reccurringtime#{z}", :name => "counselor[reccurring][#{z}][week_days][]", :value => wd}
     .row.reccurring-padding.reccurring-sub-row.time_pair#sametime{:class => " reccurringtime#{z}"}
       .reccurring-day-text
-        Same schedule everyday
+        Same availability everyday
         = check_box_tag "", "", true, {"data-name" => "sametime", "data-item" => "reccurringtime#{z}", :class => "sametimecheck", :name => "counselor[reccurring][#{z}][availability_dates_attributes][is_same_time]", :value => 1}
     - n = 1
     - cls = "sametime"
     - wd = 0
     .row.reccurring-padding.reccurring-sub-row.time_pair{:class => "#{cls} reccurringtime#{z}"}
-      .col-sm-5{:class => "#{cls}"}
+      .col-sm-4{:class => "#{cls}"}
         .form-group.form-group-reccurring
           %label.label-width Start
           %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => "", :onkeypress => "return restrictedField();"}
-      .col-sm-5{:class => "#{cls}"}
+      .col-sm-4{:class => "#{cls}"}
         .form-group.form-group-reccurring
           %label.label-width End
           %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => "", :onkeypress => "return restrictedField();"}
       .col-sm-2.text-right{:class => "#{cls}"}
         - if n == 1
-          %button.btn-primary.add-button{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}+
+          %button.btn-primary.add-button.plus-btn{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}
   .row.form-submit
     .col-sm-12.reccurring-padding.text-right
       %input{:type => "hidden", :value => "reccurring", :name => "counselor[availability]"}

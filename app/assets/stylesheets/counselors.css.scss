@@ -249,10 +249,10 @@
 }
 .add-button {
 	border: 0;
-	padding: 10px 10px;
-	font-size: 24px;
+	padding: 0;
 	margin-top: 2px;
-	width: 50%;
+	width: 40px;
+	height: 38px;
 }
 .reccurring-padding {
 	padding-top: 15px;
@@ -271,7 +271,7 @@
 	padding-left: 65px;
 }
 .date-width {
-	width: 130px !important;
+	width: 126px !important;
 }
 .reccurring-day-text {
 	
@@ -334,4 +334,12 @@
 
 .withpadding{
 	padding-left: 15px;
+}
+
+.plus-btn{
+	background: #32a878 url('plus.png') center center no-repeat;
+}
+
+.close-btn {
+	background: #32a878 url('close.png') center center no-repeat;
 }
