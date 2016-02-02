@@ -1,7 +1,8 @@
 %ul.nav.navbar-nav.navbar-right
-  %li
-    = link_to 'Search', counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavSearch"
-  - if user_signed_in?
+  
+  - if user_signed_in? and (!current_user.is_counselor or current_user.counselor.present?)
+    %li
+      = link_to 'Search', counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavSearch"
     %li
       = link_to 'Dashboard', user_dashboard_url(:host => Rails.configuration.action_mailer.default_url_options[:host],:q => "#{current_user.counselor ? 'counselor' : ''}")
     %li
@@ -38,10 +39,11 @@
               .fa.fa-money
               Payouts
           %li.divider
-        %li
-          = link_to credit_cards_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavPayments" do
-            .fa.fa-credit-card
-            Payments
+        - if !current_user.is_counselor?
+          %li
+            = link_to credit_cards_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavPayments" do
+              .fa.fa-credit-card
+              Payments
         %li
           = link_to edit_user_registration_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavSettings" do
             .fa.fa-cog
@@ -81,8 +83,13 @@
               .fa.fa-money
               Payouts
 
-  - else
+  - elsif !user_signed_in?
     %li
       = link_to "Login", new_user_session_url
     %li
       = link_to "Sign up", new_user_registration_url, :class => "btn btn-primary navbar-btn"
+  - else
+    %li
+      = link_to destroy_user_session_url(), method: :delete do
+        .fa.fa-sign-out
+        Logout

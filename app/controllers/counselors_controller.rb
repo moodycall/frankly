@@ -1,5 +1,6 @@
 class CounselorsController < ApplicationController
   before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :checkIsCounselor!, except: [:new,:create]
   before_action :set_counselor, only: [:update_bank, :show, :edit, :update, :destroy, :payouts, :upcoming, :availability, :licenses, :certifications, :education]
   respond_to :html, :json
 
@@ -136,7 +137,7 @@ class CounselorsController < ApplicationController
   end
 
   def payouts
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       @tab_name = 'payouts'
@@ -153,7 +154,7 @@ class CounselorsController < ApplicationController
   end
 
   def upcoming
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not access the counselor."
     else
       @tab_name = 'upcoming'
@@ -172,7 +173,10 @@ class CounselorsController < ApplicationController
   def new
     if current_user.counselor.present?
       redirect_to counselor_url(current_user.counselor), notice: 'Good news! You are already a Counselor with MoodyCall. See your profile below.'
+    elsif !current_user.is_counselor
+      redirect_to user_dashboard_url, notice: 'You must first log out to access this page.'
     else
+      @hide_search = true
       @counselor = Counselor.new
       @counselor.bio = "I'm passionate about helping people reach their full potential. I look forward to leveraging my professional experience to help you reach yours. Schedule a session with me today!"
     end
@@ -183,7 +187,7 @@ class CounselorsController < ApplicationController
   # GET /counselors/1/edit
   def edit
     
-    unless (@counselor.is_active and user_can_access_counselor) or current_user.is_admin
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_licenses.present?
@@ -198,7 +202,7 @@ class CounselorsController < ApplicationController
   end
 
   def licenses
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_licenses.present?
@@ -211,7 +215,7 @@ class CounselorsController < ApplicationController
   end
 
   def certifications
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_certifications.present?
@@ -224,7 +228,7 @@ class CounselorsController < ApplicationController
   end
 
   def education
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       unless @counselor.counseling_degrees.present?
@@ -237,7 +241,7 @@ class CounselorsController < ApplicationController
   end
 
   def availability
-    unless @counselor.is_active and user_can_access_counselor
+    unless user_can_access_counselor
       redirect_to counselor_url, :notice => "You can not edit the counselor."
     else
       @page_title    = "Availability for #{@counselor.user.name}"
@@ -467,9 +471,17 @@ class CounselorsController < ApplicationController
     if user_signed_in?
       super
     else
-      redirect_to new_user_registration_path, :notice => "Let's get you started. Please enter your name, email, and password."
+      redirect_to new_user_registration_path(:q => "counselor"),:notice => "Let's get you started. Please enter your name, email, and password."
       ## if you want render 404 page
       ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
+    end
+  end
+
+  def checkIsCounselor!
+    if user_signed_in? and current_user.is_counselor and !current_user.counselor.present?
+      redirect_to new_counselor_path, :notice => "Please fill in the form to continue"
+    else
+      # super
     end
   end
 end

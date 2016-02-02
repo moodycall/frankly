@@ -5,6 +5,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
+    if params['q'].present? and params['q'] == "counselor"
+      session[:account_for] = "counselor"
+      @page_title = "Counselor Sign Up"
+      @page_subtitle = "Sign up as a counselor"
+    else
+      session[:account_for] = "user"
+      @page_title = "User Sign Up"
+      @page_subtitle = "Sign up as a user"
+    end
     build_resource({})
     respond_with self.resource
   end
@@ -16,6 +25,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     resource_saved = resource.save
     yield resource if block_given?
     if resource_saved
+      session[:account_for] = ""
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -155,7 +165,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
                                                            :email,
                                                            :password,
                                                            :password_confirmation,
-                                                           :unconfirmed_email)}
+                                                           :unconfirmed_email,
+                                                           :is_counselor)}
     
     devise_parameter_sanitizer.for(:account_update) {|u| u.permit(:first_name,
                                                                   :last_name,

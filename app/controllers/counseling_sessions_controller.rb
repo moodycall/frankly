@@ -47,7 +47,7 @@ class CounselingSessionsController < ApplicationController
         @counseling_session      = CounselingSession.new
         @counseling_session.time = session[:pending_session_time]
         # @dts                     = Time.parse(session[:pending_session_date]).in_time_zone - Time.parse(session[:pending_session_date]).utc_offset
-        @dts                     = session[:pending_session_date].in_time_zone + Time.parse(session[:pending_session_date]).utc_offset  
+        @dts                     = session[:pending_session_date].in_time_zone + Time.parse(session[:pending_session_date]).utc_offset
         session[:pending_session_date]
       else
         redirect_to new_credit_card_path, notice: "Please nter the card you'd like to use to pay for your session."
@@ -63,10 +63,12 @@ class CounselingSessionsController < ApplicationController
   # POST /counseling_sessions.json
   def create
     if current_user.present?
-      if current_user.current_card
+      if current_user.current_card or current_user.is_counselor?
         # Don't allow user to schedule a session with themself.
         if current_user.counselor.present? and current_user.counselor.id.to_s == "#{params[:counseling_session][:counselor_id]}"
           redirect_to :back, :notice => "Sorry, you can not schedule a session with yourself."
+        elsif current_user.is_counselor?
+          redirect_to :back, :notice => "You must first log out your counselor account to book a session."
         else
 
           # If they're already a user, we'll want to let them create a session

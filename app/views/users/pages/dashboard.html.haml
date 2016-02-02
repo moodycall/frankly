@@ -4,21 +4,22 @@
 			%h1 Dashboard
 
 	- if current_user.counselor.present?
-		.btn-group.counselor-toggle
-			= link_to url_for(:q => :counselor), :class => "btn btn-primary #{'active' if params[:q]}" do
-				Counselor View
-			= link_to url_for(), :class => "btn btn-primary #{'active' unless params[:q]}" do
-				Client View
+		/ .btn-group.counselor-toggle
+		/ 	= link_to url_for(:q => :counselor), :class => "btn btn-primary #{'active' if params[:q]}" do
+		/ 		Counselor View
+		/ 	= link_to url_for(), :class => "btn btn-primary #{'active' unless params[:q]}" do
+		/ 		Client View
 
 	.row
 		.col-md-6
 			%h3
 				.fa.fa-clock-o
-				= "Upcoming Sessions #{'as Counselor' if params[:q] == "counselor"}"
+				/ = "Upcoming Sessions #{'as Counselor' if params[:q] == "counselor"}"
+				= "Upcoming Sessions"
 			%hr.green
 			- if @upcoming_sessions.count > 0
 				- @upcoming_sessions.each do |session|
-					- if params[:q].present?
+					- if current_user.counselor.present?
 						= render ("shared/sessions/session_client_preview"), :session => session, :icon => "clock-o"
 					- else
 						= render ("shared/sessions/session_preview"), :session => session, :icon => "clock-o"
@@ -28,23 +29,24 @@
 						-# %li
 							-# = link_to "View Full Session History", user_session_history_path, :class => "btn btn-link"
 						%li
-							- unless params[:q].present?
-								= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-link"
+							- unless current_user.counselor.present?
+								= link_to "Schedule a New Session", counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-link"
 			- else
 				%p.text-center
 					You currently have no upcoming sessions.
 					%br
 					%br
-					- unless params[:q].present?
-						= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-primary btn-lg"
+					- unless current_user.counselor.present?
+						= link_to "Schedule a New Session", counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-primary btn-lg"
 		.col-md-6
 			%h3
 				.fa.fa-book
-				= "Session History #{'as Counselor' if params[:q] == "counselor"}"
+				/ = "Session History #{'as Counselor' if params[:q] == "counselor"}"
+				= "Session History"
 			%hr.green
 				- if @previous_sessions.count > 0
 					- @previous_sessions.each do |session|
-						- if params[:q].present?
+						- if current_user.counselor.present?
 							= render ("shared/sessions/session_client_preview"), :session => session, :icon => "check-circle-o"
 						- else
 							= render ("shared/sessions/session_preview"), :session => session, :icon => "check-circle-o"
@@ -54,15 +56,15 @@
 							%li
 								= link_to "View Full Session History", user_session_history_path, :class => "btn btn-link"
 							%li
-								- unless params[:q].present?
-									= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-link"
+								- unless current_user.counselor.present?
+									= link_to "Schedule a New Session", counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-link"
 				- else
 					%p.text-center
 						You currently have no previous sessions.
 						%br
 						%br
-						- unless params[:q].present?
-							= link_to "Schedule a New Session", counselors_url(:datetime => Time.zone.now.strftime("%m/%d/%Y"), :host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-primary btn-lg"
+						- unless current_user.counselor.present?
+							= link_to "Schedule a New Session", counselors_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :class => "btn btn-primary btn-lg"
 
 :javascript
 
