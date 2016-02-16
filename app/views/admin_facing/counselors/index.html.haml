@@ -13,6 +13,8 @@
           %th
           %th.sortby.defaultSort{ :name => "last_name"} Name
           %th{ :name => "is_active"} Active
+          %th{ :name => "email"} Email
+          %th{ :name => "phone"} Phone
           %th{ :name => "created_at"} Date Created
           %th{ :name => "popularity"} Public Rating
           %th.text-right{ :name => "session_rate_in_dollars"} Session Rate
@@ -33,6 +35,10 @@
             %td
               - if counselor.is_active?
                 .fa.fa-check-circle-o
+            %td
+              = counselor.user.email
+            %td
+              = counselor.phone
             %td
               = counselor.created_at.strftime("%B %e, %Y")
             %td

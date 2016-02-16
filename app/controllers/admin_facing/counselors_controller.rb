@@ -13,7 +13,7 @@ class AdminFacing::CounselorsController < AdminFacingController
   def getCounselors
 
   	sortby = params[:sortby]
-  	if sortby == "last_name" or sortby == "is_active" or sortby == "created_at"
+  	if sortby == "last_name" or sortby == "is_active" or sortby == "created_at" or sortby == "email" or sortby == "phone"
 		@counselors = Counselor.joins(:user).order(sortby)
 	elsif sortby == "popularity"
 		@counselors = Counselor.joins(:user).sort_by(&:popularity)
