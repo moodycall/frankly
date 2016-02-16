@@ -39,11 +39,11 @@
               .fa.fa-money
               Payouts
           %li.divider
-        - if !current_user.is_counselor?
-          %li
-            = link_to credit_cards_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavPayments" do
-              .fa.fa-credit-card
-              Payments
+        
+        %li
+          = link_to credit_cards_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavPayments" do
+            .fa.fa-credit-card
+            Payments
         %li
           = link_to edit_user_registration_url(:host => Rails.configuration.action_mailer.default_url_options[:host]), :id => "primaryNavSettings" do
             .fa.fa-cog

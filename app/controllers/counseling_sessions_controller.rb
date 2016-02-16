@@ -67,8 +67,8 @@ class CounselingSessionsController < ApplicationController
         # Don't allow user to schedule a session with themself.
         if current_user.counselor.present? and current_user.counselor.id.to_s == "#{params[:counseling_session][:counselor_id]}"
           redirect_to :back, :notice => "Sorry, you can not schedule a session with yourself."
-        elsif current_user.is_counselor?
-          redirect_to :back, :notice => "You must first log out your counselor account to book a session."
+        # elsif current_user.is_counselor?
+          # redirect_to :back, :notice => "You must first log out your counselor account to book a session."
         else
 
           # If they're already a user, we'll want to let them create a session
