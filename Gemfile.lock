@@ -11,7 +11,7 @@ GIT
   revision: 2df5817192e58265bcdff06956250e8d37b354f8
   specs:
     stripe (1.20.0)
-      json (~> 1.8.2)
+      json (~> 1.8.1)
       mime-types (>= 1.25, < 3.0)
       rest-client (~> 1.4)
 
