@@ -9,17 +9,17 @@
           (Only visible to admin users)
       .row
         .col-sm-6
-          = f.label :hourly_rate_in_cents, :label => "Hourly Rate"
+          = f.label :hourly_rate_in_dollars, :label => "Hourly Rate"
           .input-group
-            = f.input :hourly_rate_in_cents, input_html: { :class => "form-control" }, :label => false
+            = f.input :hourly_rate_in_dollars, input_html: { :class => "form-control" }, :label => false
             %span.input-group-addon
-              cents
+              dollars
         .col-sm-6
-          = f.label :hourly_fee_in_cents, :label => "Hourly Fee"
+          = f.label :hourly_fee_in_dollars, :label => "Hourly Fee"
           .input-group
-            = f.input :hourly_fee_in_cents, input_html: { :class => "form-control" }, :label => false
+            = f.input :hourly_fee_in_dollars, input_html: { :class => "form-control" }, :label => false
             %span.input-group-addon
-              cents
+              dollars
         .col-sm-12
           .form-group
             = f.input :is_active
