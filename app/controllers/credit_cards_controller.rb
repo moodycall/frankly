@@ -26,21 +26,22 @@ class CreditCardsController < ApplicationController
     rescue Stripe::CardError => e
       # Since it's a decline, Stripe::CardError will be caught
       body = e.json_body
-      err  = body[:error]
+      err  = body[:error][:message]
       redirect_to user_dashboard_path, notice: "#{err}"
-    end
-
-    @credit_card.stripe_card_id = card.id
-    @credit_card.last_four      = card.last4
-
-    if @credit_card.save
-      unless session[:pending_session_counselor_id].present?
-        redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
-      else
-        redirect_to new_counseling_session_path, notice: 'You are almost done. Now you can finalize your session.'
-      end
     else
-      render :new
+
+      @credit_card.stripe_card_id = card.id
+      @credit_card.last_four      = card.last4
+
+      if @credit_card.save
+        unless session[:pending_session_counselor_id].present?
+          redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
+        else
+          redirect_to new_counseling_session_path, notice: 'You are almost done. Now you can finalize your session.'
+        end
+      else
+        render :new
+      end
     end
   end
 
