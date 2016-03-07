@@ -31,9 +31,9 @@ class AdminFacing::PayoutsController < AdminFacingController
     if params[:payout_ids].present?
       payouts = Payout.find(params[:payout_ids])
       payouts.each do |payout|
-        if(payout.total_in_cents != 0){
+        if payout.total_in_cents != 0
           payout.transfer_funds(payout.total_in_cents)
-        }
+        end
       end
       redirect_to :back, :notice => "Your Payout have successfully been issued."
     else
