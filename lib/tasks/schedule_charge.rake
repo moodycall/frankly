@@ -1,13 +1,4 @@
-desc "Schedule Charge"if session.charge_customer(session.client_id, session_cost, charge_description)
-        puts "Charge for #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')}"
-      elsif session.should_be_cancelled
-        puts "Cancelling #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')} due to lack of payment."
-        session.cancelled_on_dts = Time.now.utc
-        if session.save
-          CounselorMailer.client_cancellation(session.id).deliver
-          UserMailer.counseling_session_cancellation(session.id).deliver
-        end
-      end
+desc "Schedule Charge"
 task :schedule_charge => :environment do
 
   chargeable_sessions = CounselingSession.chargeable_sessions
