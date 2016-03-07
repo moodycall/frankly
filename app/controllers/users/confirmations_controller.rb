@@ -7,7 +7,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
       sign_in(resource_name, resource)
       respond_with_navigational(resource){ redirect_to user_dashboard_path }
     else
-      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render :new }
+      respond_with_navigational(resource.errors, :status => :unprocessable_entity){ render_with_scope :new }
     end
   end
 end
