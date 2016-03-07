@@ -20,15 +20,28 @@ class CreditCardsController < ApplicationController
 
     # We want to retrieve the customer from Stripe
     # Then add the new card to the customer
-    customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
-    card                        = customer.cards.create(:card => params[:stripeToken])
+    begin
+      customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
+      card                        = customer.cards.create(:card => params[:stripeToken])
     rescue Stripe::CardError => e
       # Since it's a decline, Stripe::CardError will be caught
       body = e.json_body
       err  = body[:error]
-    redirect_to user_dashboard_path, notice: "#{err}"
+      redirect_to user_dashboard_path, notice: "#{err}"
+    end
 
-    
+    @credit_card.stripe_card_id = card.id
+    @credit_card.last_four      = card.last4
+
+    if @credit_card.save
+      unless session[:pending_session_counselor_id].present?
+        redirect_to user_dashboard_path, notice: 'Credit card was successfully created.'
+      else
+        redirect_to new_counseling_session_path, notice: 'You are almost done. Now you can finalize your session.'
+      end
+    else
+      render :new
+    end
   end
 
   # PATCH/PUT /credit_cards/1
