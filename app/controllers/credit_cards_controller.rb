@@ -27,7 +27,7 @@ class CreditCardsController < ApplicationController
       # Since it's a decline, Stripe::CardError will be caught
       body = e.json_body
       err  = body[:error][:message]
-      redirect_to user_dashboard_path, notice: "#{err}"
+      render :new, notice: "#{err}"
     else
 
       @credit_card.stripe_card_id = card.id
