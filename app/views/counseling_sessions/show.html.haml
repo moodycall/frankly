@@ -174,11 +174,9 @@
 
     if(s <= 60000){
       var cntdwntext = 'Your session ends in '+pad(min)+':'+pad(sec);
-    }else{
-      var cntdwntext = pad(min)+':'+pad(sec);
+      $('#cntdwn').text(cntdwntext);
     }
-    $('#cntdwn').text(cntdwntext);
-
+    
     if(s <= 0){
       session.disconnect();
       $(historyDiv).hide();
