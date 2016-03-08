@@ -54,6 +54,7 @@
       
       %p.text-right
         #countdown_clock.text-right
+        #cntdwn.text-right
 
       %br
 
@@ -146,24 +147,52 @@
     
   });
 
-  //  var updateClock = function() {
-  //      function pad(n) {
-  //          return (n < 10) ? '0' + n : n;
-  //      }
-  //
-  //      var now = new Date();
-  //      var s = pad(now.getUTCHours()) + ':' +
-  //              pad(now.getUTCMinutes()) + ':' +
-  //              pad(now.getUTCSeconds());
-  //
-  //      $('#clock').html(s);
-  //
-  //      var delay = 1000 - (now % 1000);
-  //      setTimeout(updateClock, delay);
-  //      console.log(s)
-  //  };
-  //
-  //  updateClock();
+  var countDownClock = function() {
+
+    function pad(n) {
+       return (n < 10) ? '0' + n : n;
+    }
+
+    var s = new Date();
+    var now = new Date();
+    var endTime = new Date();
+
+    endTime.setHours("#{@counseling_session.estimated_endtime.utc.strftime("%k")}");
+
+    endTime.setMinutes("#{@counseling_session.estimated_endtime.utc.strftime("%M")}");
+
+    endTime.setSeconds(0);
+
+    s.setHours(now.getUTCHours());
+    s.setMinutes(now.getUTCMinutes());
+    s.setSeconds(now.getUTCSeconds());
+
+    s = endTime - s;
+
+    var min = (s/1000/60) << 0,
+    sec = ((s/1000) % 60) << 0;
+
+    if(s <= 60000){
+      var cntdwntext = 'Your session will expire in '+pad(min)+':'+pad(sec);
+    }else{
+      var cntdwntext = pad(min)+':'+pad(sec);
+    }
+    $('#cntdwn').text(cntdwntext);
+
+    if(s <= 0){
+      session.disconnect();
+      $(historyDiv).hide();
+      $('.chat-name').addClass('closed');
+      alert('Your session has expired');
+      window.location = $('#exitSession').find('a').attr('href');
+
+    }else{
+      var delay = 1000 - (now % 1000);
+      setTimeout(countDownClock, delay);
+    }
+  }
+
+  countDownClock();
 
   var disconn = 0;
   var apiKey = "#{ENV["OPENTOK_KEY"]}";
