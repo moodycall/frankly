@@ -297,6 +297,9 @@ class CounselorsController < ApplicationController
     # handle_availability_intervals
 
     respond_to do |format|
+
+      params[:counselor][:hourly_rate_in_cents] = params[:counselor][:hourly_rate_in_dollars].to_i*100
+      params[:counselor][:hourly_fee_in_cents] = params[:counselor][:hourly_fee_in_dollars].to_i*100
       if @counselor.update(counselor_params)
         format.html { redirect_to :back, notice: 'Counselor was successfully updated.' }
         format.json { render :show, status: :ok, location: @counselor }
