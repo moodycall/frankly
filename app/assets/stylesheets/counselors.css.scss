@@ -282,6 +282,14 @@
   padding-left: 15px;
   padding-bottom: 15px;
 }
+.clear-date-text {
+	
+  font-size: 14px;
+  font-weight: 700;
+  color: #959595;
+  text-transform: uppercase;
+  padding-bottom: 15px;
+}
 .reccurring-days .form-group-reccurring {
 	display: inline-block !important;
 }
@@ -342,4 +350,24 @@
 
 .close-btn {
 	background: #32a878 url('close.png') center center no-repeat;
+}
+.availableDates a{
+	color: #32a878;
+}
+.unavailableDates a, .unavailableDates span{
+	color: grey !important;
+}
+.ui-dialog {
+	text-align: center;
+	padding: 10px 0;
+	background-color: #32a878;
+	border-radius: 4px;
+	z-index: 9999 !important;
+	outline: 0 none !important;
+}
+.ui-dialog-titlebar {
+	display: none;
+}
+#dialog {
+	color: #fff;
 }

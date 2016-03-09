@@ -77,6 +77,7 @@
               .trigger_calendar_picker
                 .fa.fa-calendar-o.fa-2x
             .col-sm-6
+              #dialog
               = text_field_tag :datetime, @dts.strftime("%m/%d/%Y"), :class => "form-control", :input_html => { :class => "form-control"}
             .col-sm-5
               = submit_tag "Change Date", :class => "btn btn-primary btn-dark btn-lg btn-block"
@@ -86,3 +87,49 @@
         = render "availability_day", :dts => (@dts).in_time_zone
         = render "availability_day", :dts => (@dts + 1.day).in_time_zone
         = render "availability_day", :dts => (@dts + 2.day).in_time_zone
+
+:javascript
+
+  // Get unique available dates of counselor
+  var disableddates = #{@counselor.unique_available_days()};
+
+  // Dissable and change color of unavailable dates
+  $( "#datetime" ).datepicker({
+
+    beforeShowDay: function(date) {
+
+      var string = jQuery.datepicker.formatDate('dd-mm-yy', date);
+      
+      if (disableddates.indexOf(string) != -1) {
+          return [true, 'availableDates'];
+      }
+      return [false, 'unavailableDates'];
+    },
+    onSelect: function() {
+        $("#counselor_dts_change_form").submit();
+    }
+  });
+
+  $("#dialog").text("No availability");
+
+  var dlg = $('#dialog').dialog({
+    autoOpen: false,
+    draggable: false,
+    resizable: false,
+    width: 50,
+    height: 40
+  });
+
+  $("#ui-datepicker-div").on("mouseover",".unavailableDates",function() {
+    dlg.dialog("option", "position", {
+      my: "left top",
+      at: "right bottom",
+      of: event,
+      offset: "20 20"
+    });
+    dlg.dialog("open");
+  }).mousemove(function(event) {
+      
+  }).mouseout(function() {
+    dlg.dialog("close");
+  });

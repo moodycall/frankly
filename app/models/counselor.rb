@@ -174,8 +174,8 @@ class Counselor < ActiveRecord::Base
 					nextDate 	= date_of_next "#{weekDay}",t.timezone_name
 
 					while d.end_date >= nextDate and
-						 (preDate == 0 or nextDate <= preDate or type == 'specific') and
-						 (type != 'specific' or
+						 (preDate == 0 or nextDate <= preDate or type == 'unique' or type == 'specific') and
+						 (type != 'specific' or type != 'unique' or
 						 (nextDate.in_time_zone(pre_timezone) <= date.end_of_day))
 
 						availableTime 	= (Time.zone.local(nextDate.year, nextDate.month, nextDate.day, start_time.hour, start_time.min, start_time.sec))
@@ -190,7 +190,7 @@ class Counselor < ActiveRecord::Base
 								
 								if (availableTime <= availableEnds and
 									 availableTime > currentTime + 30.minutes) and
-									 ((type == 'next') or (type == 'all' and timeInUserZone>=date.beginning_of_day) or (type == 'specific' and timeInUserZone.between?(date.beginning_of_day,date.end_of_day)))
+									 ((type == 'next') or ((type == 'all' or type == 'unique') and timeInUserZone>=date.beginning_of_day) or (type == 'specific' and timeInUserZone.between?(date.beginning_of_day,date.end_of_day)))
 									
 									if !booked_on(availableTime).present?
 										availableExist = true
@@ -201,7 +201,7 @@ class Counselor < ActiveRecord::Base
 							end
 						end
 						
-						if availableExist and type != 'specific'
+						if availableExist and type != 'specific' and type != 'unique'
 							preDate	= nextDate
 							break
 						end
@@ -251,6 +251,18 @@ class Counselor < ActiveRecord::Base
   		date  = Date.parse(day).in_time_zone(timezone_name)
 		delta = date >= Time.zone.today ? 0 : 7
 		(Date.parse(day) + delta).in_time_zone(timezone_name)
+	end
+
+	def unique_available_days()
+		dateArray = []
+		items = all_available(Time.now.in_time_zone,'unique')
+		items.each do |t|
+			dt = t.in_time_zone.strftime("%d-%m-%Y")
+			if !dateArray.include? dt
+				dateArray.push(dt)
+			end
+		end
+  		dateArray
 	end
 
 	def available_on_day(wday)
