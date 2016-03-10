@@ -172,7 +172,7 @@
     var min = (s/1000/60) << 0,
     sec = ((s/1000) % 60) << 0;
 
-    if(s <= 60000){
+    if(s <= 300000){
       var cntdwntext = 'Your session ends in '+pad(min)+':'+pad(sec);
       $('#cntdwn').text(cntdwntext);
     }
@@ -182,7 +182,11 @@
       $(historyDiv).hide();
       $('.chat-name').addClass('closed');
       alert('Your session has expired');
-      window.location = $('#exitSession').find('a').attr('href');
+      if($("#endSession").length>0){
+        $("#endSession").click();
+      }else{
+        window.location = $('#exitSession').find('a').attr('href');
+      }
 
     }else{
       var delay = 1000 - (now % 1000);
