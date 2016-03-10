@@ -183,7 +183,7 @@
       $('.chat-name').addClass('closed');
       alert('Your session has expired');
       if($("#endSession").length>0){
-        $("#endSession").click();
+        $('#hideButton').click();
       }else{
         window.location = $('#exitSession').find('a').attr('href');
       }
