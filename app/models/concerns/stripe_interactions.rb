@@ -40,7 +40,7 @@ module StripeInteractions
     transfer = Stripe::Transfer.create(
       :amount => total_in_cents, # amount in cents
       :currency => "usd",
-      :recipient => self.user.stripe_recipient_id,
+      :destination => self.user.stripe_recipient_id,
       :statement_descriptor => "Payout from MoodyCall | #{self.id}"
     )
 
