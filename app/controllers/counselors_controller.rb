@@ -260,9 +260,9 @@ class CounselorsController < ApplicationController
       recipient.save
     else
       recipient = Stripe::Recipient.create(
-        :name => @counselor.user.name,
-        :type => "individual",
-        :email => @counselor.user.email,
+        :name => params[:name],
+        :type => params[:type],
+        :email => params[:email],
         :bank_account => params[:stripeToken]
       )
       @counselor.user.stripe_recipient_id = recipient.id
@@ -301,6 +301,9 @@ class CounselorsController < ApplicationController
       params[:counselor][:hourly_rate_in_cents] = params[:counselor][:hourly_rate_in_dollars].to_i*100
       params[:counselor][:hourly_fee_in_cents] = params[:counselor][:hourly_fee_in_dollars].to_i*100
       if @counselor.update(counselor_params)
+        if @counselor.is_active?
+          @counselor._create_stripe_recipient_id
+        end
         format.html { redirect_to :back, notice: 'Counselor was successfully updated.' }
         format.json { render :show, status: :ok, location: @counselor }
       else
@@ -406,55 +409,59 @@ class CounselorsController < ApplicationController
     # We want to build from scratch when counselor updates their availability
     availability_params = Array.new
     if params[:counselor][:availability]
-      type = params[:counselor][:availability]
+
       @counselor.availability_dates.destroy_all
-      params[:counselor][type].to_a.each do |row|
-        if row[1][:availability_dates_attributes].present?
+      if !params[:counselor][:clear_date].present?
 
-          availability_params = row[1][:availability_dates_attributes]
-          
-          temp_start_date = availability_params[:start_date].split('/')
-          availability_params[:start_date] = "#{temp_start_date[1]}/#{temp_start_date[0]}/#{temp_start_date[2]}"
-          
-          if !availability_params[:end_date].present?
-            availability_params[:end_date] = availability_params[:start_date]
-            availability_params[:is_same_time] = 1
-            availability_params[:is_specific] = 1
-            wd = DateTime.parse(availability_params[:start_date]).strftime('%w')
-            row[1][:week_days] = [wd]
-          else
-            temp_end_date = availability_params[:end_date].split('/')
-            availability_params[:end_date] = "#{temp_end_date[1]}/#{temp_end_date[0]}/#{temp_end_date[2]}"
-          end
+        type = params[:counselor][:availability]
+        params[:counselor][type].to_a.each do |row|
+          if row[1][:availability_dates_attributes].present?
 
-          @availabilityDate = @counselor.availability_dates.new(availability_params)
-          @availabilityDate.save
-          row[1][:week_days].to_a.each do |day|
-
-            dayIndex = day
-            if availability_params[:is_same_time].present?
-              dayIndex = "0"
-            end
-            row[1][:availability_intervals_attributes][dayIndex].each do |t|
-              original_start_time = t[1][:start_time]
-              original_end_time   = t[1][:end_time]
-              start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
-              end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
-              # We want to store UTC time for consistancy
-              availabilityTime = {}
-              # availabilityTime[:start_time] = start_time_as_utc
-              # availabilityTime[:end_time]   = end_time_as_utc
-              availabilityTime[:start_time] = original_start_time
-              availabilityTime[:end_time]   = original_end_time
-              availabilityTime[:day_of_week] = day
-              availabilityTime[:timezone_name] = Time.zone.name
-              @availabilityDate.availability_intervals.new(availabilityTime).save
-            end
+            availability_params = row[1][:availability_dates_attributes]
             
-          end
+            temp_start_date = availability_params[:start_date].split('/')
+            availability_params[:start_date] = "#{temp_start_date[1]}/#{temp_start_date[0]}/#{temp_start_date[2]}"
+            
+            if !availability_params[:end_date].present?
+              availability_params[:end_date] = availability_params[:start_date]
+              availability_params[:is_same_time] = 1
+              availability_params[:is_specific] = 1
+              wd = DateTime.parse(availability_params[:start_date]).strftime('%w')
+              row[1][:week_days] = [wd]
+            else
+              temp_end_date = availability_params[:end_date].split('/')
+              availability_params[:end_date] = "#{temp_end_date[1]}/#{temp_end_date[0]}/#{temp_end_date[2]}"
+            end
 
-        else
-          # params[:counselor][:availability_intervals_attributes].delete(time[0])
+            @availabilityDate = @counselor.availability_dates.new(availability_params)
+            @availabilityDate.save
+            row[1][:week_days].to_a.each do |day|
+
+              dayIndex = day
+              if availability_params[:is_same_time].present?
+                dayIndex = "0"
+              end
+              row[1][:availability_intervals_attributes][dayIndex].each do |t|
+                original_start_time = t[1][:start_time]
+                original_end_time   = t[1][:end_time]
+                start_time_as_utc   = Time.zone.parse(original_start_time).utc.strftime("%I:%M%P")
+                end_time_as_utc     = Time.zone.parse(original_end_time).utc.strftime("%I:%M%P")
+                # We want to store UTC time for consistancy
+                availabilityTime = {}
+                # availabilityTime[:start_time] = start_time_as_utc
+                # availabilityTime[:end_time]   = end_time_as_utc
+                availabilityTime[:start_time] = original_start_time
+                availabilityTime[:end_time]   = original_end_time
+                availabilityTime[:day_of_week] = day
+                availabilityTime[:timezone_name] = Time.zone.name
+                @availabilityDate.availability_intervals.new(availabilityTime).save
+              end
+              
+            end
+
+          else
+            # params[:counselor][:availability_intervals_attributes].delete(time[0])
+          end
         end
       end
     end
@@ -483,8 +490,6 @@ class CounselorsController < ApplicationController
   def checkIsCounselor!
     if user_signed_in? and current_user.is_counselor and !current_user.counselor.present?
       redirect_to new_counselor_path, :notice => "Please fill in the form to continue"
-    else
-      # super
     end
   end
 end

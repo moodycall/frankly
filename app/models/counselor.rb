@@ -22,14 +22,14 @@ class Counselor < ActiveRecord::Base
 	accepts_nested_attributes_for :counseling_degrees
 	
 	validates_presence_of :bio,
-							:profession_start_date,
-							:photo
+							:profession_start_date
+							# :photo
 	validates :phone,   
 							:presence => true,
 							:numericality => true,
 							:length => { :minimum => 10, :maximum => 15 }
 												
-	before_create :_create_stripe_recipient_id
+	# before_create :_create_stripe_recipient_id
 
 	mount_uploader :photo, ProfilePhotoUploader
 
@@ -300,12 +300,6 @@ class Counselor < ActiveRecord::Base
     end
   end
 
-	private
-
-	def parse_dts(string)
-    DateTime.parse(string)
-  end
-
 	def _create_stripe_recipient_id
 		unless user.stripe_recipient_id.present?
 	  	recipient = Stripe::Recipient.create(
@@ -318,4 +312,10 @@ class Counselor < ActiveRecord::Base
 			user.stripe_recipient_id = recipient.id
 		end
 	end
+
+	private
+
+	def parse_dts(string)
+    DateTime.parse(string)
+  end
 end

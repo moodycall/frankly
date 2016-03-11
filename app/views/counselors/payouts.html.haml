@@ -1,3 +1,6 @@
+- counselorDisabled = true
+- if @counselor.is_active?
+  - counselorDisabled = false
 .container
   %h1 All Payouts
   .row
@@ -38,11 +41,19 @@
           %br
           #bank_details_wrapper
             .form-group.hidden-default
-              %input.form-control.floatlabel.country{:placeholder => "Country Code", :value => "US"}
+              %input.form-control.floatlabel.bankformitem.country{:placeholder => "Country Code", :value => "US"}
             .form-group
-              %input.form-control.floatlabel.routing-number{:placeholder => "Routing Number"}
+              =  select_tag :type, options_for_select([ ["Type",""], ["Individual","individual"], ["Corporation","corporation"] ], disabled: "Type", selected:"Type"), :class => "form-control bankformitem", :label => false, :include_blank => false, :onChange => "getTaxID(this)", :disabled => counselorDisabled
             .form-group
-              %input.form-control.floatlabel.account-number{:placeholder => "Account Number"}
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "name", :placeholder => "Full Legal Name", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.account-taxid#taxid{:name => "taxid", :placeholder => "Tax ID", :disabled => true}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.routing-number{:placeholder => "Routing Number", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-number{:placeholder => "Account Number", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-email{:name => "email", :placeholder => "Email Address", :value => @counselor.user.email, :disabled => counselorDisabled}
           = submit_tag "Submit Bank Credentials", :class => "btn btn-primary btn-block btn-lg"
 
 :javascript
@@ -73,13 +84,46 @@
         // Disable the submit button to prevent repeated clicks
         $form.find('button').prop('disabled', true);
 
-        Stripe.bankAccount.createToken({
-          country: $('.country').val(),
-          routingNumber: $('.routing-number').val(),
-          accountNumber: $('.account-number').val()
-        }, stripeResponseHandler);
+        if(validateBankDetails(this)){
+
+          Stripe.bankAccount.createToken({
+            country: $('.country').val(),
+            routingNumber: $('.routing-number').val(),
+            accountNumber: $('.account-number').val()
+          }, stripeResponseHandler);
+        }
 
         // Prevent the form from submitting with the default action
         return false;
       });
+    });
+
+    function getTaxID(obj){
+      if($(obj).val() == "individual"){
+        $("#taxid").val("SSN");
+      }else{
+        $("#taxid").val("EIN");
+      }
+    }
+
+    function validateBankDetails(form){
+      var valid = true;
+      $(form).find(".bankformitem").each(function(){
+        if($(this).val() == ""){
+          valid = false;
+          $(this).css("border","1px solid red")
+        }
+      });
+      if(valid == false){
+        $(form).find('.payment-errors').slideDown().text("Please fill out all fields");
+      }else{
+        $(form).find('.payment-errors').slideUp().text("");
+      }
+      return valid;
+    }
+
+    $(".bankformitem").change(function(){
+      if($(this).val() != ""){
+        $(this).css("border","1px solid #CCC")
+      }
     });
