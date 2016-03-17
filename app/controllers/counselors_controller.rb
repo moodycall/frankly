@@ -123,7 +123,7 @@ class CounselorsController < ApplicationController
         recipient = Stripe::Account.create(
           :from_recipient => @counselor.user.stripe_recipient_id
         )
-        @counselor.user.stripe_recipient_id = recipient.id
+        @counselor.user.stripe_recipient_id = recipient.migrated_to
         @counselor.user.save!
       end
 
