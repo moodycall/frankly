@@ -22,7 +22,7 @@ class CreditCardsController < ApplicationController
     # Then add the new card to the customer
     begin
       customer                    = Stripe::Customer.retrieve(current_user.stripe_customer_id)
-      card                        = customer.cards.create(:card => params[:stripeToken])
+      card                        = customer.sources.create(:source => params[:stripeToken])
     rescue Stripe::CardError => e
       # Since it's a decline, Stripe::CardError will be caught
       body = e.json_body

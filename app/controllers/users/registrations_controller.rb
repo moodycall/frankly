@@ -52,15 +52,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def update
     if params[:stripeToken].present?
       if current_user.stripe_recipient_id.present?
-        recipient = Stripe::Recipient.retrieve(current_user.stripe_recipient_id)
-        recipient.bank_account = params[:stripeToken]
+        recipient = Stripe::Account.retrieve(current_user.stripe_recipient_id)
+        recipient.external_account = params[:stripeToken]
         recipient.save
       else
-        recipient = Stripe::Recipient.create(
-          :name => current_user.name,
-          :type => "individual",
+        recipient = Stripe::Account.create(
           :email => current_user.email,
-          :bank_account => params[:stripeToken]
+          :managed => true,
+          :country => 'US',
+          :external_account => params[:stripeToken]
         )
         current_user.stripe_recipient_id = recipient.id
         current_user.save!

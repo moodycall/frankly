@@ -255,15 +255,15 @@ class CounselorsController < ApplicationController
 
   def update_bank
     if @counselor.user.stripe_recipient_id.present?
-      recipient = Stripe::Recipient.retrieve(@counselor.user.stripe_recipient_id)
-      recipient.bank_account = params[:stripeToken]
+      recipient = Stripe::Account.retrieve(@counselor.user.stripe_recipient_id)
+      recipient.external_account = params[:stripeToken]
       recipient.save
     else
-      recipient = Stripe::Recipient.create(
-        :name => params[:name],
-        :type => params[:type],
+      recipient = Stripe::Account.create(
         :email => params[:email],
-        :bank_account => params[:stripeToken]
+        :managed => true,
+        :country => 'US',
+        :external_account => params[:stripeToken]
       )
       @counselor.user.stripe_recipient_id = recipient.id
       @counselor.user.save!
@@ -301,9 +301,9 @@ class CounselorsController < ApplicationController
       params[:counselor][:hourly_rate_in_cents] = params[:counselor][:hourly_rate_in_dollars].to_i*100
       params[:counselor][:hourly_fee_in_cents] = params[:counselor][:hourly_fee_in_dollars].to_i*100
       if @counselor.update(counselor_params)
-        if @counselor.is_active?
-          @counselor._create_stripe_recipient_id
-        end
+        # if @counselor.is_active?
+        #   @counselor._create_stripe_recipient_id
+        # end
         format.html { redirect_to :back, notice: 'Counselor was successfully updated.' }
         format.json { render :show, status: :ok, location: @counselor }
       else
