@@ -119,14 +119,6 @@ class CounselorsController < ApplicationController
       redirect_to counselors_path, :notice => "The counselor you're looking for is not currently available. Please search and select an active counselor."
     else
 
-      if @counselor.user.stripe_recipient_id != ""
-        recipient = Stripe::Account.create(
-          :from_recipient => @counselor.user.stripe_recipient_id
-        )
-        @counselor.user.stripe_recipient_id = recipient.id
-        @counselor.user.save!
-      end
-
       if current_user and current_user.id != @counselor.user.id and !session[:profileViews].include?(@counselor.id)
         @counselor.update_columns(:profile_view => @counselor.profile_view+1)
         session[:profileViews].push(@counselor.id)
