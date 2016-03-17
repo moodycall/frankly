@@ -32,10 +32,16 @@ class AdminFacing::PayoutsController < AdminFacingController
       payouts = Payout.find(params[:payout_ids])
       payouts.each do |payout|
         if payout.total_in_cents != 0
-          payout.transfer_funds(payout.total_in_cents)
+          res = payout.transfer_funds(payout.total_in_cents)
+          if res == "true"
+            redirect_to :back, :notice => "Your Payout have successfully been issued."
+          else
+            redirect_to :back, :notice => "#{res}"
+          end
+        else
+          redirect_to :back, :notice => "Your Payout have successfully been issued."
         end
       end
-      redirect_to :back, :notice => "Your Payout have successfully been issued."
     else
       redirect_to :back, :notice => "Please select Payouts to Transfer."
     end

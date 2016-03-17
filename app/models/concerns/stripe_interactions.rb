@@ -49,12 +49,12 @@ module StripeInteractions
       # Since it's a decline, Stripe::CardError will be caught
       body = e.json_body
       err  = body[:error][:message]
-      redirect_to :back, notice: "#{err}"
     else
 
       self.stripe_transfer_id = transfer.id
       self.funds_sent_dts     = Time.now
       self.save
+      res = "true"
     end
   end
 
