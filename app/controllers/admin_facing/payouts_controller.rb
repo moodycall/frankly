@@ -39,7 +39,7 @@ class AdminFacing::PayoutsController < AdminFacingController
             redirect_to :back, :notice => "#{res}"
           end
         else
-          redirect_to :back, :notice => "Your Payout have successfully been issued."
+          redirect_to :back, :notice => "Payout for 0 amount can not be issued."
         end
       end
     else
