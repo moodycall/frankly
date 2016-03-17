@@ -37,16 +37,24 @@ module StripeInteractions
 
   def transfer_funds(total_in_cents)
     # Create a transfer to the specified recipient
-    transfer = Stripe::Transfer.create(
-      :amount => total_in_cents, # amount in cents
-      :currency => "usd",
-      :destination => self.user.stripe_recipient_id,
-      :description => "Payout from MoodyCall | #{self.id}"
-    )
+    begin
 
-    self.stripe_transfer_id = transfer.id
-    self.funds_sent_dts     = Time.now
-    self.save
+      transfer = Stripe::Transfer.create(
+        :amount => total_in_cents, # amount in cents
+        :currency => "usd",
+        :destination => self.user.stripe_recipient_id,
+        :description => "Payout from MoodyCall | #{self.id}"
+      )
+    rescue Stripe::StripeError => e
+      # Since it's a decline, Stripe::CardError will be caught
+      body = e.json_body
+      err  = body[:error][:message]
+      redirect_to :back, notice: "#{err}"
+    else
+
+      self.stripe_transfer_id = transfer.id
+      self.funds_sent_dts     = Time.now
+      self.save
   end
 
   def issue_refund
