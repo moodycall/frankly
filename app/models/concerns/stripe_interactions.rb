@@ -55,6 +55,7 @@ module StripeInteractions
       self.stripe_transfer_id = transfer.id
       self.funds_sent_dts     = Time.now
       self.save
+    end
   end
 
   def issue_refund
