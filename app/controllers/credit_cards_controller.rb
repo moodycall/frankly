@@ -18,6 +18,7 @@ class CreditCardsController < ApplicationController
   def create
     @credit_card = current_user.credit_cards.new(credit_card_params)
 
+    current_user._create_stripe_customer_id
     # We want to retrieve the customer from Stripe
     # Then add the new card to the customer
     begin
