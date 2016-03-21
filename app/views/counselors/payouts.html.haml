@@ -50,12 +50,13 @@
               %input.form-control.floatlabel.bankformitem.account-name{:name => "first_name", :placeholder => "First Name", :disabled => counselorDisabled}
             .form-group
               %input.form-control.floatlabel.bankformitem.account-name{:name => "last_name", :placeholder => "Last Name", :disabled => counselorDisabled}
-            .form-group.dob
-              %input.form-control.floatlabel.bankformitem.account-name{:name => "day", :placeholder => "Day", :disabled => counselorDisabled}
-            .form-group.dob
-              %input.form-control.floatlabel.bankformitem.account-name{:name => "month", :placeholder => "Month", :disabled => counselorDisabled}
-            .form-group.dob
-              %input.form-control.floatlabel.bankformitem.account-name{:name => "year", :placeholder => "Year", :disabled => counselorDisabled}
+            .row
+              .form-group.col-xs-4
+                %input.form-control.floatlabel.bankformitem.account-name{:name => "day", :placeholder => "Day", :disabled => counselorDisabled}
+              .form-group.col-xs-4
+                %input.form-control.floatlabel.bankformitem.account-name{:name => "month", :placeholder => "Month", :disabled => counselorDisabled}
+              .form-group.col-xs-4
+                %input.form-control.floatlabel.bankformitem.account-name{:name => "year", :placeholder => "Year", :disabled => counselorDisabled}
             .form-group
               %input.form-control.floatlabel.bankformitem.account-name{:name => "address", :placeholder => "Address Line 1", :disabled => counselorDisabled}
             .form-group
