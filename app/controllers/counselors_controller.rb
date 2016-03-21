@@ -254,22 +254,136 @@ class CounselorsController < ApplicationController
   end
 
   def update_bank
+
+    err = "Bank information was successfully updated. New payout will be deposited into new bank account."
     if @counselor.user.stripe_recipient_id.present?
-      recipient = Stripe::Account.retrieve(@counselor.user.stripe_recipient_id)
-      recipient.external_account = params[:stripeToken]
-      recipient.save
+
+      begin
+        recipient = Stripe::Account.retrieve(@counselor.user.stripe_recipient_id)
+        recipient.external_account = params[:stripeToken]
+
+        if params[:type] == 'individual'
+          recipient.legal_entity = {
+            :first_name => params[:first_name],
+            :last_name => params[:last_name],
+            :type => params[:type],
+            :dob => {
+              :day => params[:day], 
+              :month => params[:month], 
+              :year => params[:year]
+            },
+            :address => {
+              :city => params[:city],
+              :line1 => params[:address],
+              :postal_code => params[:postal_code],
+              :state => params[:state]
+              },
+            :ssn_last_4 => params[:ssn].last(4)
+          }
+        else
+          recipient.legal_entity = {
+            :first_name => params[:first_name],
+            :last_name => params[:last_name],
+            :type => params[:type],
+            :dob => {
+              :day => params[:day], 
+              :month => params[:month], 
+              :year => params[:year]
+            },
+            :address => {
+              :city => params[:city],
+              :line1 => params[:address],
+              :postal_code => params[:postal_code],
+              :state => params[:state]
+              },
+            :ssn_last_4 => params[:ssn].last(4),
+            :business_name => params[:business_name],
+            :business_tax_id => params[:ein]
+          }
+        end
+
+        recipient.tos_acceptance = {
+          :date => params[:date],
+          :ip => params[:ip]
+        }
+
+        recipient.save
+      rescue Stripe::StripeError => e
+        body = e.json_body
+        err  = body[:error][:message]
+      end
     else
-      recipient = Stripe::Account.create(
-        :email => params[:email],
-        :managed => true,
-        :country => 'US',
-        :external_account => params[:stripeToken]
-      )
-      @counselor.user.stripe_recipient_id = recipient.id
-      @counselor.user.save!
+
+      begin
+        if params[:type] == 'individual'
+          recipient = Stripe::Account.create(
+            :email => params[:email],
+            :managed => true,
+            :country => 'US',
+            :external_account => params[:stripeToken],
+            :legal_entity => {
+              :first_name => params[:first_name],
+              :last_name => params[:last_name],
+              :type => params[:type],
+              :dob => {
+                :day => params[:day],
+                :month => params[:month],
+                :year => params[:year]
+              },
+              :address => {
+                :city => params[:city],
+                :line1 => params[:address],
+                :postal_code => params[:postal_code],
+                :state => params[:state]
+              },
+              :ssn_last_4 => params[:ssn].last(4)
+            },
+            :tos_acceptance => {
+              :date => params[:date],
+              :ip => params[:ip]
+            }
+          )
+        else
+          recipient = Stripe::Account.create(
+            :email => params[:email],
+            :managed => true,
+            :country => 'US',
+            :external_account => params[:stripeToken],
+            :legal_entity => {
+              :first_name => params[:first_name],
+              :last_name => params[:last_name],
+              :type => params[:type],
+              :dob => {
+                :day => params[:day],
+                :month => params[:month],
+                :year => params[:year]
+              },
+              :address => {
+                :city => params[:city],
+                :line1 => params[:address],
+                :postal_code => params[:postal_code],
+                :state => params[:state]
+              },
+              :business_name => params[:business_name],
+              :business_tax_id => params[:ein],
+              :ssn_last_4 => params[:ssn].last(4)
+            },
+            :tos_acceptance => {
+              :date => params[:date],
+              :ip => params[:ip]
+            }
+          )
+        end
+      rescue Stripe::StripeError => e
+        body = e.json_body
+        err  = body[:error][:message]
+      else
+        @counselor.user.stripe_recipient_id = recipient.id
+        @counselor.user.save!
+      end
     end
 
-    redirect_to :back, :notice => "Bank information was successfully updated. New payout will be deposited into new bank account."
+    redirect_to :back, :notice => "#{err}"
   end
 
   # POST /counselors

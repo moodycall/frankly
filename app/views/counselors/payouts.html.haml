@@ -43,17 +43,39 @@
             .form-group.hidden-default
               %input.form-control.floatlabel.bankformitem.country{:placeholder => "Country Code", :value => "US"}
             .form-group
-              =  select_tag :type, options_for_select([ ["Type",""], ["Individual","individual"], ["Corporation","corporation"] ], disabled:"", selected:""), :class => "form-control bankformitem", :label => false, :include_blank => false, :onChange => "getTaxID(this)", :disabled => counselorDisabled
+              =  select_tag :type, options_for_select([ ["Type",""], ["Individual","individual"], ["Company","company"] ], disabled:"", selected:""), :class => "form-control bankformitem", :label => false, :include_blank => false, :onChange => "getTaxID(this)", :disabled => counselorDisabled
+            .form-group#business_name
+              %input.form-control.floatlabel.account-name{:name => "business_name", :placeholder => "Business Name"}
             .form-group
-              %input.form-control.floatlabel.bankformitem.account-name{:name => "name", :placeholder => "Full Legal Name", :disabled => counselorDisabled}
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "first_name", :placeholder => "First Name", :disabled => counselorDisabled}
             .form-group
-              %input.form-control.floatlabel.bankformitem.account-taxid#taxid{:name => "taxid", :placeholder => "Tax ID", :disabled => counselorDisabled}
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "last_name", :placeholder => "Last Name", :disabled => counselorDisabled}
+            .form-group.dob
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "day", :placeholder => "Day", :disabled => counselorDisabled}
+            .form-group.dob
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "month", :placeholder => "Month", :disabled => counselorDisabled}
+            .form-group.dob
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "year", :placeholder => "Year", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "address", :placeholder => "Address Line 1", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "city", :placeholder => "City", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "state", :placeholder => "State", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-name{:name => "postal_code", :placeholder => "Zip", :disabled => counselorDisabled}
+            .form-group
+              %input.form-control.floatlabel.bankformitem.account-taxid{:name => "ssn", :placeholder => "SSN", :disabled => counselorDisabled}
+            .form-group#ein
+              %input.form-control.floatlabel.account-taxid{:name => "ein", :placeholder => "EIN", :disabled => counselorDisabled}
             .form-group
               %input.form-control.floatlabel.bankformitem.routing-number{:placeholder => "Routing Number", :disabled => counselorDisabled}
             .form-group
               %input.form-control.floatlabel.bankformitem.account-number{:placeholder => "Account Number", :disabled => counselorDisabled}
             .form-group
               %input.form-control.floatlabel.bankformitem.account-email{:name => "email", :placeholder => "Email Address", :value => @counselor.user.email, :disabled => counselorDisabled}
+            %input{:name => "ip", :type => "hidden", :value => request.remote_ip}
+            %input{:name => "date", :type => "hidden", :value => Time.now.to_time.to_i}
           = submit_tag "Submit Bank Credentials", :class => "btn btn-primary btn-block btn-lg", :disabled => counselorDisabled
         - if counselorDisabled
           #below-text
@@ -103,12 +125,11 @@
 
     function getTaxID(obj){
       if($(obj).val() == "individual"){
-        $("#taxid").val("SSN");
+        $("#business_name").hide().find('input').removeClass('bankformitem');
+        $("#ein").hide().find('input').removeClass('bankformitem');
       }else{
-        $("#taxid").val("EIN");
-      }
-      if($("#taxid").val() != ""){
-        $("#taxid").css("border","1px solid #CCC")
+        $("#business_name").show().find('input').addClass('bankformitem');
+        $("#ein").show().find('input').addClass('bankformitem');
       }
     }
 
