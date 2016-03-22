@@ -60,12 +60,34 @@ class Counselor < ActiveRecord::Base
 		end
 	end
 
+	def single_payable_sessions
+		counseling_sessions.select do |session|
+			session.estimated_endtime < Time.now and
+			session.refund_amount_in_cents == nil and
+			session.payout_id.nil? and
+			session.estimate_duration_in_minutes == 30
+		end
+	end
+
+	def double_payable_sessions
+		counseling_sessions.select do |session|
+			session.estimated_endtime < Time.now and
+			session.refund_amount_in_cents == nil and
+			session.payout_id.nil? and
+			session.estimate_duration_in_minutes == 60
+		end
+	end
+
+	def total_payable_sessions_count
+		single_payable_sessions.count + (double_payable_sessions.count * 2)
+	end
+
 	def payable_total_in_dollars
-		payable_sessions.count * session_net_profit_in_dollars
+		total_payable_sessions_count * session_net_profit_in_dollars
 	end
 
 	def payable_total_in_cents
-		(payable_sessions.count * session_net_profit_in_dollars) * 100
+		(total_payable_sessions_count * session_net_profit_in_dollars) * 100
 	end
 
 	def is_user_favorite(user_id)
