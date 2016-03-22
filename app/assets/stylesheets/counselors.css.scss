@@ -377,9 +377,16 @@
 #below-text {
 	margin-top: 10px;
 }
-.dob {
-	width: 30% !important;
-	display: inline-block !important;
+.dob .form-group.col-xs-3 {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.dob.row {
+	margin-left: -5px;
+	margin-right: -5px;
+}
+.dob label {
+	padding-top: 15px;
 }
 #ssn, #ein, #business_name {
 	display: none;
