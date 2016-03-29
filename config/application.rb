@@ -19,9 +19,6 @@ module Moodycall
     Rails.application.config.assets.precompile += %w( gritter.png )
     Rails.application.config.assets.precompile += %w( gritter-close.png )
     config.assets.enabled = true
-    config.after(:suite) do
-        ActiveRecord::Base.connection.execute("DEALLOCATE ALL")
-    end
     
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
