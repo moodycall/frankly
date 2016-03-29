@@ -13,7 +13,9 @@ module Moodycall
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-
+    config.after(:suite) do
+        ActiveRecord::Base.connection.execute("DEALLOCATE ALL")
+    end
     config.assets.paths << "#{Rails.root}/app/assets/fonts"
     Rails.application.config.assets.precompile += %w( ie-spacer.gif )
     Rails.application.config.assets.precompile += %w( gritter.png )
