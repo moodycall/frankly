@@ -9,6 +9,7 @@ development:
   database: moodycall_dev
   pool: 5
   timeout: 15000
+  prepared_statement: false
 
 staging:
   adapter: postgresql
@@ -16,9 +17,11 @@ staging:
   database: staging
   pool: 5
   timeout: 8000
+  prepared_statement: false
 
 production:
   adapter: postgresql
   database: production
   pool: 5
   timeout: 8000
+  prepared_statement: false
