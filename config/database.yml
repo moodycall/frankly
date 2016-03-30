@@ -25,4 +25,3 @@ production:
   pool: 5
   timeout: 8000
   prepared_statement: false
-  
