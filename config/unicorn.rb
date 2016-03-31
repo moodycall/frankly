@@ -24,6 +24,6 @@ after_fork do |server, worker|
       database: "moodycall_dev"
       pool: "5"
       timeout: "15000"
-      prepared_statement: false
+      prepared_statement: "false"
     )
 end
