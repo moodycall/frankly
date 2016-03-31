@@ -19,11 +19,5 @@ after_fork do |server, worker|
   end
 
   defined?(ActiveRecord::Base) and
-    ActiveRecord::Base.establish_connection(
-      adapter: "postgresql"
-      database: "moodycall_dev"
-      pool: "5"
-      timeout: "15000"
-      prepared_statement: "false"
-    )
+    ActiveRecord::Base.establish_connection
 end
