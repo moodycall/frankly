@@ -12,9 +12,7 @@ Rails.application.configure do
   }
 
   # Code is not reloaded between requests.
-  config.cache_classes = false
-
-  config.middleware.delete "ActiveRecord::QueryCache"
+  config.cache_classes = true
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -24,7 +22,7 @@ Rails.application.configure do
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
