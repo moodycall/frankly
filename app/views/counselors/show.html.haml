@@ -5,8 +5,6 @@
   .row
     .col-md-6
 
-      -# = raise "#{@counselor.availability_intervals.all_availabilities(Time.now)}"
-
       .counselor_professional_overview_wrapper
         - unless @counselor.is_active
           .alert.alert-warning
@@ -18,11 +16,11 @@
           - nextAvailable = @counselor.next_available
           %hr
           .text-center
-            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => nextAvailable.in_time_zone.strftime("%I:%M%P"), :available => availabilities.include?(nextAvailable + 30.minutes), :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => nextAvailable.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.is_available_at(nextAvailable + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
               Book Next Available
 
             Begins in
-            = distance_of_time_in_words(Time.now, nextAvailable)
+            = distance_of_time_in_words(Time.now.utc, nextAvailable)
 
             = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: nextAvailable.in_time_zone}
 
@@ -84,15 +82,15 @@
 
         %hr
 
-        = render "availability_day", :dts => (@dts).in_time_zone
-        = render "availability_day", :dts => (@dts + 1.day).in_time_zone
-        = render "availability_day", :dts => (@dts + 2.day).in_time_zone
+        = render "availability_day", :dts => (@dts).in_time_zone, :availabilities => availabilities
+        = render "availability_day", :dts => (@dts + 1.day).in_time_zone, :availabilities => ""
+        = render "availability_day", :dts => (@dts + 2.day).in_time_zone, :availabilities => ""
 
 :javascript
 
   // Get unique available dates of counselor
   var disableddates = #{@counselor.unique_available_days()};
-
+  
   // Dissable and change color of unavailable dates
   $( "#datetime" ).datepicker({
 
@@ -111,7 +109,7 @@
   });
 
   $("#dialog").text("No availability");
-
+  
   var dlg = $('#dialog').dialog({
     autoOpen: false,
     draggable: false,

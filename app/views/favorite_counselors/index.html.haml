@@ -3,8 +3,11 @@
 
 	-if @favorite_counselors.present?
 		- @favorite_counselors.each do |favorite|
-			= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: favorite.counselor, iterator: 1, dates: @dts}
-	-else
+			-if favorite.counselor.next_available.present?
+				= render partial: "shared/counselors/favourite_preview_with_schedule", locals: {counselor: favorite.counselor, availability: favorite.counselor.availability_by_dts(favorite.counselor.next_available.in_time_zone).first(5), iterator: 1, dates: favorite.counselor.next_available.in_time_zone}
+			-else
+				= render partial: "shared/counselors/favourite_preview_with_schedule", locals: {counselor: favorite.counselor, availability: favorite.counselor.availability_by_dts(@dts).first(5), iterator: 1, dates: @dts}
+	-else	
 		%p.text-center
 			You currently have no favorites.
 		%p.text-center

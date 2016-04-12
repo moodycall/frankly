@@ -8,6 +8,12 @@
 - @daysArr[6] = 'Saturday'
 - z = 0;
 = simple_form_for(@counselor, url: availability_counselor_path(@counselor), html: { method: :put, :id => "reccurringForm", "data-id" => "reccurring", :class => "form-inline" }) do |f|
+  .clear-date-text
+    Clear my availability
+    %a{ :href => "#", "data-container" => "body", "data-toggle" => "popover", "data-placement" => "right", "data-content" => "Check this and click on Submit button to clear all your availability", "data-trigger" => "hover" }
+      .fa.fa-lg.fa-question-circle
+    = check_box_tag "clear_date", "", false, {"data-name" => "clear_date", :name => "counselor[clear_date]", :value => 0}
+
   - if @counselor.availability_dates.present? and !@counselor.availability_dates.first.is_specific?
     - @counselor.availability_dates.each do |dates|
       - z += 1
@@ -60,11 +66,11 @@
             .col-sm-4{:class => "#{cls}"}
               .form-group.form-group-reccurring
                 %label.label-width Start
-                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => DateTime.parse("#{time.start_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
+                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][][start_time]", :placeholder => "Start time", :value => DateTime.parse("#{time.start_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
             .col-sm-4{:class => "#{cls}"}
               .form-group.form-group-reccurring
                 %label.label-width End
-                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => DateTime.parse("#{time.end_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
+                %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][][end_time]", :placeholder => "End time", :value => DateTime.parse("#{time.end_time}").strftime("%I:%M%P"), :onkeypress => "return restrictedField();"}
             .col-sm-2.text-right{:class => "#{cls}"}
               - if n == 1
                 %button.btn-primary.add-button.plus-btn{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}
@@ -106,11 +112,11 @@
       .col-sm-4{:class => "#{cls}"}
         .form-group.form-group-reccurring
           %label.label-width Start
-          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][start_time]", :placeholder => "Start time", :value => "", :onkeypress => "return restrictedField();"}
+          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][][start_time]", :placeholder => "Start time", :value => "", :onkeypress => "return restrictedField();"}
       .col-sm-4{:class => "#{cls}"}
         .form-group.form-group-reccurring
           %label.label-width End
-          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][#{n}][end_time]", :placeholder => "End time", :value => "", :onkeypress => "return restrictedField();"}
+          %input.date-width.form-control.time{:name => "counselor[reccurring][#{z}][availability_intervals_attributes][#{wd}][][end_time]", :placeholder => "End time", :value => "", :onkeypress => "return restrictedField();"}
       .col-sm-2.text-right{:class => "#{cls}"}
         - if n == 1
           %button.btn-primary.add-button.plus-btn{:type => "button", "data-name" => "#{cls}", "data-item" => "reccurringtime#{z}", :onclick => "addNewTime(this,0);"}

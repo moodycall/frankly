@@ -1,17 +1,17 @@
 - @modal_target_id = "#{@counselor.slug}-#{dts.to_s.parameterize}"
-- availabilities   = @counselor.availability_by_dts(dts)
+- if availabilities == ""
+  - availabilities   = @counselor.availability_by_dts(dts)
 
 %h3
   = (dts).strftime("%B %e, %Y")
 
 .row.counselor_availability_day_wrapper
 
-  - if availabilities.count > 0 # Then make sure the counselor has availabilities on dts
+  - if availabilities.length > 0 # Then make sure the counselor has availabilities on dts
     - availabilities.each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
-        -# - if interval > 30.minutes.from_now
-        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.in_time_zone.strftime("%I:%M%P"), :available => "#{availabilities.include?(interval + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
-          = interval.in_time_zone.strftime("%I:%M%P")
+        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.time.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.is_available_at(interval.time + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+          = interval.time.in_time_zone.strftime("%I:%M%P")
             
   - else # Otherwise, there aren't any openings
     %p.text-center

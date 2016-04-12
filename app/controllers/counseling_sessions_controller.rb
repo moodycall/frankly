@@ -79,6 +79,15 @@ class CounselingSessionsController < ApplicationController
             redirect_to :back, notice: "We were unable to create your session because you have a session during that time. If you'd like to book with this counselor at this time, please cancel your other session."
           else
             if @counseling_session.save
+              bookedtimes = "'#{@counseling_session.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")}'"
+              if @counseling_session.estimate_duration_in_minutes == 60
+                nextTime = (@counseling_session.start_datetime.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
+                bookedtimes += ",'#{nextTime}'"
+              end
+              availability = AvailabilityDay.where("counselor_id=#{@counseling_session.counselor_id} and available_datetime in (#{bookedtimes})")
+              availability.each do |t|
+                t.update(:active=>false)
+              end
               session.delete(:pending_session_counselor_id)
               CounselorMailer.new_counseling_session(@counseling_session).deliver
               @counseling_session.create_opentok_session # Create  opentok session for later use
@@ -117,7 +126,15 @@ class CounselingSessionsController < ApplicationController
   def cancel
     @counseling_session.cancelled_on_dts = Time.now
     @counseling_session.save
-
+    bookedtimes = "'#{@counseling_session.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")}'"
+    if @counseling_session.estimate_duration_in_minutes == 60
+      nextTime = (@counseling_session.start_datetime.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
+      bookedtimes += ",'#{nextTime}'"
+    end
+    availability = AvailabilityDay.where("counselor_id=#{@counseling_session.counselor_id} and available_datetime in (#{bookedtimes})")
+    availability.each do |t|
+      t.update(:active=>true)
+    end
     if current_user.counselor.present? and current_user.counselor == @counseling_session.counselor 
       if @counseling_session.stripe_charge_id.present? and @counseling_session.issue_refund
         redirect_to :back, :notice => "Counseling Session ##{@counseling_session.secure_id} has been cancelled and client has been refunded."

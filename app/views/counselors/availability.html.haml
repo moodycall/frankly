@@ -57,8 +57,8 @@
       }
       var close = "<div class='col-sm-2 text-right "+item+"'><button class='btn-primary add-button plus-btn' type='button' data-name='"+item+"' data-item='"+itemnum+"' onclick='addNewTime(this,0);'></button></div>";
     }
-    var starttime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>Start</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][start_time]' class='date-width form-control time' placeholder='Start time' onkeypress = 'return restrictedField();'></div></div>";
-    var endtime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>End</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"]["+num+"][end_time]' class='date-width form-control time' placeholder='End time' onkeypress = 'return restrictedField();'></div></div>";
+    var starttime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>Start</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"][][start_time]' class='date-width form-control time' placeholder='Start time' onkeypress = 'return restrictedField();'></div></div>";
+    var endtime = "<div class='col-sm-4 "+item+"'><div class='form-group form-group-reccurring'><label class='label-width'>End</label> <input name='counselor["+sec+"]["+cnt+"][availability_intervals_attributes]["+wd+"][][end_time]' class='date-width form-control time' placeholder='End time' onkeypress = 'return restrictedField();'></div></div>";
     
     var html = "<div class='row reccurring-padding reccurring-sub-row time_pair "+item+" "+itemnum+"'>"+labeltext+starttime+endtime+close+"</div>";
     
@@ -69,7 +69,8 @@
     }
     $('.time_pair .time').timepicker({
       showDuration: true,
-      maxTime: '11:59pm'
+      maxTime: '11:59pm',
+      'timeFormat': 'h:ia'
     });
 
     $('.time_pair').datepair();
@@ -437,10 +438,15 @@
       }
     });
     $('#reccurringForm, #specificForm').submit(function(e){
+
       e.preventDefault();
-      type = $(this).attr('data-id');
-      if(validateAvailability(type)){
+      if ($('#clear_date').prop('checked')){
         this.submit();
+      }else{
+        type = $(this).attr('data-id');
+        if(validateAvailability(type)){
+          this.submit();
+        }
       }
     });
 

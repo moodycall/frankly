@@ -30,12 +30,11 @@
       = render "shared/counselors/public_rating", :counselor => counselor
 
       .counselor_availability_preview_wrapper
-        - if counselor.availability_days.length > 0
-          - counselor.availability_days.first(5).each do |availableinterval|
-            - interval = availableinterval.available_datetime
+        - if availability.length > 0
+          - availability.each do |interval|
             .col-xs-4.col-sm-2
-              .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.in_time_zone.strftime("%I:%M%P"), :available => "#{counselor.is_available_at(interval.utc + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
-                = interval.in_time_zone.strftime("%I:%M%P")
+              .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.time.in_time_zone.strftime("%I:%M%P"), :available => "#{counselor.is_available_at(interval.time.utc + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
+                = interval.time.in_time_zone.strftime("%I:%M%P")
         - else
           .col-xs-5.col-sm-3
             .btn.btn-primary.btn-block{ :disabled => :disabled } 
@@ -44,8 +43,6 @@
           = link_to counselor_path(counselor, :datetime => Time.zone.now.strftime("%m/%d/%Y")), :class => "btn btn-link" do
             .fa.fa-search-plus
             More
-
--# = time_as_local(counselor.next_available)
 
 %hr
 
