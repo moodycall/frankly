@@ -46,7 +46,7 @@ class CounselorsController < ApplicationController
         inner join users on users.id = counselors.user_id 
         inner join specializations on specializations.counselor_id = counselors.id
         where #{query})
-      order by start_datetime limit 20")
+      order by start_datetime limit 1")
     
     @iterator = 0
     existDateArr = []
