@@ -46,7 +46,7 @@ class CounselorsController < ApplicationController
         inner join users on users.id = counselors.user_id 
         inner join specializations on specializations.counselor_id = counselors.id
         where #{query})
-      order by start_datetime limit 15")
+      order by start_datetime limit 100")
     
     @iterator = 0
     existDateArr = []
@@ -55,7 +55,7 @@ class CounselorsController < ApplicationController
 
     upcomingDates.each do |upcoming|
       if !existDateArr.include?(upcoming.start_datetime.strftime("%Y-%m-%d"))
-        if(existDateArr.length < 7)
+        if(existDateArr.length < 1)
           existDateArr.push(upcoming.start_datetime.strftime("%Y-%m-%d"))
           dateIdsArr[upcoming.start_datetime.strftime("%Y-%m-%d")] = ""
           dtime = upcoming.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")
