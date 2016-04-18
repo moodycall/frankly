@@ -16,7 +16,7 @@
       .row
         .col-sm-3.col-sm-22.col-search
           = text_field_tag "counselor_name", params[:counselor_name], :id => "hdnname", :placeholder => "Search by name", :class => "form-control"
-        .col-sm-1.ortext.hiddenSearch
+        .col-sm-1.ortext
           .s
             = '-OR-'
         .col-sm-3.col-sm-22.col-search
@@ -42,6 +42,7 @@
   $('#advance_search, #hide_search').click(function(){
     $('.col-search').toggleClass('col-sm-20')
     $('.col-btn').toggleClass('col-btn-10')
+    $('.ortext').toggleClass('ortext-sm')
     toggleAttr($('#datetime'),'name','datetime')
     toggleAttr($('#gender'),'name','gender')
     $('.hiddenSearch').toggleClass('hiddenDiv');
