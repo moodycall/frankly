@@ -15,12 +15,12 @@
     = form_tag counselors_path, method: :get do |f|
       .row
         .col-sm-3.col-sm-22.col-search
-          =  select_tag :specialty, options_from_collection_for_select(Specialty.where(:is_active => true).order(:name => :asc), :name, :name, spcl), :class => "form-control", :label => false, :include_blank => false
+          = text_field_tag "counselor_name", params[:counselor_name], :id => "hdnname", :placeholder => "Search by name", :class => "form-control"
         .col-sm-1.ortext.hiddenSearch
           .s
             = '-OR-'
         .col-sm-3.col-sm-22.col-search
-          = text_field_tag "counselor_name", params[:counselor_name], :id => "hdnname", :placeholder => "Search by name", :class => "form-control"
+          =  select_tag :specialty, options_from_collection_for_select(Specialty.where(:is_active => true).order(:name => :asc), :name, :name, spcl), :class => "form-control", :label => false, :include_blank => false
         .col-sm-3.col-search.hiddenSearch.hiddenDiv
           = select_tag :"", options_for_select([ "No Preference", "Male", "Female" ], params[:gender]), :class => "form-control", :id => "gender"
         .col-sm-3.col-search.hiddenSearch.hiddenDiv

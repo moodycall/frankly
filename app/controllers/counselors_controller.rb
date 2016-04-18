@@ -30,7 +30,8 @@ class CounselorsController < ApplicationController
 
     if params[:counselor_name] and params[:counselor_name] != ""
       name = params[:counselor_name]
-      query = "(counselors.is_active=true and users.gender in (#{gender})) and (specializations.specialty_id= #{@specialty.id} or users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
+      # query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id} and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
+      query = "(counselors.is_active=true and users.gender in (#{gender})) and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
     else
       name = ""
       query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id}"
