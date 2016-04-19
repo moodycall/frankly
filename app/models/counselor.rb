@@ -162,7 +162,7 @@ class Counselor < ActiveRecord::Base
   	end
 	
 	def availabilitytime
-		availability_days.first
+		self.availability_days.first.available_datetime
 	end
 
 	def availability_by_dts(date)

@@ -1,9 +1,7 @@
 - if @counselorsArr.length > 0 and @counselorsArr[0]['date'].present?
   - newDate = @counselorsArr[0]['date']
-  - counselorCnt = @counselorsArr[0]['counselors'].length
 - else
   - newDate = @dts;
-  - counselorCnt = 0
 
 .container
   .row.search_row
@@ -11,7 +9,7 @@
       %h4.search_results_overview
         %em
           - if newDate.strftime("%B %e, %Y") == @dts.strftime("%B %e, %Y") or !params[:datetime].present?
-            #{pluralize(counselorCnt, "Professional")}
+            #{pluralize(@totalCount, "Professional")}
             - if @specialty.present? and !params[:counselor_name].present?
               specializing in
               %em
