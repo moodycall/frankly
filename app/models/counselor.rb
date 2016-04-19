@@ -161,6 +161,10 @@ class Counselor < ActiveRecord::Base
     	booked_sessions = counseling_sessions.where(:cancelled_on_dts => nil, start_datetime: Date.parse(date.to_s).beginning_of_day..Date.parse(date.to_s).end_of_day).all
   	end
 	
+	def availabilitytime
+		availability_days.first
+	end
+
 	def availability_by_dts(date)
 		currentTimeUtc 	= (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
 		searchStartDate	= date.beginning_of_day.utc.strftime("%Y-%m-%d %H:%M:%S")

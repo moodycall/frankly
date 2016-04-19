@@ -86,6 +86,9 @@ Rails.application.routes.draw do
       put :remove_certification
       put :remove_license
   	end
+    collection do
+      post :getCounselors
+    end
   end
 
   devise_for :users, :controllers => {:registrations => "users/registrations", confirmations: 'users/confirmations'}

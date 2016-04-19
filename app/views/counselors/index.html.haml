@@ -29,7 +29,7 @@
             = "available on #{@dts.strftime("%B %e, %Y")}. How about selecting from one of these upcoming dates instead?"
     .col-md-3
       .col-filter
-        =  select_tag :specialty, options_for_select([ ["Upcoming Availability","availability"], ["Newest First","newest"], ["Rating (High-Low)","popularity"], ["Fee (Low-High)","low-fee"], ["Fee (High-Low)","high-fee"] ], @sortby), :class => "form-control", :label => false, :include_blank => false, :onchange => "sortCounselors(this);"
+        =  select_tag :sort, options_for_select([ ["Upcoming Availability","availability"], ["Newest First","newest"], ["Rating (High-Low)","popularity"], ["Fee (Low-High)","low-fee"], ["Fee (High-Low)","high-fee"] ], @sortby), :class => "form-control", :label => false, :include_blank => false, :onchange => "sortCounselors(this);"
 
   - iterator = 0
   - if @counselorsArr.length > 0
@@ -59,12 +59,15 @@
                 %a{:onclick=>"viewLessResult('#{iterator}')"} View Less
           - i += 1
         - iterator += 1
+    = hidden_field_tag "resultCount", @counselorsArr[0]["counselors"].length
     / = will_paginate @counseling_sessions, previous_label: h("<"), next_label: h(">")
   - else
     .text-center
       There are no counselors matching these parameters.
       %br
       Please adjust your search and try again.
+= hidden_field_tag "totalCount", @totalCount
+= hidden_field_tag "url", getCounselors_counselors_path
 
 :javascript
   $('#counselor_search').show()
@@ -87,4 +90,34 @@
     
     $('.viewMore'+cnt).show();
     $('.hideSec.insideSec'+cnt).hide('800');
+  }
+
+
+  $(document).scroll(function(){
+    var totalCount = $("#totalCount").val();
+    var resultCount = $("#resultCount").val();
+    if(totalCount > resultCount){
+      var limit = 2;
+      if(parseInt(totalCount) == parseInt(resultCount)+1){
+        limit = 1;
+      }
+      loadResultAjax(resultCount,limit);
+    }
+  });
+  
+  function loadResultAjax(resultCount,limit){
+    var specialty = $("#specialty").val();
+    var gender = $("#gender").val();
+    var sortby = $("#sort").val();
+    var counselor_name = $("#hdnname").val();
+    $.ajax({
+      type: 'post',
+      url: $("#url").val(),
+      async: false,
+      data: {'specialty':specialty, 'gender':gender, 'sortby': sortby,'counselor_name':counselor_name, 'offset':resultCount, 'limit':limit},
+      success: function(response){
+        $('.repeatCounselors').append(response);
+        $("#resultCount").val(parseInt(resultCount)+parseInt(limit));
+      }
+    });
   }

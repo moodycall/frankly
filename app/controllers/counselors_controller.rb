@@ -28,6 +28,8 @@ class CounselorsController < ApplicationController
       sortby = "availability"
     end
 
+    limit = 2
+
     if params[:counselor_name] and params[:counselor_name] != ""
       name = params[:counselor_name].downcase
       # query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id} and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
@@ -49,7 +51,7 @@ class CounselorsController < ApplicationController
         inner join users on users.id = counselors.user_id 
         inner join specializations on specializations.counselor_id = counselors.id
         where #{query})
-      order by start_datetime limit 100")
+      order by start_datetime limit 50")
     
     @iterator = 0
     existDateArr = []
@@ -75,7 +77,6 @@ class CounselorsController < ApplicationController
     
     existDateArr.each do |upcoming|
 
-      order     = "availability_days.available_datetime"
       datearr   = dateIdsArr[upcoming].chop
       curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
       dateQuery = "availability_days.active=true and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
@@ -84,15 +85,119 @@ class CounselorsController < ApplicationController
       @available_counselors[@iterator]['counselors'] = Array.new
 
       if sortby == "newest"
-        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("#{order}").sort_by(&:created_at).reverse
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.created_at DESC")
       elsif sortby == "low-fee"
-        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("#{order}").sort_by(&:hourly_rate_in_cents)
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.hourly_rate_in_cents ASC")
       elsif sortby == "high-fee"
-        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("#{order}").sort_by(&:hourly_rate_in_cents).reverse
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.hourly_rate_in_cents DESC")
       elsif sortby == "popularity"
-        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("#{order}").sort_by(&:popularity).reverse
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").sort_by(&:popularity).reverse
       else
-        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("#{order}")
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("availability_days.available_datetime ASC").sort_by(&:availabilitytime)
+      end
+
+      @totalCount = @sortApplied.length
+      @available_counselors[@iterator]['counselors'] = @sortApplied.first(limit)
+      @iterator += 1
+    end
+    
+    @counselorsArr = @available_counselors
+
+    @sortby = sortby
+    @page_title = "Search Counselors"
+    @page_subtitle = "Find the right counselor for you."
+  end
+
+  def getCounselors
+    @thisDate = @dts.in_time_zone.utc.strftime("%Y-%m-%d %H:%M:%S")
+    @specialty = Specialty.where(:is_active => true, :set_default => 1).first
+
+    if params[:specialty]
+      @specialty = Specialty.find_by_name "#{params[:specialty]}"
+    end
+
+    if params[:gender] == "Female"
+      gender = 2
+    elsif params[:gender] == "Male"
+      gender = 1
+    else
+      gender = "1,2"
+    end
+
+    if params[:sortby] and params[:sortby] != ""
+      sortby = params[:sortby]
+    else
+      sortby = "availability"
+    end
+
+    ofset = params['offset'].to_i
+    limit = params['limit'].to_i
+    newofset = ofset+limit
+
+    if params[:counselor_name] and params[:counselor_name] != ""
+      name = params[:counselor_name].downcase
+      # query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id} and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
+      query = "(counselors.is_active=true and (LOWER(users.first_name) like '%#{name}%' or LOWER(users.last_name) like '%#{name}%' or concat(LOWER(users.first_name), ' ', LOWER(users.last_name)) like '%#{name}%'))"
+      @thisDate = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")
+      @dts = Time.now.in_time_zone
+    else
+      name = ""
+      query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id}"
+    end
+    curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
+    
+    upcomingDates = AvailabilityDay.find_by_sql(
+      "select distinct (availability_days.start_datetime) as start_datetime 
+      from availability_days 
+      inner join counselors on counselors.id = availability_days.counselor_id 
+      where available_datetime >= '#{@thisDate}' and available_datetime > '#{curentUtc}' and active=true and counselors.id in (
+        select counselors.id from counselors 
+        inner join users on users.id = counselors.user_id 
+        inner join specializations on specializations.counselor_id = counselors.id
+        where #{query})
+      order by start_datetime limit 50")
+    
+    @iterator = 0
+    existDateArr = []
+    dateIdsArr = {}
+    @available_counselors = Array.new
+
+    upcomingDates.each do |upcoming|
+      if !existDateArr.include?(upcoming.start_datetime.strftime("%Y-%m-%d"))
+        if(existDateArr.length < 1)
+          existDateArr.push(upcoming.start_datetime.strftime("%Y-%m-%d"))
+          dateIdsArr[upcoming.start_datetime.strftime("%Y-%m-%d")] = ""
+          dtime = upcoming.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")
+          dateIdsArr[upcoming.start_datetime.strftime("%Y-%m-%d")] += "'#{dtime}',"
+        else
+          break
+        end
+      else 
+        dtime = upcoming.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")
+        dateIdsArr[upcoming.start_datetime.strftime("%Y-%m-%d")] += "'#{dtime}',"
+      end
+
+    end
+    
+    existDateArr.each do |upcoming|
+
+      datearr   = dateIdsArr[upcoming].chop
+      curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
+      dateQuery = "availability_days.active=true and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
+      @available_counselors[@iterator] = {}
+      @available_counselors[@iterator]['date'] = Date.parse(upcoming)
+      @available_counselors[@iterator]['counselors'] = Array.new
+
+      if sortby == "newest"
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.created_at DESC").offset(ofset).limit(limit)
+      elsif sortby == "low-fee"
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.hourly_rate_in_cents ASC").offset(ofset).limit(limit)
+      elsif sortby == "high-fee"
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("counselors.hourly_rate_in_cents DESC").offset(ofset).limit(limit)
+      elsif sortby == "popularity"
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").sort_by(&:popularity).reverse.first(newofset).last(limit)
+      else
+        @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("availability_days.available_datetime ASC").sort_by(&:availabilitytime).first(newofset).last(limit)
       end
 
       @available_counselors[@iterator]['counselors'] = @sortApplied
@@ -104,8 +209,8 @@ class CounselorsController < ApplicationController
     @sortby = sortby
     @page_title = "Search Counselors"
     @page_subtitle = "Find the right counselor for you."
+    render :layout => false
   end
-
   # GET /counselors/1
   # GET /counselors/1.json
   def show
