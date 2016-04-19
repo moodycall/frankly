@@ -1,5 +1,5 @@
 class CounselorsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :getCounselors]
   before_filter :checkIsCounselor!, except: [:new,:create]
   before_action :set_counselor, only: [:update_bank, :show, :edit, :update, :destroy, :payouts, :upcoming, :availability, :licenses, :certifications, :education]
   respond_to :html, :json
