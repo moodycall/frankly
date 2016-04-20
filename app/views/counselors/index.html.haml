@@ -116,6 +116,26 @@
       success: function(response){
         $('.repeatCounselors').append(response);
         $("#resultCount").val(parseInt(resultCount)+parseInt(limit));
+        $(".counselor-time-button").click(function(){
+          session_rate        = parseFloat($(this).attr("data-session-rate"));
+          is_hourly_available = $(this).attr("data-available");
+          time                = $(this).attr("data-time");
+
+          $(".duration_select").find("option").each(function(){
+            $(this).attr("data-session-rate", session_rate);
+          });
+
+          $(".duration_select").val("30");
+          $(".duration_select").attr("data-session-rate", session_rate);
+
+          $(".duration_select").change();
+          
+          $(".selected_time").val(time).change();
+
+          if (is_hourly_available == "false"){
+            $('.duration_select option[value="60"]').hide();
+          }
+        });
       }
     });
   }
