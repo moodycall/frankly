@@ -86,7 +86,7 @@ jQuery ->
   )
 
   $(".selected_time").change ->
-    parent              = $(this).parent(".new_counseling_session")
+    parent              = $(this).parents(".new_counseling_session")
     selected_time       = $("option:selected", this)
     is_hourly_available = selected_time.attr("data-available")
     session_rate        = parseFloat($(this).attr("data-session-rate"))
