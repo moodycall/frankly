@@ -10,6 +10,20 @@
           -else
             = image_tag "default-avatar.png", :class => "counselor_image"
           / = image_tag counselor.user.photo
+        .row
+          .col-sm-6
+            %span.text-muted
+              1 hour:
+          .col-sm-6
+            %span.text-muted
+              = "$#{counselor.session_rate_in_dollars*2}"
+        .row
+          .col-sm-6
+            %span.text-muted
+              1/2 hour:
+          .col-sm-6
+            %span.text-muted
+              = "$#{counselor.session_rate_in_dollars}"
     .col-sm-10
 
       - if current_user.present?

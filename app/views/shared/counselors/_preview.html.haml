@@ -6,6 +6,21 @@
           = image_tag counselor.photo_url(:medium), :class => "counselor_image"
         -else
           = image_tag "default-avatar.png", :class => "counselor_image"
+      %br
+      .row
+        .col-sm-6
+          %span.text-muted
+            1 hour:
+        .col-sm-6
+          %span.text-muted
+            = "$#{counselor.session_rate_in_dollars*2}"
+      .row
+        .col-sm-6
+          %span.text-muted
+            1/2 hour:
+        .col-sm-6
+          %span.text-muted
+            = "$#{counselor.session_rate_in_dollars}"
     .col-sm-7
 
       .counselor_name_wrapper
@@ -18,3 +33,5 @@
       = render "shared/counselors/public_rating", :counselor => counselor
 
       = render "shared/counselors/favorite_button", :counselor => counselor
+
+      = "#{@counselor.profile_view} profile views"
