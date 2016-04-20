@@ -209,6 +209,7 @@ class CounselorsController < ApplicationController
     @sortby = sortby
     @page_title = "Search Counselors"
     @page_subtitle = "Find the right counselor for you."
+    @ofset = ofset
     render :layout => false
   end
   # GET /counselors/1

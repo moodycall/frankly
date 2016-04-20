@@ -1,24 +1,11 @@
-- iterator = 0
+- iterator = @ofset
 - if @counselorsArr.length > 0
   - @counselorsArr.each do |counselors|
     - counselorArr = []
     - cDate = counselors['date']
     - counselorArr = counselors['counselors']
-    - i = 0
     - counselorArr.each do |counselor|
       - itemCounselor = counselor
-      - if i > 2
-        - cls = 'hideSec'
-        - if i == counselorArr.length-1
-          .view_more{:class => "viewMore viewMore#{iterator}"} 
-            %a{:onclick=>"viewMoreResult('#{iterator}')"} View More
-          
-      - else
-        - cls = ''
-      .insideSection{:class=>"#{cls} insideSec#{iterator}"}
+      .insideSection{:class=>"insideSec#{iterator}"}
         = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: itemCounselor, dates: cDate, iterator: iterator}
-        - if i > 2 and i == counselorArr.length-1
-          .view_more.hideSec{:class=> "insideSec#{iterator}"} 
-            %a{:onclick=>"viewLessResult('#{iterator}')"} View Less
-      - i += 1
     - iterator += 1
