@@ -157,7 +157,7 @@
         $(".duration_select").change(function(){
           devider = $(this).find("option:selected").val()/30;
           session_rate        = parseFloat($(this).attr('data-session-rate')*devider);
-          update_session_cost(session_rate);
+          $(".session_cost_wrapper").html("$" + session_rate.toFixed(2));
         });
       }
     });
