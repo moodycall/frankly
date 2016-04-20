@@ -11,6 +11,8 @@ class CounselingDegree < ActiveRecord::Base
       [ 'M.A.',  'Master of Arts' ],
       [ 'Ph.D.', 'Doctor of Philosophy' ],
       [ 'M.D.',  'Doctor of Medicine' ],
+      [ 'DMIN',  'Doctor of Ministry' ],
+      [ 'MDIV',  'Master of Divinity' ],
     ]
   end
 
