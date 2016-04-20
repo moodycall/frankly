@@ -136,6 +136,29 @@
             $('.duration_select option[value="60"]').hide();
           }
         });
+
+        $(".selected_time").change(function(){
+          parent              = $(this).parent(".new_counseling_session");
+          selected_time       = $("option:selected", this);
+          is_hourly_available = selected_time.attr("data-available");
+          session_rate        = parseFloat($(this).attr("data-session-rate"));
+
+          if (is_hourly_available == "false"){
+            $(".duration_select").val("30");
+            $(".duration_select option[value='60']").hide();
+          }else{
+            $(".duration_select").val("30");
+            $(".duration_select option[value='60']").show();
+          }
+          
+          parent.find(".duration_select").change();
+        });
+
+        $(".duration_select").change(function(){
+          devider = $(this).find("option:selected").val()/30;
+          session_rate        = parseFloat($(this).attr('data-session-rate')*devider);
+          update_session_cost(session_rate);
+        });
       }
     });
   }
