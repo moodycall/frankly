@@ -63,12 +63,14 @@ class AdminFacing::PayoutsController < AdminFacingController
   end
 
   def create
+    params[:payout][:total_in_cents] = params[:payout][:total_in_dollars].to_i * 100
     @payout = Payout.new(payout_params)
     @payout.save
     respond_with(@payout)
   end
 
   def update
+    params[:payout][:total_in_cents] = params[:payout][:total_in_dollars].to_i * 100
     @payout.update(payout_params)
     respond_with(@payout)
   end
