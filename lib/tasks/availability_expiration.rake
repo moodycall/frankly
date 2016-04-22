@@ -7,8 +7,8 @@ task :availability_expiration  => :environment do
                 where counselors.is_active = true 
                 and availability_days.active = true 
                 and availability_days.available_date = '#{currentDate}' 
-                and counselors.id not in (select counselor_id from availability_days as 
-                  where as.active = true and as.available_date > '#{currentDate}')")
+                and counselors.id not in (select counselor_id from availability_days as available 
+                  where available.active = true and available.available_date > '#{currentDate}')")
 
   counselors.each do |c|
     puts "#{c.first_name}"
