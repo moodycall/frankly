@@ -20,4 +20,12 @@ class CounselorMailer < ActionMailer::Base
     mail to: "#{@counselor.email}",
     subject: "Congratulations! You've Been Scheduled with MoodyCall!"
   end
+
+  def availability_expired_notice(user)
+    @user = user
+    @userName = @user.first_name
+
+    mail to: "#{@user.email}",
+    subject: "Your availability at MoodyCall is about to run out!"
+  end
 end
