@@ -14,8 +14,7 @@ class CounselingSessionsController < ApplicationController
   def show
     if(@counseling_session.estimated_endtime < Time.zone.now)
       redirect_to user_dashboard_path, :notice => "Your session has expired."
-    end
-    if (@counseling_session.start_datetime - 5.minutes) < Time.zone.now
+    elsif (@counseling_session.start_datetime - 5.minutes) < Time.zone.now
       api_key    = Rails.configuration.opentok_api_key
       api_secret = Rails.configuration.opentok_api_secret
       opentok    = OpenTok::OpenTok.new api_key, api_secret
