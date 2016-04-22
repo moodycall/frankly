@@ -86,7 +86,10 @@
           You have already submitted a rating for this session.
 
   .text-center#exitSession
-    = link_to "Exit Session", user_dashboard_path, :class => "btn text-danger"
+    - if current_user.is_counselor_of_session(@counseling_session.counselor_id)
+      = link_to "Exit Session", user_dashboard_path(:q => :counselor), :class => "btn text-danger"
+    - else
+      = link_to "Exit Session", user_dashboard_path, :class => "btn text-danger"
 
 / Modal
 #compatabilityModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
