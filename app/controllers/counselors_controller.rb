@@ -349,6 +349,7 @@ class CounselorsController < ApplicationController
       
       if request.put?
         handle_availability_intervals
+        flash[:notice] = "Availability Updated Successfully"
       end
     end
   end
