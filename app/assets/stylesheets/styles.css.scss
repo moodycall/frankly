@@ -257,7 +257,7 @@ footer h3 {
 }
 
 .session_preview {
-	border: 3px solid $grey_light;
+	display: table;
 
 	.counselor_pubic_rating_wrapper {
 	  margin-bottom: 5px;
@@ -265,20 +265,26 @@ footer h3 {
 	
 	.helper{
 		display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+	    height: 100%;
+	    vertical-align: middle;
 	}
 	.counselor_favorite_wrapper {
-		float: right;
-		padding: 10px;
+		display: table-cell;
+		border-bottom: 3px solid #e5e5e5;
+		border-top: 3px solid #e5e5e5;
+		border-right: 3px solid #e5e5e5;
+		float: none;
+		padding: 5px;
 		font-size: 16px;
 	}
 	.session_preview_icon {
-		float: left;
-		height: 125px;
+		display: table-cell;
+		height: 100%;
+		float: none;
+		vertical-align: middle;
+		padding: 0 18px;
 		background-color: $primary_color;
 		color: #fff;
-		padding: 50px 20px;
 		margin: -3px 0px -3px -3px;
 
 		.fa {
@@ -302,6 +308,9 @@ footer h3 {
 	}
 	.enter_counseling_session_wrapper {
 		margin-top: 5px;
+	}
+	.client_sess_view {
+		border-right: 3px solid #e5e5e5;
 	}
 }
 
@@ -334,5 +343,8 @@ footer h3 {
 	.counselor_availability_preview_wrapper [class^="col-"] .btn {
 	  padding: 11px;
 	  font-size: 14px;
+	}
+	.media-middle {
+		border-left: 3px solid #e5e5e5;
 	}
 }

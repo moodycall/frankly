@@ -5,7 +5,7 @@
 	.media-left.media-middle
 		/ = link_to counselor_path(session.counselor) do
 		= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
-	.media-body
+	.media-body.client_sess_view
 		/ = link_to counselor_path(session.counselor) do
 		%h3.counselor_name.session_preview_counselor_title
 			= session.client.name
@@ -13,7 +13,7 @@
 		%ul.list-inline
 			%li
 				= session.start_datetime.strftime("%B %e, %Y at %l:%M%P")
-			%li
+			%li.nopading
 				•
 			%li
 				= session.estimate_duration_in_minutes

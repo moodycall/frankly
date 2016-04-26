@@ -19,6 +19,21 @@
 
 .media-middle {
 	overflow: hidden;
+	display: table-cell;
+	float: none;
+	border-bottom: 3px solid #e5e5e5;
+	border-top: 3px solid #e5e5e5;
+
+}
+
+.media-body {
+	width: 100%;
+	border-bottom: 3px solid #e5e5e5;
+  	border-top: 3px solid #e5e5e5;
+}
+
+.nopading{
+	padding: 0 !important;
 }
 
 ul, ol {
