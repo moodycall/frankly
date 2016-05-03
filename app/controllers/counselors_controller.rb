@@ -513,8 +513,11 @@ class CounselorsController < ApplicationController
 
     respond_to do |format|
 
-      params[:counselor][:hourly_rate_in_cents] = params[:counselor][:hourly_rate_in_dollars].to_f*100
-      params[:counselor][:hourly_fee_in_cents] = params[:counselor][:hourly_fee_in_dollars].to_f*100
+      if(params[:counselor][:hourly_rate_in_dollars])
+        params[:counselor][:hourly_rate_in_cents] = params[:counselor][:hourly_rate_in_dollars].to_f*100
+        params[:counselor][:hourly_fee_in_cents] = params[:counselor][:hourly_fee_in_dollars].to_f*100
+      end
+      
       if @counselor.update(counselor_params)
         # if @counselor.is_active?
         #   @counselor._create_stripe_recipient_id
