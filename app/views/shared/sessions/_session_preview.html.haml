@@ -5,7 +5,7 @@
 	.media-left.media-middle
 		= link_to counselor_path(session.counselor) do
 			-if session.counselor.photo.present?
-				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
+				= image_tag session.counselor.photo, :class => "counselor_image media-object session_preview_img"
 			-else
 				= image_tag "default-avatar.png", :class => "counselor_image media-object session_preview_img"
 	.media-body
