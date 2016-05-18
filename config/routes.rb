@@ -34,13 +34,22 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :general,
+              :controller => "admin_facing/general" do
+
+      collection do
+        post :getGeneralData
+      end
+    end
+
     resources :counselors,
               :as         => :admin_counselor_overviews,
               :controller => "admin_facing/counselors",
-              :only       => [:index, :getCounselors] do
+              :only       => [:index, :getCounselors, :deleteCounselors] do
       
       collection do
         post :getCounselors
+        post :deleteCounselors
       end
     end
 
