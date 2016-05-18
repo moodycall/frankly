@@ -63,6 +63,13 @@ GEM
       railties (>= 3.0)
       sass-rails (>= 3.2)
     chunky_png (1.3.4)
+    ckeditor (4.1.6)
+      cocaine
+      orm_adapter (~> 0.5.0)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.8)
+      climate_control (>= 0.0.3, < 1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -347,6 +354,7 @@ DEPENDENCIES
   browser
   carrierwave
   chosen-rails
+  ckeditor
   coffee-rails (~> 4.0.0)
   delayed_job_active_record
   devise
@@ -376,3 +384,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unicorn
   will_paginate (> 3.0)
+
+BUNDLED WITH
+   1.11.2
