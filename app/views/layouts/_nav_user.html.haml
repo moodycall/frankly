@@ -82,6 +82,10 @@
             = link_to payouts_url(:subdomain => "admin") do
               .fa.fa-money
               Payouts
+          %li
+            = link_to general_index_url(:subdomain => "admin") do
+              .fa.fa-cog
+              General Email Settings
 
   - elsif !user_signed_in?
     %li
