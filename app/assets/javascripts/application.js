@@ -28,4 +28,5 @@
 //= require jquery.datepair
 //= require jquery.cookie
 //= require chosen-jquery
+//= require ckeditor/init
 //= require_tree .
