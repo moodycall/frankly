@@ -11,6 +11,7 @@
       %thead
         %tr
           %th
+          %th
           %th.sortby.defaultSort{ :name => "last_name"} Name
           %th{ :name => "is_active"} Active
           %th{ :name => "email"} Email
@@ -27,6 +28,10 @@
       %tbody
         - @counselors.each_with_index do |counselor, index|
           %tr{ :class => "row_#{index}"}
+            %td
+              - if !counselor.is_active? and !counselor.counseling_sessions.present?
+                %a{:onclick => "deleteCounselor(#{counselor.id});"}
+                  .fa.fa-trash
             %td
               = link_to edit_counselor_url(counselor, :host => Rails.configuration.action_mailer.default_url_options[:host]) do
                 .fa.fa-pencil
@@ -64,6 +69,7 @@
   
   = will_paginate @counselors, previous_label: h("<"), next_label: h(">")
   = hidden_field_tag "url", getCounselors_admin_counselor_overviews_path
+  = hidden_field_tag "deleteUrl", deleteCounselors_admin_counselor_overviews_path
 
 :javascript
   $('#counselor_search').show();
@@ -131,4 +137,29 @@
         $("#main").find('.container [name='+atribute+']').addClass('defaultSort');
       }
     });
+  }
+
+  function deleteCounselor(counselor){
+    
+    if(confirm("Are you sure you want to delete the counselor?")){
+      $('#loader').show();
+      $.ajax({
+        type: 'post',
+        url: $('#deleteUrl').val(),
+        async: false,
+        dataType: 'json',
+        data: {'id':counselor},
+        success: function(response){
+          setTimeout(function(){
+            $('#loader').hide();
+          },1000);
+          if(response.status == 'success'){
+            alert("Counselor has been deleted.");
+            window.location.reload();
+          }else{
+            alert('Could not delete the counselor. Please try again.')
+          }
+        }
+      });
+    }
   }

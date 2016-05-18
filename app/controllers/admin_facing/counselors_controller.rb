@@ -40,4 +40,46 @@ class AdminFacing::CounselorsController < AdminFacingController
 
   end
 
+  def deleteCounselors
+  	id = params['id'];
+  	@counselor = Counselor.find(id);
+  	# @upcomingSessions = @counselor.upcoming_sessions
+  	# @upcomingSessions.each do |session|
+	# 	session.cancelled_on_dts = Time.now
+	# 	session.save
+	# 	bookedtimes = "'#{session.start_datetime.utc.strftime("%Y-%m-%d %H:%M:%S")}'"
+	# 	if session.estimate_duration_in_minutes == 60
+	# 		nextTime = (session.start_datetime.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
+	# 		bookedtimes += ",'#{nextTime}'"
+	# 	end
+	# 	availability = AvailabilityDay.where("counselor_id=#{session.counselor_id} and available_datetime in (#{bookedtimes})")
+	# 	availability.each do |t|
+	# 		t.update(:active=>true)
+	# 	end
+
+	# 	if session.is_refundable
+	# 		if session.stripe_charge_id.present? and session.issue_refund
+	# 			  CounselorMailer.client_cancellation(session.id).deliver
+	# 			  UserMailer.counseling_session_cancellation(session.id).deliver
+	# 		else
+	# 			  CounselorMailer.client_cancellation(session.id).deliver
+	# 			  UserMailer.counseling_session_cancellation(session.id).deliver
+	# 		end
+	# 	else
+	# 		CounselorMailer.client_cancellation(session.id).deliver
+	# 		UserMailer.counseling_session_cancellation(session.id).deliver
+	# 	end
+	# end
+	
+	name = @counselor.user.first_name
+	email= @counselor.user.email
+  	if @counselor.user.delete and @counselor.delete
+
+  		CounselorMailer.counselor_deleted(name,email).deliver
+	  	respond_to do |format|
+		    format.json { render json: {"status" => "success"}}
+		end
+  	end
+  end
+
 end
