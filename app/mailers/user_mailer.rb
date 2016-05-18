@@ -18,27 +18,50 @@ class UserMailer < ActionMailer::Base
   def provide_cc_info(user_id)
     @greeting = "Hello"
     @user     = User.find(user_id)
+    @general  = General.where(:item => "provide credit card info").last()
+    subject   = @general[:subject]
+    content   = @general[:content]
+    
+    content.gsub!("http://mclink",new_credit_card_url)
 
     mail to: "#{@user.email}",
-    subject: "Please Add a Credit Card"
+    subject: "#{subject}",
+    content_type: "text/html",
+    body: "#{content}"
   end
 
   def counseling_session_charge_confirmation(counseling_session_id)
     @counseling_session = CounselingSession.find(counseling_session_id)
     @client             = @counseling_session.client
-    @greeting           = "Hello"
+    @general  = General.where(:item => "charged for session").last()
+    subject   = @general[:subject]
+    content   = @general[:content]
+
+    content.gsub!("mcClientName",@client.name)
+    content.gsub!("mcCounselorName",@counseling_session.counselor.user.name)
+    content.gsub!("mcSessionDate",@counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P %Z"))
 
     mail to: "#{@client.email}",
-    subject: "Charged for Counseling Session via MoodyCall"
+    subject: "#{subject}",
+    content_type: "text/html",
+    body: "#{content}"
   end
 
   def counseling_session_cancellation(counseling_session_id)
     @counseling_session = CounselingSession.find(counseling_session_id)
     @client             = @counseling_session.client
     @counselor          = @counseling_session.counselor.user
-    @greeting           = "Hello"
+    @general  = General.where(:item => "Counseling Session Cancellation (by counselor)").last()
+    subject   = @general[:subject]
+    content   = @general[:content]
+    
+    content.gsub!("mcClientName",@client.name)
+    content.gsub!("mcCounselorName",@counselor.name)
+    content.gsub!("mcSessionDate",@counseling_session.start_datetime.strftime("%B %e, %Y at %l:%M%P %Z"))
 
     mail to: "#{@client.email}",
-    subject: "Counseling Session Cancellation"
+    subject: "#{subject}",
+    content_type: "text/html",
+    body: "#{content}"
   end
 end
