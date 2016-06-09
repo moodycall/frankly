@@ -11,7 +11,7 @@ module StripeInteractions
         charge = Stripe::Charge.create(
           :amount => total_in_cents,
           :currency => "usd",
-          :customer => user.stripe_customer_id,
+          :customer => "#{user.stripe_customer_id}",
           :description => "#{description}"
         )
 
