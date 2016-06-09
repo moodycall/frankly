@@ -4,14 +4,14 @@ module StripeInteractions
   def charge_customer(user_id, total_in_cents, description)
     user = User.find(user_id)
     if user.stripe_customer_id != ''
-      customer = Stripe::Customer.retrieve("#{user.stripe_customer_id}")
+      # customer = Stripe::Customer.retrieve("#{user.stripe_customer_id}")
 
       begin
 
         charge = Stripe::Charge.create(
           :amount => total_in_cents,
           :currency => "usd",
-          :customer => customer,
+          :customer => user.stripe_customer_id,
           :description => "#{description}"
         )
 
