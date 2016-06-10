@@ -6,6 +6,7 @@ task :schedule_charge => :environment do
     session_cost       = session.price_in_cents
     charge_description = "MoodyCall Session ##{session.secure_id}"
     if session_cost != 0
+      puts "charge for client_id #{session.client_id}"
       if session.charge_customer(session.client_id, session_cost, charge_description)
         puts "Charge for #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')}"
       elsif session.should_be_cancelled
