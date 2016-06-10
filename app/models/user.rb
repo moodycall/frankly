@@ -125,6 +125,7 @@ class User < ActiveRecord::Base
 			  :description => "MoodyCall Customer"
 			)
 			self.stripe_customer_id = customer.id
+      self.save
 		end
   end
 
