@@ -66,6 +66,7 @@ class Counselor < ActiveRecord::Base
 		counseling_sessions.select do |session|
 			session.estimated_endtime < Time.now and
 			session.refund_amount_in_cents == nil and
+			session.stripe_charge_id != nil and
 			session.payout_id.nil? and
 			session.estimate_duration_in_minutes == 30
 		end
@@ -75,6 +76,7 @@ class Counselor < ActiveRecord::Base
 		counseling_sessions.select do |session|
 			session.estimated_endtime < Time.now and
 			session.refund_amount_in_cents == nil and
+			session.stripe_charge_id != nil and
 			session.payout_id.nil? and
 			session.estimate_duration_in_minutes == 60
 		end
