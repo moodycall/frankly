@@ -21,7 +21,11 @@
           %td= counseling_session.client.name
           %td
             = link_to counseling_session.counselor.user.name, counselor_url(counseling_session.counselor, :host => Rails.configuration.action_mailer.default_url_options[:host])
-          %td.text-right= link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout) if counseling_session.payout.present?
+          %td.text-right
+            - if counseling_session.payout.present?
+              = link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout)
+            - elsif counseling_session.cancelled_on_dts.present?
+              Cancelled
           %td.text-right
             = counseling_session.estimate_duration_in_minutes
             min
