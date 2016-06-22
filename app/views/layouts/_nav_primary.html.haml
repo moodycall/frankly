@@ -23,17 +23,27 @@
 
             %span.time_zone_hover_name
               = Time.zone.name
-            %span.caret
-          %ul.dropdown-menu.timezone_picker{:role => "menu"}
-            %li.dropdown-header
-              Select Your Timezone
-            - ActiveSupport::TimeZone.us_zones.each do |zone|
-              %li
-                = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
+          /   %span.caret
+          / %ul.dropdown-menu.timezone_picker{:role => "menu"}
+          /   %li.dropdown-header
+          /     Select Your Timezone
+          /   - ActiveSupport::TimeZone.us_zones.each do |zone|
+          /     %li
+          /       = link_to "#{Time.now.in_time_zone(zone.name).strftime("%I:%M%P")} in #{zone.name}", "", :class => "time_zone", "data-timezone" => zone.name
       
       = render "layouts/nav_user"
       
 :javascript
+
+  var timezone = jstz.determine();
+  var zoneName = timezone.name();
+  console.info(zoneName);
+  
+  if($.cookie("moodcall_timezone") != zoneName){
+    $.cookie("moodcall_timezone", zoneName, { path: '/' });
+    window.location.reload();
+  }
+  
   $(".time_zone").click(function() {
     zone = $(this).attr("data-timezone");
     $.cookie("moodcall_timezone", zone, { path: '/' });
