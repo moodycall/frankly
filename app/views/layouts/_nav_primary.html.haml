@@ -44,15 +44,53 @@
     window.location.reload();
   }
   
-  $(".time_zone").click(function() {
-    zone = $(this).attr("data-timezone");
-    $.cookie("moodcall_timezone", zone, { path: '/' });
-    var metaTimezone = {
-      zone_name: zone
-    };
-    Intercom('trackEvent', 'changed_timezone', metaTimezone);
-  });
+  var hour = "#{Time.zone.now.strftime("%H")}";
+  var min  = "#{Time.zone.now.strftime("%M")}";
+  var sec  = "#{Time.zone.now.strftime("%S")}";
+  var timeout = (60-parseInt(sec))*1000;
+  currTime = new Date();
+  currTime.setHours(hour);
+  currTime.setMinutes(min);
+  currTime.setSeconds(sec);
+  updateClock(currTime,timeout);
 
+  function updateClock(time,tout){
+
+    $('.time_zone_hover_time').text(getTimeInformat(time));
+    var newTime = new Date();
+    newTime.setTime(time.getTime()+tout);
+    
+    setTimeout(function(){
+      updateClock(newTime,60000);
+    },tout);
+  }
+
+  function getTimeInformat(t){
+    var h = t.getHours();
+    var a = "am";
+    if(h>=12){
+      a = "pm";
+    }
+    if(h>12){
+      h = h-12;
+    }
+    if(h == 0){
+      h = 12;
+    }
+    h = addZero(h);
+    var m = addZero(t.getMinutes());
+
+    var time = h+":"+m+a;
+    return time;
+  }
+
+  function addZero(i){
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+  }
+  
   $("#primaryNavFavorites").click(function() {
     Intercom('trackEvent', 'viewed_favorites');
   });
