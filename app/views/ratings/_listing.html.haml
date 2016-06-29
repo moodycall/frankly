@@ -3,9 +3,10 @@
     Reviews
 
   - @counselor.ratings.where.not(:comment => "", :counseling_session => nil).each do |rating|
-    .rating_wrapper
-      = rating.comment
-      .rating_star_wrapper 
+    .rating_wrapper.row
+      .col-sm-9
+        = rating.comment
+      .rating_star_wrapper.col-sm-3 
         .fa.fa-lg{ :class => "#{rating.stars.to_i >= 1 ? 'fa-star' : 'fa-star-o'}"}
         .fa.fa-lg{ :class => "#{rating.stars.to_i >= 2 ? 'fa-star' : 'fa-star-o'}"}
         .fa.fa-lg{ :class => "#{rating.stars.to_i >= 3 ? 'fa-star' : 'fa-star-o'}"}
