@@ -14,10 +14,6 @@ module StripeInteractions
         :description => "#{description}"
       )
 
-      self.stripe_charge_id              = charge.id
-      self.stripe_balance_transaction_id = charge.balance_transaction
-      self.save
-
     rescue Stripe::CardError
       # Send error if no card if on file :: Cannot charge a customer that has no active card
       unless user.sent_initial_cc_request_dts.present?
@@ -25,6 +21,12 @@ module StripeInteractions
         user.sent_initial_cc_request_dts = Time.now
         user.save
       end
+      response = false
+    else
+      self.stripe_charge_id              = charge.id
+      self.stripe_balance_transaction_id = charge.balance_transaction
+      self.save
+      response = true
     end
   end
 
