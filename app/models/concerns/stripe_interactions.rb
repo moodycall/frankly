@@ -28,7 +28,6 @@ module StripeInteractions
       self.save
       response = true
     end
-    return response
   end
 
   def update_transaction_total(balance_transaction_id)
