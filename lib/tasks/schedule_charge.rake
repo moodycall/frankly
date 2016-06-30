@@ -7,11 +7,20 @@ task :schedule_charge => :environment do
     charge_description = "MoodyCall Session ##{session.secure_id}"
     if session_cost != 0
       charged = session.charge_customer(session.client_id, session_cost, charge_description)
-      if charged == true
+      if charged == "true"
         puts "Charge for #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')}"
-      elsif session.should_be_cancelled
+      elsif charged == "card"
         puts "Cancelling #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')} due to lack of payment."
         session.cancelled_on_dts = Time.now.utc
+        session.cancel_reason = "Card Declined"
+        if session.save
+          CounselorMailer.client_cancellation(session.id).deliver
+          UserMailer.counseling_session_cancellation(session.id).deliver
+        end
+      else
+        puts "Cancelling #{session.start_datetime.strftime('%b %e, %Y %I:%M%P')} due to lack of payment."
+        session.cancelled_on_dts = Time.now.utc
+        session.cancel_reason = "Payment error"
         if session.save
           CounselorMailer.client_cancellation(session.id).deliver
           UserMailer.counseling_session_cancellation(session.id).deliver

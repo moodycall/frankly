@@ -25,7 +25,10 @@
             - if counseling_session.payout.present?
               = link_to "##{counseling_session.payout.secure_id}", payout_path(counseling_session.payout)
             - elsif counseling_session.cancelled_on_dts.present?
-              Cancelled
+              -if counseling_session.cancel_reason.present?
+                = counseling_session.cancel_reason
+              -else
+                Cancelled
           %td.text-right
             = counseling_session.estimate_duration_in_minutes
             min
