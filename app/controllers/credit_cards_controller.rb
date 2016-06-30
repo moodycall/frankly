@@ -30,7 +30,8 @@ class CreditCardsController < ApplicationController
       err  = body[:error][:message]
       redirect_to :back, notice: "#{err}"
     else
-
+      customer.default_source     = card.id
+      customer.save
       @credit_card.stripe_card_id = card.id
       @credit_card.last_four      = card.last4
 
