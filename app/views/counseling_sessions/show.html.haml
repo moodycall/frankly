@@ -160,9 +160,9 @@
     var now = new Date();
     var endTime = new Date();
 
-    endTime.setHours("#{@counseling_session.estimated_endtime.utc.strftime("%k")}");
+    endTime.setHours("#{@bufferedEstimatedTime.utc.strftime("%k")}");
 
-    endTime.setMinutes("#{@counseling_session.estimated_endtime.utc.strftime("%M")}");
+    endTime.setMinutes("#{@bufferedEstimatedTime.utc.strftime("%M")}");
 
     endTime.setSeconds(0);
 

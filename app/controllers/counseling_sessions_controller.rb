@@ -12,7 +12,8 @@ class CounselingSessionsController < ApplicationController
   # GET /counseling_sessions/1
   # GET /counseling_sessions/1.json
   def show
-    if(@counseling_session.estimated_endtime < Time.zone.now)
+    @bufferedEstimatedTime = @counseling_session.estimated_endtime + 5.minutes
+    if(@bufferedEstimatedTime < Time.zone.now)
       redirect_to user_dashboard_path, :notice => "Your session has expired."
     elsif (@counseling_session.start_datetime - 5.minutes) < Time.zone.now
       api_key    = Rails.configuration.opentok_api_key
@@ -22,7 +23,7 @@ class CounselingSessionsController < ApplicationController
       if @counseling_session.opentok_session_id.present?
         @token = opentok.generate_token @counseling_session.opentok_session_id,
             :role        => :moderator,
-            :expire_time => @counseling_session.estimated_endtime,
+            :expire_time => @bufferedEstimatedTime,
             :data        => "name=#{current_user.name}"
       else
         @counseling_session.create_opentok_session
