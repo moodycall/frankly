@@ -180,11 +180,15 @@
       $('#cntdwn').text(cntdwntext);
     }
     
+    if(s==60000){
+      alert("This session will automatically end in 1 minute.");
+    }
+    
     if(s <= 0){
       session.disconnect();
       $(historyDiv).hide();
       $('.chat-name').addClass('closed');
-      alert('Your session has expired');
+      alert('This session has ended.');
       if($("#endSession").length>0){
         $('#hideButton').click();
       }else{
