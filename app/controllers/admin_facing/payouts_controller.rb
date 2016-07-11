@@ -29,18 +29,28 @@ class AdminFacing::PayoutsController < AdminFacingController
 
   def bulk_transfer
     if params[:payout_ids].present?
+      paymentStatus = "true"
+      failedCnt = 0
+      notice = "\n"
       payouts = Payout.find(params[:payout_ids])
       payouts.each do |payout|
         if payout.total_in_cents != 0
           res = payout.transfer_funds(payout.total_in_cents)
-          if res == "true"
-            redirect_to :back, :notice => "Your Payout have successfully been issued."
-          else
-            redirect_to :back, :notice => "#{res}"
+          if res != "true"
+            paymentStatus = "false"
+            failedCnt = failedCnt+1
+            notice += "#{failedCnt}. #{res}\n"
           end
         else
-          redirect_to :back, :notice => "Payout for 0 amount can not be issued."
+          paymentStatus = "false"
+          failedCnt = failedCnt+1
+          notice += "#{failedCnt}. Payout for 0 amount can not be issued.\n"
         end
+      end
+      if paymentStatus == "true"
+        redirect_to :back, :notice => "Your Payout have successfully been issued."
+      else
+        redirect_to :back, :notice => "#{failedCnt} payouts failed.#{notice}"
       end
     else
       redirect_to :back, :notice => "Please select Payouts to Transfer."
