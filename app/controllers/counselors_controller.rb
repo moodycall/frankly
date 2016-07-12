@@ -33,7 +33,7 @@ class CounselorsController < ApplicationController
     if params[:counselor_name] and params[:counselor_name] != ""
       name = params[:counselor_name].downcase
       # query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id} and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
-      query = "(counselors.is_active=true and (LOWER(users.first_name) like '%#{name}%' or LOWER(users.last_name) like '%#{name}%' or concat(LOWER(users.first_name), ' ', LOWER(users.last_name)) like '%#{name}%'))"
+      query = "(counselors.is_active=true and ((LOWER(users.first_name) like '%#{name}%') or (LOWER(users.last_name) like '%#{name}%') or ((concat((LOWER(users.first_name)), ' ', (LOWER(users.last_name)))) like '%#{name}%')))"
       @thisDate = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")
       @dts = Time.now.in_time_zone
     else
