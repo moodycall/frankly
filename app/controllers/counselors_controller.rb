@@ -33,7 +33,7 @@ class CounselorsController < ApplicationController
     if params[:counselor_name] and params[:counselor_name] != ""
       name = params[:counselor_name].downcase
       # query = "(counselors.is_active=true and users.gender in (#{gender})) and specializations.specialty_id= #{@specialty.id} and (users.first_name like '%#{name}%' or users.last_name like '%#{name}%' or concat(users.first_name, ' ', users.last_name) like '%#{name}%')"
-      query = "(counselors.is_active=true and ((LOWER(users.first_name) like '%#{name}%') or (LOWER(users.last_name) like '%#{name}%') or ((concat((LOWER(users.first_name)), ' ', (LOWER(users.last_name)))) like '%#{name}%')))"
+      query = "(counselors.is_active=true and (LOWER(users.first_name) like '%#{name}%' or LOWER(users.last_name) like '%#{name}%' or fullname like '%#{name}%'))"
       @thisDate = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")
       @dts = Time.now.in_time_zone
     else
@@ -43,7 +43,8 @@ class CounselorsController < ApplicationController
     curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
     
     upcomingDates = AvailabilityDay.find_by_sql(
-      "select distinct (availability_days.start_datetime) as start_datetime 
+      "select distinct (availability_days.start_datetime) as start_datetime, 
+      concat(LOWER(users.first_name), ' ', LOWER(users.last_name)) as fullname 
       from availability_days 
       inner join counselors on counselors.id = availability_days.counselor_id 
       where available_datetime >= '#{@thisDate}' and available_datetime > '#{curentUtc}' and active=true and counselors.id in (
