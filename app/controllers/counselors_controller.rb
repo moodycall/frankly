@@ -46,7 +46,7 @@ class CounselorsController < ApplicationController
       "select distinct (availability_days.start_datetime) as start_datetime 
       from availability_days 
       inner join counselors on counselors.id = availability_days.counselor_id 
-      where available_datetime >= '#{@thisDate}' and available_datetime > '#{curentUtc}' and active=true and counselors.id in (
+      where availability_days.available_datetime >= '#{@thisDate}' and availability_days.available_datetime > '#{curentUtc}' and availability_days.active=true and counselors.id in (
         select counselors.id from counselors 
         inner join users on users.id = counselors.user_id 
         inner join specializations on specializations.counselor_id = counselors.id
@@ -57,7 +57,7 @@ class CounselorsController < ApplicationController
     existDateArr = []
     dateIdsArr = {}
     @available_counselors = Array.new
-
+    
     upcomingDates.each do |upcoming|
       if !existDateArr.include?(upcoming.start_datetime.strftime("%Y-%m-%d"))
         if(existDateArr.length < 1)
@@ -79,9 +79,8 @@ class CounselorsController < ApplicationController
 
       datearr   = dateIdsArr[upcoming].chop
       curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
-      dateQuery = "availability_days.active=true and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
+      dateQuery = "availability_days.active=true and availability_days.available_datetime>='#{@thisDate}' and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
       @available_counselors[@iterator] = {}
-      @available_counselors[@iterator]['date'] = Date.parse(upcoming)
       @available_counselors[@iterator]['counselors'] = Array.new
 
       if sortby == "newest"
@@ -97,6 +96,7 @@ class CounselorsController < ApplicationController
       end
 
       @totalCount = @sortApplied.length
+      @available_counselors[@iterator]['date'] = @sortApplied.first(1)[0].availability_days.first(1)[0].available_datetime
       @available_counselors[@iterator]['counselors'] = @sortApplied.first(limit)
       @iterator += 1
     end
@@ -183,9 +183,8 @@ class CounselorsController < ApplicationController
 
       datearr   = dateIdsArr[upcoming].chop
       curentUtc = (Time.now.utc + 30.minutes).strftime("%Y-%m-%d %H:%M:%S")
-      dateQuery = "availability_days.active=true and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
+      dateQuery = "availability_days.active=true and availability_days.available_datetime>='#{@thisDate}' and availability_days.available_datetime >'#{curentUtc}' and availability_days.start_datetime in (#{datearr})"
       @available_counselors[@iterator] = {}
-      @available_counselors[@iterator]['date'] = Date.parse(upcoming)
       @available_counselors[@iterator]['counselors'] = Array.new
 
       if sortby == "newest"
@@ -200,6 +199,7 @@ class CounselorsController < ApplicationController
         @sortApplied = Counselor.includes(:user,:specializations,:availability_days).where("#{dateQuery} and #{query}").references(:availability_days).distinct("counselor.id").order("availability_days.available_datetime ASC").sort_by(&:availabilitytime).first(newofset).last(limit)
       end
 
+      @available_counselors[@iterator]['date'] = @sortApplied.first(1)[0].availability_days.first(1)[0].available_datetime
       @available_counselors[@iterator]['counselors'] = @sortApplied
       @iterator += 1
     end
