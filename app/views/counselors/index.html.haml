@@ -94,16 +94,17 @@
   $(document).scroll(function(){
     var totalCount = $("#totalCount").val();
     var resultCount = $("#resultCount").val();
+    var date = "#{newDate}";
     if(totalCount > resultCount){
       var limit = 2;
       if(parseInt(totalCount) == parseInt(resultCount)+1){
         limit = 1;
       }
-      loadResultAjax(resultCount,limit);
+      loadResultAjax(resultCount,limit,date);
     }
   });
   
-  function loadResultAjax(resultCount,limit){
+  function loadResultAjax(resultCount,limit,date){
     var specialty = $("#specialty").val();
     var gender = $("#gender").val();
     var sortby = $("#sort").val();
@@ -112,7 +113,7 @@
       type: 'post',
       url: $("#url").val(),
       async: false,
-      data: {'specialty':specialty, 'gender':gender, 'sortby': sortby,'counselor_name':counselor_name, 'offset':resultCount, 'limit':limit},
+      data: {'specialty':specialty, 'gender':gender, 'sortby': sortby,'counselor_name':counselor_name, 'offset':resultCount, 'limit':limit, 'date': date},
       success: function(response){
         $('.repeatCounselors').append(response);
         $("#resultCount").val(parseInt(resultCount)+parseInt(limit));

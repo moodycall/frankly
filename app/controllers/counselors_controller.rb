@@ -109,7 +109,7 @@ class CounselorsController < ApplicationController
   end
 
   def getCounselors
-    @thisDate = @dts.in_time_zone.utc.strftime("%Y-%m-%d %H:%M:%S")
+    @thisDate = params[:date].in_time_zone.utc.strftime("%Y-%m-%d %H:%M:%S")
     @specialty = Specialty.where(:is_active => true, :set_default => 1).first
 
     if params[:specialty]
