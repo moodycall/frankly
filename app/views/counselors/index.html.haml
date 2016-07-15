@@ -92,8 +92,8 @@
 
 
   $(document).scroll(function(){
-    var totalCount = $("#totalCount").val();
-    var resultCount = $("#resultCount").val();
+    var totalCount = parseInt($("#totalCount").val());
+    var resultCount = parseInt($("#resultCount").val());
     var date = "#{newDate}";
     if(totalCount > resultCount){
       var limit = 2;
