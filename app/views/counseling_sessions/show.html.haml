@@ -331,9 +331,7 @@
         alert('This browser does not support screen sharing.');
       } else if (response.extensionInstalled === false && #{browser.chrome?} === true) {
         $("#sharescreenchrome").removeClass('hide');
-      } else if (response.extensionInstalled === false && #{browser.firefox?} === true) {
-        $("#sharescreenfirefox").removeClass('hide');
-      }else{
+      } else{
         $("#sharescreen").removeClass('hide');
       }
     });
