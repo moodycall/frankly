@@ -57,7 +57,6 @@
         #cntdwn.text-right
 
       %br
-
   #video_wrapper
     #userDiv.hidden-xs
 
@@ -70,7 +69,12 @@
   %br
   .text-muted.text-center
     Make sure to allow Camera and Microphone in your browser.
-
+  #sharescreen.btn-primary.btn.hide
+    Share Screen
+  = link_to "https://chrome.google.com/webstore/detail/ijdjgffffdoegabmplefeakbefklknld", :target => "_blank", :id => "sharescreenchrome", :class => "hide" do
+    Install Screen Sharing Extension
+  = link_to "https://addons.mozilla.org/en-US/firefox/addon/moodycall-screen-sharing/", :target => "_blank", :id => "sharescreenfirefox", :class => "hide" do
+    Install Screen Sharing Extension
   -# #clock
 
   - unless current_user.is_counselor_of_session(@counseling_session.counselor_id)
@@ -175,7 +179,7 @@
     var min = (s/1000/60) << 0,
     sec = ((s/1000) % 60) << 0;
 
-    if(s <= 300000){
+    if(s > 0 && s <= 300000){
       var cntdwntext = 'Your session ends in '+pad(min)+':'+pad(sec);
       $('#cntdwn').text(cntdwntext);
     }
@@ -188,6 +192,7 @@
       session.disconnect();
       $(historyDiv).hide();
       $('.chat-name').addClass('closed');
+      $('#cntdwn').text("Your session is ended");
       alert('This session has ended.');
       if($("#endSession").length>0){
         $('#hideButton').click();
@@ -209,15 +214,28 @@
   var token = "#{@token}";
   
   var session = OT.initSession(apiKey, sessionId);
+  var publisher = OT.initPublisher("userDiv");
+  var form = document.querySelector('#form');
+  var msgTxt = document.querySelector('#msgTxt'); 
+
+  session.on('streamDestroyed', function(event) {
+    event.preventDefault();
+    //if(event.stream.videoType == 'screen'){
+      //$("#awaiting_connection").show();
+    //}
+  });
 
   session.on({ 
       streamCreated: function(event) { 
         $("#awaiting_connection").hide();
-        session.subscribe(event.stream, 'connectedToDiv', {insertMode: 'append', width:'100%', height:600}); 
+        session.subscribe(event.stream, 'connectedToDiv', {insertMode: 'replace', width:'100%', height:600}, function(error) {
+          if (error) {
+            alert('Could not subscribe the screen: ' + error.message);
+          }
+        }); 
         $("#connectedToDiv .OT_subscriber").css({"margin-left": "auto", "margin-right": "auto"});
       }
   });
-  var publisher = OT.initPublisher("userDiv")
 
   session.connect(token, function(error) {
     if (error) {
@@ -226,10 +244,14 @@
       $("#awaiting_connection").show();
     } else {
       disconn = 0;
-      session.publish(publisher, {width:50, height:25});
+      session.publish(publisher, {width:50, height:25}, function(error){
+        if(error){
+          alert('Could not connect: ' + error.message);
+        }
+      });
     }
   });
-  var form = document.querySelector('#form');
+
   // Receive a message and append it to the history
   var msgHistory = document.querySelector('#history');
   session.on('signal:chat', function(event) {
@@ -247,7 +269,6 @@
 
   // Send a signal once the user enters data in the form.This will send the data entered to all participants
 
-  var msgTxt = document.querySelector('#msgTxt');
   $('#form').submit(function(event){
     event.preventDefault();
 
@@ -258,7 +279,7 @@
           if (!error) {
             msgTxt.value = '';
           }else{
-            alert("Sorry, Your are not connected to the session");
+            alert("Sorry, Your session is ended");
           }
       });
   });
@@ -279,6 +300,8 @@
   // End session when click on rating button
   session.on("sessionDisconnected", function(error) {
     disconn = 1;
+    $("#awaiting_connection").show();
+    $('#sharescreen').hide();
   });
 
   $('#endSession').click(function(){
@@ -288,7 +311,7 @@
       conf = confirm('Are you sure to end the session?');
     }
     if(conf == true){
-      disconn == 0
+      disconn = 0
       session.disconnect();
       $(historyDiv).hide();
       $('.chat-name').addClass('closed');
@@ -296,3 +319,66 @@
     }
     
   });
+
+  // screen shaing options
+
+  OT.registerScreenSharingExtension('chrome', 'ijdjgffffdoegabmplefeakbefklknld', 2);
+
+  $(document).ready(function(){
+
+    OT.checkScreenSharingCapability(function(response) {
+      if (!response.supported || response.extensionRegistered === false) {
+        alert('This browser does not support screen sharing.');
+      } else if (response.extensionInstalled === false && #{browser.chrome?} === true) {
+        $("#sharescreenchrome").removeClass('hide');
+      } else{
+        $("#sharescreen").removeClass('hide');
+      }
+    });
+  });
+
+  $('#sharescreen').click(function(){
+    screenshare();
+  });
+
+  function screenshare() {
+    OT.checkScreenSharingCapability(function(response) {
+      if (!response.supported || response.extensionRegistered === false) {
+        alert('This browser does not support screen sharing.');
+      } else if (response.extensionInstalled === false) {
+        alert('Please install the screen sharing extension and load your app over https.');
+      } else if(disconn == 0) {
+        // Screen sharing is available. Publish the screen.
+        $('#sharescreen').hide();
+        var screenSharingPublisher = OT.initPublisher('userDiv', {videoSource: 'screen'});        
+
+        session.publish(screenSharingPublisher, function(error) {
+
+          if (error) {
+            alert('Could not share screen: ' + error.message);
+            var publisher = OT.initPublisher('userDiv');
+            session.publish(publisher, function(error) {
+              $('#sharescreen').show();
+              if (error) {
+                alert('Could not share: ' + error.message);
+              }
+            });
+          }
+        });
+
+        screenSharingPublisher.on('streamDestroyed', function(event) {
+          if (event.reason === 'mediaStopped') {
+            // User clicked stop sharing
+            $('#sharescreen').show();
+            event.preventDefault();
+            var publisher = OT.initPublisher('userDiv');
+            session.publish(publisher, function(error) {
+              if (error) {
+                alert('Could not share the '+ event.stream.videoType +': ' + error.message);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
