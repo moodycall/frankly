@@ -50,7 +50,7 @@
             - interval = availableinterval.available_datetime
             .col-xs-4.col-sm-2
               / .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.in_time_zone.strftime("%I:%M%P"), :available => "#{counselor.is_available_at(interval.utc + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
-                = interval.in_time_zone.strftime("%I:%M%P")
+              = interval.in_time_zone.strftime("%I:%M%P")
         - else
           .col-xs-5.col-sm-3
             .btn.btn-primary.btn-block{ :disabled => :disabled } 
