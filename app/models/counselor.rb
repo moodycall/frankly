@@ -196,16 +196,16 @@ class Counselor < ActiveRecord::Base
   		available_days 	= availability_days.select("start_datetime").where("#{where}").order("start_datetime").distinct('start_datetime')
 	
 		dateArray 		= []
-		# available_days.each do |available_day|
-			# dateArray.push(available_day[:start_datetime].strftime("%d-%m-%Y"))
-		# end
-		# dateArray
+		available_days.each do |available_day|
+			dateArray.push(available_day[:start_datetime].strftime("%d-%m-%Y"))
+		end
+		dateArray
 	end
 
 	def is_available_at(time)
 		where       = "active=true and available_datetime = '#{time}'"
-  		# available 	= availability_days.select("available_datetime").where("#{where}")
-  		# available.present?
+  		available 	= availability_days.select("available_datetime").where("#{where}")
+  		available.present?
 	end
 
 	def self.active_counselors
