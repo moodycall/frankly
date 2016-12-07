@@ -51,7 +51,7 @@
           - else
             - cls = ''
           .insideSection{:class=>"#{cls} insideSec#{iterator}"}
-            = render partial: "shared/counselors/preview_with_schedule", locals: {counselor: itemCounselor, dates: cDate, iterator: iterator}
+            /= render partial: "shared/counselors/preview_with_schedule", locals: {counselor: itemCounselor, dates: cDate, iterator: iterator}
             - if i > 2 and i == counselorArr.length-1
               .view_more.hideSec{:class=> "insideSec#{iterator}"} 
                 %a{:onclick=>"viewLessResult('#{iterator}')"} View Less
