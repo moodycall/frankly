@@ -205,10 +205,10 @@ class Counselor < ActiveRecord::Base
 	def is_available_at(time)
 		where       = "active=true and available_datetime = '#{time}'"
   		available 	= availability_days.count "#{where}"
-  		if available > 0
-  			true
-  		else
-  			false
+  		# if available > 0
+		true
+		# else
+		# false
 	end
 
 	def self.active_counselors
