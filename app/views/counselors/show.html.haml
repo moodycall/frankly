@@ -22,7 +22,7 @@
             Begins in
             = distance_of_time_in_words(Time.now.utc, nextAvailable)
 
-            = @counselor.availability_days.present?(nextAvailable + 30.minutes)
+            = @counselor.availability_days.include? (nextAvailable + 30.minutes)
 
             = render partial: "shared/counselors/modal_scheduler", locals: {counselor: @counselor, target_id: "next_available", dts: nextAvailable.in_time_zone}
 
