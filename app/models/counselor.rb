@@ -204,9 +204,7 @@ class Counselor < ActiveRecord::Base
 
 	def is_available_at(time)
 		where       = "active=true and available_datetime = '#{time}'"
-  		available 	= availability_days.select("available_datetime").where("#{where}").present?
-  		available
-  		true
+  		availability_days.where("#{where}").exists?  		
 	end
 
 	def self.active_counselors
