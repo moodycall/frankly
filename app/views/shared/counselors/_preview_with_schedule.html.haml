@@ -46,7 +46,7 @@
 
       .counselor_availability_preview_wrapper
         - if counselor.availability_days.length > 0
-          - counselor.availability_days.first(5).each do |availableinterval|
+          - counselor.availability_days.first(1).each do |availableinterval|
             - interval = availableinterval.available_datetime
             .col-xs-4.col-sm-2
               .btn.btn-primary.btn-block.counselor-time-button{ :data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.in_time_zone.strftime("%I:%M%P"), :available => "#{counselor.is_available_at(interval.utc + 30.minutes)}", :session_rate => "#{counselor.session_rate_in_dollars}"}}
