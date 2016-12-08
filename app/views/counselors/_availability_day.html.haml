@@ -10,7 +10,7 @@
   - if availabilities.length > 0 # Then make sure the counselor has availabilities on dts
     - availabilities.each do |interval|
       .col-xs-6.col-sm-3.availability_time_button_wrapper
-        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.time.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.is_available_at(interval.time + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+        .btn.btn-primary.btn-block.counselor-time-button{:data => { :toggle => "modal", :target => "##{@modal_target_id}", :time => interval.time.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.availability_days.map(&:available_datetime).include?(interval.time + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
           = interval.time.in_time_zone.strftime("%I:%M%P")
             
   - else # Otherwise, there aren't any openings
