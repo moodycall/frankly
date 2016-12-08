@@ -16,7 +16,7 @@
           - nextAvailable = @counselor.next_available
           %hr
           .text-center
-            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => nextAvailable.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.is_available_at(nextAvailable + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
+            .btn.btn-primary.counselor-time-button{:data => { :target => "#next_available",:toggle => "modal", :time => nextAvailable.in_time_zone.strftime("%I:%M%P"), :available => "#{@counselor.availability_days.map(&:available_datetime).include?(nextAvailable + 30.minutes)}", :session_rate => "#{@counselor.session_rate_in_dollars}"}}
               Book Next Available
 
             Begins in
